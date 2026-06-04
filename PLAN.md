@@ -546,24 +546,10 @@ Setiap batch adalah unit kerja yang **bisa diselesaikan dalam satu sesi** (2–6
 
 #### Konfigurasi Tailwind
 
-- [ ] Update `tailwind.config.ts` — tambah dark mode class dan extend colors:
-  ```typescript
-  const config: Config = {
-    darkMode: 'class',
-    content: ['./app/**/*.{ts,tsx}', './components/**/*.{ts,tsx}'],
-    theme: {
-      extend: {
-        colors: {
-          'sp-black':   '#121212',
-          'sp-dark':    '#181818',
-          'sp-card':    '#1f1f1f',
-          'sp-green':   '#1ed760',
-          'sp-border':  'rgba(255,255,255,0.1)',
-        }
-      }
-    }
-  }
-  ```
+- [ ] Update `tailwind.config.ts` — ikuti panduan DESIGN.md (Light Theme, Emerald Accents):
+  - Setup CSS variables untuk palette Light Emerald di `globals.css`
+  - Setup custom font `Playfair Display` dan `Inter`
+  - Setup utility radius dan spacing
 
 #### Konfigurasi `next.config.ts`
 
@@ -599,39 +585,15 @@ Setiap batch adalah unit kerja yang **bisa diselesaikan dalam satu sesi** (2–6
 **Prasyarat:** B04 selesai  
 **Output:** Global layout, tema dark mode, komponen layout reusable
 
-#### Global CSS (Dark Theme)
+#### Global CSS (Light Emerald Theme)
 
-- [ ] Update `app/globals.css`:
-  ```css
-  @tailwind base;
-  @tailwind components;
-  @tailwind utilities;
+- [ ] Update `app/globals.css` sesuai `DESIGN.md`:
+  - Setup CSS variables untuk palette Light Theme (Warm white, Emerald glows)
+  - Buat utility class untuk `shadow-capsule` dan efek brutalist glow
+  - Set default body background dan text color
+  - Tambah styling scrollbar minimalis
 
-  :root {
-    --bg-primary: #121212;
-    --bg-secondary: #181818;
-    --bg-card: #1f1f1f;
-    --accent: #1ed760;
-    --text-primary: #ffffff;
-    --text-secondary: #b3b3b3;
-    --border: rgba(255, 255, 255, 0.1);
-    --danger: #e91429;
-    --warning: #f59b23;
-  }
-
-  body {
-    background-color: var(--bg-primary);
-    color: var(--text-primary);
-    font-family: system-ui, -apple-system, sans-serif;
-  }
-
-  /* Scrollbar styling */
-  ::-webkit-scrollbar { width: 6px; }
-  ::-webkit-scrollbar-track { background: var(--bg-secondary); }
-  ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 3px; }
-  ```
-
-- [ ] Update `app/layout.tsx` — set `<html>` class ke `dark` secara default
+- [ ] Update `app/layout.tsx` — set font menggunakan Playfair Display dan Inter.
 
 #### Buat Supabase Client Utils
 
@@ -669,59 +631,33 @@ Setiap batch adalah unit kerja yang **bisa diselesaikan dalam satu sesi** (2–6
 #### Komponen Layout: Sidebar
 
 - [ ] Buat `components/layout/Sidebar.tsx`:
-  - Logo UNSAP (text-based, tanpa gambar dulu)
-  - Navigasi berbeda untuk mahasiswa vs admin (terima prop `role`)
-  - Link aktif highlighted dengan `sp-green`
-  - Mahasiswa: Dashboard, Submit Tiket
-  - Admin: Dashboard, Analytics, Kelola ML (master admin only)
-  - Avatar + nama user di bottom
-  - Logout button
+  - Menggunakan Cendekia style: `bg-surface-container-low`
+  - Nav item aktif highlighted dengan warna `primary` (Navy)
+  - Avatar + nama user + badge role di bottom
 
 #### Komponen Layout: Navbar (Mobile)
 
 - [ ] Buat `components/layout/Navbar.tsx`:
-  - Hamburger menu untuk mobile
-  - Judul halaman saat ini
-  - Bell icon notifikasi
-  - Avatar user
+  - Menggunakan class `.glass-nav` (glassmorphism)
 
 #### App Layout untuk Dashboard
 
 - [ ] Buat `app/(dashboard)/layout.tsx`:
-  - Sidebar di kiri (desktop), Navbar di atas (mobile)
-  - Main content area dengan padding yang benar
-  - Proteksi route (redirect ke login jika belum auth) — placeholder dulu, akan diisi di B06
+  - Sidebar di kiri, main content `bg-background` dan `text-on-surface`
 
-#### Komponen UI Reusable
+#### Komponen UI Reusable (Cendekia Style)
 
 - [ ] Buat `components/ui/PriorityBadge.tsx`:
-  - `low` → badge hijau redup
-  - `normal` → badge abu-abu
-  - `urgent` → badge merah dengan pulse animation
-  - Terima prop `priority` dan `overridden?: boolean`
-
+  - Gunakan style dot warna (merah/biru/outline) dengan pill shape
 - [ ] Buat `components/ui/StatusBadge.tsx`:
-  - `open` → abu-abu
-  - `in_progress` → biru
-  - `resolved` → hijau
-  - `closed` → gelap
-
+  - Gunakan style pill dengan warna glass/tonal background
 - [ ] Buat `components/ui/SlaIndicator.tsx`:
-  - Terima prop `deadline: Date`
-  - Hijau jika > 50% waktu tersisa
-  - Kuning jika 10–50%
-  - Merah jika < 10% atau sudah lewat
+  - Gunakan indikator dot hijau/kuning/merah dengan animasi `sla-pulse` jika overdue
 
-- [ ] Buat `components/ui/PageHeader.tsx`:
-  - Judul halaman + subtitle opsional + slot untuk action button
-
-#### Halaman Landing Page (Placeholder)
+#### Halaman Landing Page
 
 - [ ] Update `app/page.tsx`:
-  - Hero section: nama sistem + tagline + CTA button Login
-  - Section fitur 3 kolom (icon + judul + deskripsi singkat)
-  - Footer sederhana
-  - Dark theme sesuai design system
+  - Redesign dengan warm off-white background, teks warna navy, dan feature card berdesain glow.
 
 ---
 

@@ -1,26 +1,100 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@theme {
+  --font-sans: var(--font-body), system-ui, sans-serif;
+  --font-serif: var(--font-serif), ui-serif, Georgia, serif;
+  --font-mono: var(--font-jetbrains-mono), monospace;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  /* Colors — Background (Light Theme) */
+  --color-bg-base: #faf9f6; /* Warm white */
+  --color-bg-surface: #ffffff;
+  --color-bg-elevated: #f4f4f5;
+  --color-bg-overlay: rgba(0, 0, 0, 0.03);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  /* Colors — Text */
+  --color-text-primary: #18181b; /* Zinc 900 */
+  --color-text-secondary: #52525b; /* Zinc 600 */
+  --color-text-muted: #a1a1aa; /* Zinc 400 */
+  --color-text-inverse: #ffffff;
+
+  /* Colors — Accent (Adapted Brutalist for Light) */
+  --color-accent: #18181b;
+  --color-accent-subtle: rgba(0, 0, 0, 0.05);
+  --color-glow-cyan: #67e8f9;
+  --color-glow-pink: #f9a8d4;
+  --color-glow-purple: #d8b4fe;
+
+  /* Colors — Border */
+  --color-border: #e4e4e7; /* Zinc 200 */
+  --color-border-strong: #d4d4d8; /* Zinc 300 */
+
+  /* Colors — Semantic */
+  --color-success: #16a34a;
+  --color-warning: #ca8a04;
+  --color-error: #dc2626;
+  --color-info: #2563eb;
+
+  /* Shadows */
+  --shadow-glow: 0 0 80px -20px rgba(216, 180, 254, 0.4);
+  --shadow-capsule: 0 4px 20px -2px rgba(0, 0, 0, 0.05), 0 0 3px rgba(0,0,0,0.02);
+
+  /* Keyframes */
+  --animate-fade-up: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+  --animate-fade-in: fadeIn 0.8s ease both;
+  --animate-marquee: marquee 25s linear infinite;
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes marquee {
+    0% { transform: translateX(0%); }
+    100% { transform: translateX(-100%); }
   }
 }
 
+:root {
+  --bg-base: #faf9f6;
+  --bg-surface: #ffffff;
+  --text-primary: #18181b;
+  --text-secondary: #52525b;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--bg-base);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+::selection {
+  background-color: rgba(0, 0, 0, 0.1);
+  color: #000000;
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-base); }
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+@layer utilities {
+  .text-balance { text-wrap: balance; }
 }

@@ -659,25 +659,27 @@ ALTER PUBLICATION supabase_realtime ADD TABLE public.notifications;
 
 ## 10. Desain & UX
 
-### 10.1 Design System (Dipertahankan dari v1)
+### 10.1 Design System (Cendekia — Institutional Clarity)
 
-**Tema:** Dark Immersive (Spotify-Inspired)
+**Tema:** Light Immersive (Warm Off-White & Deep Navy), mengutamakan *Institutional Clarity* sesuai file `DESIGN.md`.
 
 | Token | Nilai |
 |---|---|
-| Background Primary | `#121212` |
-| Background Secondary | `#181818` |
-| Background Card | `#1f1f1f` |
-| Accent Primary | `#1ed760` (Spotify Green) |
-| Text Primary | `#ffffff` |
-| Text Secondary | `#b3b3b3` |
-| Border | `rgba(255,255,255,0.1)` |
-| Danger | `#e91429` |
-| Warning | `#f59b23` |
+| Background Primary | `#F7F6F3` (Warm Off-white) |
+| Surface Container | `#EEEBE7` |
+| Surface Card | `#FFFFFF` |
+| Primary (Navy) | `#1A3A5C` |
+| Accent Green | `#22C55E` |
+| Text Primary | `#111110` |
+| Text Secondary | `#5A5855` |
+| Border | `#D6D3CF` |
+| Danger / Urgent | `#EF4444` |
+| Warning | `#F59E0B` |
 
-**Tipografi:** System font stack, weight 400/500/700  
-**Border radius:** Pill-shape untuk tombol dan input (border-radius: 9999px), 8px untuk card  
-**Animasi:** Micro-animation halus, 150–300ms ease-out  
+**Tipografi:** `Inter` untuk UI umum, `JetBrains Mono` untuk data teknis (nomor tiket, token anonim, skor ML).  
+**Karakteristik Visual:** Menggunakan efek *Daytime Glass* (frosted glass transparan dengan blur 16-24px), border radius 24px untuk card, dan micro-interaction dengan glow-effect.  
+**Animasi:** Functional motion, 120-200ms ease.  
+**Catatan Penting:** Seluruh detail implementasi komponen mengacu penuh pada pedoman dalam `DESIGN.md`.
 
 ### 10.2 Halaman Utama
 
@@ -708,15 +710,15 @@ ALTER PUBLICATION supabase_realtime ADD TABLE public.notifications;
 - Indicator "sedang mengetik..." (opsional, P2)
 
 **PriorityBadge**
-- `low` → hijau redup
-- `normal` → abu-abu
-- `urgent` → merah berkedip (pulse animation)
-- Jika `priority_overridden = true` → tambahkan ikon peringatan
+- `low` → Outline dot, abu-abu
+- `normal` → Biru aksen
+- `urgent` → Dot merah berkedip (glow shadow) + teks merah
+- Jika `priority_overridden = true` → tambahkan ikon peringatan ⚠️
 
 **SLA Indicator**
 - Hijau: > 50% waktu SLA tersisa
 - Kuning: 10-50% waktu SLA tersisa
-- Merah: < 10% tersisa atau sudah lewat
+- Merah: < 10% tersisa atau sudah lewat (animasi sla-pulse)
 
 ---
 
