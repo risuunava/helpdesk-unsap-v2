@@ -1,0 +1,15 @@
+node_modules/
+.next/
+
+.env*
+.env.local
+!.env.example
+!.env.local.example
+ml-service/venv/
+ml-service/models/*.pkl
+ml-service/__pycache__/
+supabase/.branches/
+supabase/.temp/
+
+PLAN.md
+PRD.md
