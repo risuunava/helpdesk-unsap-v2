@@ -673,7 +673,7 @@ Setiap batch adalah unit kerja yang **bisa diselesaikan dalam satu sesi** (2–6
 
 #### Middleware Auth
 
-- [ ] Buat `middleware.ts` di root:
+- [X] Buat `middleware.ts` di root:
   ```typescript
   import { createServerClient } from '@supabase/ssr'
   import { NextResponse, type NextRequest } from 'next/server'
@@ -724,14 +724,14 @@ Setiap batch adalah unit kerja yang **bisa diselesaikan dalam satu sesi** (2–6
 
 #### Auth Callback Route
 
-- [ ] Buat `app/api/auth/callback/route.ts`:
+- [X] Buat `app/api/auth/callback/route.ts`:
   - Handle OAuth callback dari Supabase
   - Exchange code untuk session
   - Redirect ke halaman yang sesuai berdasarkan role
 
 #### Helper: Get Current User (Server)
 
-- [ ] Buat `lib/auth.ts`:
+- [X] Buat `lib/auth.ts`:
   ```typescript
   import { createClient } from '@/lib/supabase/server'
   import { redirect } from 'next/navigation'
@@ -764,7 +764,7 @@ Setiap batch adalah unit kerja yang **bisa diselesaikan dalam satu sesi** (2–6
 
 #### Validasi Schema Auth
 
-- [ ] Buat `lib/validations/auth.schema.ts`:
+- [X] Buat `lib/validations/auth.schema.ts`:
   ```typescript
   import { z } from 'zod'
 
@@ -795,21 +795,21 @@ Setiap batch adalah unit kerja yang **bisa diselesaikan dalam satu sesi** (2–6
 
 #### Layout Auth
 
-- [ ] Buat `app/(auth)/layout.tsx`:
+- [X] Buat `app/(auth)/layout.tsx`:
   - Centered card layout (max-w-md)
   - Background dengan subtle pattern atau solid dark
   - Logo UNSAP di atas card
 
 #### Halaman Login
 
-- [ ] Buat `app/(auth)/login/page.tsx`:
+- [X] Buat `app/(auth)/login/page.tsx`:
   - Form: Email, Password
   - Tombol "Masuk" dengan loading state
   - Link ke halaman register
   - Error message dari Supabase (email/password salah)
   - Gunakan `react-hook-form` + `loginSchema`
 
-- [ ] Logic submit:
+- [X] Logic submit:
   ```typescript
   const supabase = createClient()
   const { error } = await supabase.auth.signInWithPassword({ email, password })
@@ -820,13 +820,13 @@ Setiap batch adalah unit kerja yang **bisa diselesaikan dalam satu sesi** (2–6
 
 #### Halaman Register
 
-- [ ] Buat `app/(auth)/register/page.tsx`:
+- [X] Buat `app/(auth)/register/page.tsx`:
   - Form: NIM, Nama Lengkap, Email, Password, Konfirmasi Password
   - Tombol "Daftar" dengan loading state
   - Link ke halaman login
   - Gunakan `react-hook-form` + `registerSchema`
 
-- [ ] Logic submit:
+- [X] Logic submit:
   ```typescript
   const supabase = createClient()
   const { data, error } = await supabase.auth.signUp({
@@ -841,22 +841,22 @@ Setiap batch adalah unit kerja yang **bisa diselesaikan dalam satu sesi** (2–6
 
 #### Update Dashboard Layout — Auth Check
 
-- [ ] Update `app/(dashboard)/layout.tsx`:
+- [X] Update `app/(dashboard)/layout.tsx`:
   - Gunakan `requireAuth()` dari `lib/auth.ts` untuk validasi di server
   - Pass `profile` sebagai prop ke `Sidebar`
   - Tampilkan nama user di sidebar
 
 #### Test Auth Flow
 
-- [ ] Register akun mahasiswa baru → cek profil terbuat di DB
-- [ ] Login → redirect ke `/mahasiswa`
-- [ ] Akses `/admin` tanpa login → redirect ke `/login`
-- [ ] Refresh halaman → session tetap ada
-- [ ] Logout → session hilang, redirect ke `/login`
+- [X] Register akun mahasiswa baru → cek profil terbuat di DB
+- [X] Login → redirect ke `/mahasiswa`
+- [X] Akses `/admin` tanpa login → redirect ke `/login`
+- [X] Refresh halaman → session tetap ada
+- [X] Logout → session hilang, redirect ke `/login`
 
 #### Seeder: Akun Admin & Master Admin
 
-- [ ] Buat `supabase/migrations/00005_seed_accounts.sql`:
+- [X] Buat `supabase/migrations/00005_seed_accounts.sql`:
   > Buat manual via Supabase Dashboard → Authentication → Users untuk akun test:
   - `admin@unsap.ac.id` / `admin123` → update role di profiles menjadi `admin`
   - `masteradmin@unsap.ac.id` / `master123` → update role menjadi `master_admin`

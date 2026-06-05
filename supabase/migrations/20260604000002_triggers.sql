@@ -51,11 +51,12 @@ CREATE TRIGGER profiles_updated_at BEFORE UPDATE ON public.profiles
 CREATE OR REPLACE FUNCTION handle_new_user()
 RETURNS TRIGGER AS $$
 BEGIN
-  INSERT INTO public.profiles (id, full_name, role)
+  INSERT INTO public.profiles (id, full_name, role, nim)
   VALUES (
     NEW.id,
     COALESCE(NEW.raw_user_meta_data->>'full_name', 'User'),
-    COALESCE(NEW.raw_user_meta_data->>'role', 'mahasiswa')
+    COALESCE(NEW.raw_user_meta_data->>'role', 'mahasiswa'),
+    NEW.raw_user_meta_data->>'nim'
   );
   RETURN NEW;
 END;

@@ -6,9 +6,10 @@ import { LayoutDashboard, PlusCircle, BarChart3, Brain, LogOut } from 'lucide-re
 
 interface SidebarProps {
   role?: 'mahasiswa' | 'admin' | 'master_admin'
+  userName?: string
 }
 
-export function Sidebar({ role = 'mahasiswa' }: SidebarProps) {
+export function Sidebar({ role = 'mahasiswa', userName = 'User' }: SidebarProps) {
   const pathname = usePathname()
 
   const links = role === 'mahasiswa' 
@@ -24,24 +25,24 @@ export function Sidebar({ role = 'mahasiswa' }: SidebarProps) {
 
   const roleLabel = role.replace('_', ' ')
   const roleBadgeClass = role === 'mahasiswa'
-    ? 'bg-accent-subtle text-accent'
+    ? 'bg-emerald-100 text-emerald-700'
     : role === 'admin'
-    ? 'bg-[#E8F5E9] text-[#2D8A4E]'
+    ? 'bg-teal-100 text-teal-700'
     : 'bg-text-primary text-text-inverse'
 
   return (
     <aside className="w-[240px] bg-bg-elevated border-r border-border min-h-screen hidden md:flex flex-col">
       <div className="p-6">
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg bg-accent flex items-center justify-center">
-            <span className="text-text-inverse font-display font-bold text-[15px] leading-none">U</span>
+          <div className="w-8 h-8 rounded-lg bg-emerald-800 flex items-center justify-center shadow-sm">
+            <span className="text-white font-serif font-bold text-[15px] leading-none">U</span>
           </div>
-          <span className="font-display font-bold text-[18px] text-text-primary">UNSAP</span>
+          <span className="font-serif font-bold text-[18px] text-text-primary">UNSAP</span>
         </div>
       </div>
 
       <nav className="flex-1 px-4 mt-4 space-y-1">
-        <h2 className="text-[11px] font-body font-semibold text-text-muted uppercase tracking-wider mb-3 px-3">Menu</h2>
+        <h2 className="text-[11px] font-sans font-semibold text-text-muted uppercase tracking-wider mb-3 px-3">Menu</h2>
         {links.map((link) => {
           const isActive = pathname === link.href
           const Icon = link.icon
@@ -49,10 +50,10 @@ export function Sidebar({ role = 'mahasiswa' }: SidebarProps) {
             <Link
               key={link.href}
               href={link.href}
-              className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-[14px] font-body font-medium transition-all ${
+              className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-[14px] font-sans font-medium transition-all ${
                 isActive 
-                  ? 'bg-accent text-text-inverse shadow-sm' 
-                  : 'text-text-secondary hover:bg-bg-overlay hover:text-text-primary'
+                  ? 'bg-emerald-800 text-white shadow-sm shadow-emerald-900/20' 
+                  : 'text-text-secondary hover:bg-emerald-50 hover:text-emerald-900'
               }`}
             >
               <Icon size={18} />
@@ -64,11 +65,11 @@ export function Sidebar({ role = 'mahasiswa' }: SidebarProps) {
 
       <div className="p-4 border-t border-border">
         <div className="flex items-center gap-3 px-2">
-          <div className="w-10 h-10 rounded-full bg-bg-overlay border border-border flex items-center justify-center">
-            <span className="font-display font-bold text-[14px] text-text-secondary">U</span>
+          <div className="w-10 h-10 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center shrink-0">
+            <span className="font-serif font-bold text-[14px] text-emerald-800">{userName.charAt(0).toUpperCase()}</span>
           </div>
-          <div>
-            <p className="text-[14px] font-body font-medium text-text-primary">User</p>
+          <div className="min-w-0 flex-1">
+            <p className="text-[14px] font-sans font-medium text-text-primary truncate">{userName}</p>
             <span className={`inline-block px-2 py-0.5 mt-0.5 rounded-full text-[10px] font-body font-semibold tracking-wider uppercase ${roleBadgeClass}`}>
               {roleLabel}
             </span>

@@ -1,0 +1,14 @@
+# Virtual environment
+venv/
+__pycache__/
+*.pyc
+
+# Models (generated, not tracked)
+models/*.pkl
+
+# Datasets (optional, may contain sensitive data)
+# datasets/
+
+# IDE
+.vscode/
+.idea/
