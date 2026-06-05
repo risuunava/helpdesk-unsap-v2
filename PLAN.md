@@ -1512,7 +1512,7 @@ Setiap batch adalah unit kerja yang **bisa diselesaikan dalam satu sesi** (2–6
 
 #### Halaman Detail Tiket Admin
 
-- [ ] Buat `app/(dashboard)/admin/tiket/[id]/page.tsx`:
+- [x] Buat `app/(dashboard)/admin/tiket/[id]/page.tsx`:
 
   **Layout split-view (desktop):**
   - Panel Kiri (55%) — Detail Tiket:
@@ -1535,7 +1535,7 @@ Setiap batch adalah unit kerja yang **bisa diselesaikan dalam satu sesi** (2–6
 
 #### Komponen: Ticket Actions
 
-- [ ] Buat `components/ticket/TicketActions.tsx`:
+- [x] Buat `components/ticket/TicketActions.tsx`:
   - Select status dengan PATCH /api/tickets/[id]
   - Select prioritas
   - Assign dropdown (list admin dari DB)
