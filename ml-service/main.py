@@ -34,11 +34,11 @@ class FaqSuggestRequest(BaseModel):
 class SentimentRequest(BaseModel):
     text: str
 
-@app.get("/")
-def root():
+@app.get("/health")
+def health():
     return {"status": "ok", "service": "UNSAP ML Service v2.0"}
 
-@app.post("/predict", response_model=ClassifyResponse)
+@app.post("/classify", response_model=ClassifyResponse)
 def predict_priority(req: ClassifyRequest, api_key: str = Depends(verify_api_key)):
     model, vectorizer, model_version = get_model()
     
@@ -80,7 +80,7 @@ def predict_priority(req: ClassifyRequest, api_key: str = Depends(verify_api_key
         model_version=model_version
     )
 
-@app.post("/faq/suggest")
+@app.post("/faq-suggest")
 def suggest_faq(req: FaqSuggestRequest, api_key: str = Depends(verify_api_key)):
     # Placeholder for FAQ Suggestion (TF-IDF similarity against FAQ DB)
     return {

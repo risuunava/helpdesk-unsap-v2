@@ -1,4 +1,4 @@
-﻿export type Json =
+export type Json =
   | string
   | number
   | boolean
@@ -313,7 +313,7 @@ export type Database = {
           resolved_at?: string | null
           sla_deadline?: string | null
           status?: string
-          ticket_number: string
+          ticket_number?: string
           title: string
           updated_at?: string | null
         }
@@ -361,7 +361,37 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      increment_rate_limit_count: {
+        Args: {
+          p_user_id: string
+          p_date: string
+        }
+        Returns: undefined
+      }
+      get_kpi_summary: {
+        Args: Record<string, never>
+        Returns: Json
+      }
+      get_weekly_trend: {
+        Args: Record<string, never>
+        Returns: Json
+      }
+      get_tickets_by_category: {
+        Args: Record<string, never>
+        Returns: Json
+      }
+      get_tickets_by_priority: {
+        Args: Record<string, never>
+        Returns: Json
+      }
+      get_sla_compliance: {
+        Args: Record<string, never>
+        Returns: Json
+      }
+      get_my_role: {
+        Args: Record<string, never>
+        Returns: string
+      }
     }
     Enums: {
       [_ in never]: never

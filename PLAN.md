@@ -883,7 +883,7 @@ Setiap batch adalah unit kerja yang **bisa diselesaikan dalam satu sesi** (2–6
 
 #### Struktur ML Service
 
-- [ ] Pastikan `ml-service/` punya struktur:
+- [x] Pastikan `ml-service/` punya struktur:
   ```
   ml-service/
   ├── datasets/dataset.csv
@@ -901,7 +901,7 @@ Setiap batch adalah unit kerja yang **bisa diselesaikan dalam satu sesi** (2–6
 
 #### Refactor `utils/preprocessor.py`
 
-- [ ] Pastikan preprocessing include:
+- [x] Pastikan preprocessing include:
   - Lowercase
   - Remove punctuation & numbers
   - Tokenisasi
@@ -911,7 +911,7 @@ Setiap batch adalah unit kerja yang **bisa diselesaikan dalam satu sesi** (2–6
 
 #### Refactor `utils/model_loader.py`
 
-- [ ] Implementasi pattern singleton untuk model:
+- [x] Implementasi pattern singleton untuk model:
   ```python
   import joblib, os
   from pathlib import Path
@@ -946,7 +946,7 @@ Setiap batch adalah unit kerja yang **bisa diselesaikan dalam satu sesi** (2–6
 
 #### Refactor `main.py`
 
-- [ ] Implementasi endpoint sesuai PRD:
+- [x] Implementasi endpoint sesuai PRD:
   ```python
   from fastapi import FastAPI, HTTPException, Security, Depends
   from fastapi.security.api_key import APIKeyHeader
@@ -1018,7 +1018,7 @@ Setiap batch adalah unit kerja yang **bisa diselesaikan dalam satu sesi** (2–6
 
 #### Setup `requirements.txt`
 
-- [ ] Pastikan berisi:
+- [x] Pastikan berisi:
   ```
   fastapi==0.111.0
   uvicorn[standard]==0.29.0
@@ -1034,14 +1034,14 @@ Setiap batch adalah unit kerja yang **bisa diselesaikan dalam satu sesi** (2–6
 
 #### `Procfile` untuk Railway
 
-- [ ] Buat `ml-service/Procfile`:
+- [x] Buat `ml-service/Procfile`:
   ```
   web: uvicorn main:app --host 0.0.0.0 --port $PORT
   ```
 
 #### `railway.json`
 
-- [ ] Buat `ml-service/railway.json`:
+- [x] Buat `ml-service/railway.json`:
   ```json
   {
     "$schema": "https://railway.app/railway.schema.json",
@@ -1057,7 +1057,7 @@ Setiap batch adalah unit kerja yang **bisa diselesaikan dalam satu sesi** (2–6
 
 #### Train Model Awal
 
-- [ ] Jalankan lokal:
+- [x] Jalankan lokal:
   ```bash
   cd ml-service
   python -m venv venv && source venv/bin/activate
@@ -1065,8 +1065,8 @@ Setiap batch adalah unit kerja yang **bisa diselesaikan dalam satu sesi** (2–6
   python -c "import nltk; nltk.download('stopwords'); nltk.download('punkt')"
   python train.py
   ```
-- [ ] Verifikasi `models/model_*.pkl` dan `models/vectorizer.pkl` ter-generate
-- [ ] Tambahkan `ml-service/models/*.pkl` ke `.gitignore`
+- [x] Verifikasi `models/model_*.pkl` dan `models/vectorizer.pkl` ter-generate
+- [x] Tambahkan `ml-service/models/*.pkl` ke `.gitignore`
 
 #### Deploy ke Railway
 
@@ -1080,7 +1080,7 @@ Setiap batch adalah unit kerja yang **bisa diselesaikan dalam satu sesi** (2–6
 
 #### Helper ML di Next.js
 
-- [ ] Buat `lib/ml.ts`:
+- [x] Buat `lib/ml.ts`:
   ```typescript
   const ML_URL = process.env.ML_SERVICE_URL!
   const ML_KEY = process.env.ML_SERVICE_API_KEY!
@@ -1127,7 +1127,7 @@ Setiap batch adalah unit kerja yang **bisa diselesaikan dalam satu sesi** (2–6
 
 #### Validasi Schema Tiket
 
-- [ ] Buat `lib/validations/ticket.schema.ts`:
+- [x] Buat `lib/validations/ticket.schema.ts`:
   ```typescript
   import { z } from 'zod'
 
@@ -1148,7 +1148,7 @@ Setiap batch adalah unit kerja yang **bisa diselesaikan dalam satu sesi** (2–6
 
 #### Utilitas Anonimitas
 
-- [ ] Buat `lib/anonymize.ts`:
+- [x] Buat `lib/anonymize.ts`:
   ```typescript
   export function generateAnonymousCode(userId: string): string {
     let hash = 0
@@ -1162,7 +1162,7 @@ Setiap batch adalah unit kerja yang **bisa diselesaikan dalam satu sesi** (2–6
 
 #### Utilitas Rate Limit
 
-- [ ] Buat `lib/rateLimit.ts`:
+- [x] Buat `lib/rateLimit.ts`:
   ```typescript
   import { createClient } from '@/lib/supabase/server'
 
@@ -1197,7 +1197,7 @@ Setiap batch adalah unit kerja yang **bisa diselesaikan dalam satu sesi** (2–6
 
 #### API Route: GET & POST /api/tickets
 
-- [ ] Buat `app/api/tickets/route.ts`:
+- [x] Buat `app/api/tickets/route.ts`:
 
   **GET** — list tiket (filter berdasarkan role):
   - Mahasiswa: hanya tiket sendiri
@@ -1214,7 +1214,7 @@ Setiap batch adalah unit kerja yang **bisa diselesaikan dalam satu sesi** (2–6
 
 #### API Route: GET, PATCH /api/tickets/[id]
 
-- [ ] Buat `app/api/tickets/[id]/route.ts`:
+- [x] Buat `app/api/tickets/[id]/route.ts`:
 
   **GET** — detail satu tiket:
   - Validasi kepemilikan atau role admin
@@ -1228,7 +1228,7 @@ Setiap batch adalah unit kerja yang **bisa diselesaikan dalam satu sesi** (2–6
 
 #### API Route: Upload Attachment
 
-- [ ] Upload ke Supabase Storage di dalam POST `/api/tickets`:
+- [x] Upload ke Supabase Storage di dalam POST `/api/tickets`:
   ```typescript
   const file = formData.get('attachment') as File | null
   let attachmentUrl: string | null = null
@@ -1266,7 +1266,7 @@ Setiap batch adalah unit kerja yang **bisa diselesaikan dalam satu sesi** (2–6
 
 #### Custom Hook: useTicketForm
 
-- [ ] Buat `hooks/useTicketForm.ts`:
+- [x] Buat `hooks/useTicketForm.ts`:
   - State untuk form data, loading, error, success
   - Fungsi submit yang call POST /api/tickets
   - Handle multipart form (untuk file upload)
@@ -1274,7 +1274,7 @@ Setiap batch adalah unit kerja yang **bisa diselesaikan dalam satu sesi** (2–6
 
 #### Komponen FaqSuggestion (Placeholder)
 
-- [ ] Buat `components/ticket/FaqSuggestion.tsx`:
+- [x] Buat `components/ticket/FaqSuggestion.tsx`:
   - Terima prop `query: string`
   - Tampilkan skeleton saat loading
   - Tampilkan card saran jika ada hasil (data dummy dulu)
@@ -1283,7 +1283,7 @@ Setiap batch adalah unit kerja yang **bisa diselesaikan dalam satu sesi** (2–6
 
 #### Halaman Submit Tiket
 
-- [ ] Buat `app/(dashboard)/mahasiswa/submit/page.tsx`:
+- [x] Buat `app/(dashboard)/mahasiswa/submit/page.tsx`:
 
   **Form fields:**
   - Judul (text input, min 10 char, counter)
@@ -1304,7 +1304,7 @@ Setiap batch adalah unit kerja yang **bisa diselesaikan dalam satu sesi** (2–6
 
 #### Update Rate Limit — DB Function
 
-- [ ] Tambah ke `supabase/migrations/00006_rpc_functions.sql`:
+- [x] Tambah ke `supabase/migrations/00006_rpc_functions.sql`:
   ```sql
   CREATE OR REPLACE FUNCTION increment_rate_limit_count(p_user_id UUID, p_date DATE)
   RETURNS void AS $$
@@ -1328,7 +1328,7 @@ Setiap batch adalah unit kerja yang **bisa diselesaikan dalam satu sesi** (2–6
 
 #### Custom Hook: useTickets
 
-- [ ] Buat `hooks/useTickets.ts`:
+- [x] Buat `hooks/useTickets.ts`:
   ```typescript
   // Fetch tiket dengan pagination dan filter
   // Subscribe Supabase Realtime untuk update status tiket mahasiswa sendiri
@@ -1337,7 +1337,7 @@ Setiap batch adalah unit kerja yang **bisa diselesaikan dalam satu sesi** (2–6
 
 #### Halaman Dashboard Mahasiswa
 
-- [ ] Buat `app/(dashboard)/mahasiswa/page.tsx`:
+- [x] Buat `app/(dashboard)/mahasiswa/page.tsx`:
 
   **Layout:**
   - Header: "Laporan Saya" + tombol "Buat Laporan Baru"
@@ -1351,7 +1351,7 @@ Setiap batch adalah unit kerja yang **bisa diselesaikan dalam satu sesi** (2–6
 
 #### Halaman Detail Tiket Mahasiswa
 
-- [ ] Buat `app/(dashboard)/mahasiswa/tiket/[id]/page.tsx`:
+- [x] Buat `app/(dashboard)/mahasiswa/tiket/[id]/page.tsx`:
 
   **Layout dua kolom (desktop):**
   - Kiri (60%): Info detail tiket
@@ -1374,7 +1374,7 @@ Setiap batch adalah unit kerja yang **bisa diselesaikan dalam satu sesi** (2–6
 
 #### API Route: GET /api/analytics
 
-- [ ] Buat `app/api/analytics/route.ts`:
+- [x] Buat `app/api/analytics/route.ts`:
 
   **Response:**
   ```typescript
@@ -1400,7 +1400,7 @@ Setiap batch adalah unit kerja yang **bisa diselesaikan dalam satu sesi** (2–6
 
 #### DB Functions untuk Analytics
 
-- [ ] Tambah ke `supabase/migrations/00007_analytics_functions.sql`:
+- [x] Tambah ke `supabase/migrations/20260605000010_analytics_functions.sql`:
   ```sql
   -- KPI summary
   CREATE OR REPLACE FUNCTION get_kpi_summary()
@@ -1436,17 +1436,17 @@ Setiap batch adalah unit kerja yang **bisa diselesaikan dalam satu sesi** (2–6
   END;
   $$ LANGUAGE plpgsql SECURITY DEFINER;
   ```
-- [ ] Push migration: `supabase db push`
+- [ ] Push migration: `supabase db push` *(manual)*
 
 #### API Route: GET /api/chat
 
-- [ ] Buat `app/api/chat/route.ts`:
+- [x] Buat `app/api/chat/route.ts`:
   - GET: ambil semua pesan untuk ticket_id tertentu (query param)
   - Validasi user punya akses ke tiket tersebut
 
 #### API Route: POST /api/chat
 
-- [ ] POST ke `app/api/chat/route.ts`:
+- [x] POST ke `app/api/chat/route.ts`:
   - Validasi `content` tidak kosong, max 1000 karakter
   - Validasi user punya akses ke tiket
   - Insert ke tabel `messages`
@@ -1462,13 +1462,13 @@ Setiap batch adalah unit kerja yang **bisa diselesaikan dalam satu sesi** (2–6
 
 #### KPI Cards Component
 
-- [ ] Buat `components/dashboard/KpiCard.tsx`:
+- [x] Buat `components/dashboard/KpiCard.tsx`:
   - Props: `title`, `value`, `subtitle?`, `icon`, `trend?`, `variant: 'default' | 'danger' | 'success'`
   - Ukuran card konsisten, angka besar di tengah
 
 #### Halaman Dashboard Admin
 
-- [ ] Buat `app/(dashboard)/admin/page.tsx`:
+- [x] Buat `app/(dashboard)/admin/page.tsx`:
 
   **Section 1 — KPI Cards (4 kolom):**
   - Total Tiket
@@ -1497,7 +1497,7 @@ Setiap batch adalah unit kerja yang **bisa diselesaikan dalam satu sesi** (2–6
 
 #### State Management Filter
 
-- [ ] Buat `hooks/useAdminTickets.ts`:
+- [x] Buat `hooks/useAdminTickets.ts`:
   - State: filters, page, sort
   - Fetch dari GET /api/tickets dengan query params
   - Realtime subscription untuk tiket baru

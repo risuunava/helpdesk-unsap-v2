@@ -1,0 +1,117 @@
+import { NextRequest, NextResponse } from 'next/server'
+import { createClient } from '@/lib/supabase/server'
+import { requireAuth } from '@/lib/auth'
+import { updateTicketSchema } from '@/lib/validations/ticket.schema'
+
+export async function GET(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const user = await requireAuth()
+    const supabase = await createClient()
+    const { id } = await params
+
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('id', user.id)
+      .single()
+
+    if (!profile) {
+      return NextResponse.json({ error: 'Profile not found' }, { status: 404 })
+    }
+
+    const { data: ticket, error } = await supabase
+      .from('tickets')
+      .select(`
+        *,
+        reporter:profiles!tickets_reporter_id_fkey(id, full_name, nim, role, department, avatar_url),
+        assignee:profiles!tickets_assigned_to_fkey(id, full_name, nim, role, department, avatar_url)
+      `)
+      .eq('id', id)
+      .single()
+
+    if (error || !ticket) {
+      return NextResponse.json({ error: 'Ticket not found' }, { status: 404 })
+    }
+
+    // Ownership validation
+    const isOwner = ticket.reporter_id === user.id
+    const isAdmin = profile.role === 'admin' || profile.role === 'master_admin'
+
+    if (!isOwner && !isAdmin && ticket.assigned_to !== user.id) {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+    }
+
+    // Mask anonymous info
+    if (ticket.is_anonymous && profile.role !== 'master_admin' && !isOwner) {
+      ticket.reporter = {
+        id: 'hidden',
+        full_name: ticket.anonymous_code || 'Anonim',
+        nim: 'hidden',
+        role: 'mahasiswa',
+        department: null,
+        avatar_url: null
+      }
+    }
+
+    return NextResponse.json({ data: ticket })
+
+  } catch (error: any) {
+    console.error('GET /api/tickets/[id] error:', error)
+    return NextResponse.json({ error: error.message || 'Internal Server Error' }, { status: 500 })
+  }
+}
+
+export async function PATCH(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const user = await requireAuth()
+    const supabase = await createClient()
+    const { id } = await params
+
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('id', user.id)
+      .single()
+
+    if (!profile || (profile.role !== 'admin' && profile.role !== 'master_admin')) {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+    }
+
+    const rawData = await request.json()
+    const validatedData = updateTicketSchema.parse(rawData)
+
+    const updatePayload: any = { ...validatedData }
+
+    if (validatedData.status === 'resolved') {
+      updatePayload.resolved_at = new Date().toISOString()
+    }
+    
+    if (validatedData.priority) {
+      updatePayload.priority_overridden = true
+    }
+
+    const { data: ticket, error } = await supabase
+      .from('tickets')
+      .update(updatePayload)
+      .eq('id', id)
+      .select()
+      .single()
+
+    if (error) throw error
+
+    return NextResponse.json({ data: ticket })
+
+  } catch (error: any) {
+    console.error('PATCH /api/tickets/[id] error:', error)
+    if (error.name === 'ZodError') {
+      return NextResponse.json({ error: error.issues }, { status: 400 })
+    }
+    return NextResponse.json({ error: error.message || 'Internal Server Error' }, { status: 500 })
+  }
+}
