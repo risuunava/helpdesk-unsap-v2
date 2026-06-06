@@ -4,6 +4,7 @@ import React, { useState, useRef, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { useTicketForm } from '@/hooks/useTicketForm'
 import { FaqSuggestion } from '@/components/ticket/FaqSuggestion'
+import { detectUrgentKeywords } from '@/lib/escalation'
 import {
   Send,
   Paperclip,
@@ -332,6 +333,20 @@ export default function SubmitTicketPage() {
 
           {/* FAQ Suggestion */}
           <FaqSuggestion query={description} />
+
+          {/* Urgent Keywords Warning */}
+          {detectUrgentKeywords(title + ' ' + description).length > 0 && (
+            <div className="p-4 rounded-xl border border-warning/30 bg-warning/10 flex items-start gap-3 animate-in fade-in slide-in-from-top-2 duration-300">
+              <AlertTriangle className="w-5 h-5 text-warning shrink-0 mt-0.5" />
+              <div>
+                <p className="text-sm font-semibold text-warning">Prioritas Urgent Terdeteksi</p>
+                <p className="text-xs text-warning/80 mt-0.5">
+                  Laporan ini mengandung kata kunci darurat ({detectUrgentKeywords(title + ' ' + description).join(', ')}) 
+                  dan akan otomatis mendapat prioritas <span className="font-bold">URGENT</span> untuk penanganan lebih cepat.
+                </p>
+              </div>
+            </div>
+          )}
 
           {/* Lampiran */}
           <div>

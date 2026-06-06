@@ -42,8 +42,9 @@ Setiap batch adalah unit kerja yang **bisa diselesaikan dalam satu sesi** (2–6
 | B14 | Halaman Admin — Detail Tiket | Core | 3 jam |
 | B15 | FAQ Suggestion Integration | ML | 3 jam |
 | B16 | Supabase Edge Function: process-ticket-ml | ML | 4 jam |
-| B17 | Auto-escalation & Fail-safe | ML | 2 jam |
-| B18 | Live Chat — Backend & Realtime | Realtime | 4 jam |
+| B17 | Auto-escalation & Fail-safe | ML | 2 jam | [x]
+| B18 | Live Chat â€” Backend & Realtime | Realtime | 4 jam |
+
 | B19 | Live Chat — Frontend | Realtime | 4 jam |
 | B20 | Notifikasi Realtime | Realtime | 3 jam |
 | B21 | Analytics & Charts | Analytics | 5 jam |

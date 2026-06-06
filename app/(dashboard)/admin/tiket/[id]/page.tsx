@@ -18,7 +18,7 @@ export default function AdminTicketDetail({ params }: { params: Promise<{ id: st
   const { id } = use(params)
   
   const [ticket, setTicket] = useState<any>(null)
-  const [admins, setAdmins] = useState<{ id: string; full_name: string }[]>([])
+  const [admins, setAdmins] = useState<{ id: string; full_name: string; role: string }[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [currentUserRole, setCurrentUserRole] = useState<string>('admin')
@@ -35,7 +35,7 @@ export default function AdminTicketDetail({ params }: { params: Promise<{ id: st
       // Fetch Admins for assignee dropdown
       const { data: adminList } = await supabase
         .from('profiles')
-        .select('id, full_name')
+        .select('id, full_name, role')
         .in('role', ['admin', 'master_admin'])
       
       if (adminList) setAdmins(adminList)
