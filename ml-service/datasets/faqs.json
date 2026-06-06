@@ -1,0 +1,68 @@
+[
+  {
+    "id": "8137f850-cae8-456e-b9ae-b9d68ef10f91",
+    "question": "Bagaimana cara mengajukan cuti akademik?",
+    "answer": "Cuti akademik dapat diajukan melalui SIAKAD paling lambat 2 minggu sebelum semester dimulai dengan menyertakan surat permohonan dan KTM.",
+    "category": "akademik"
+  },
+  {
+    "id": "f709079f-8dc0-4b71-93b2-f1c7a52a0d94",
+    "question": "Kapan batas pembayaran UKT semester ini?",
+    "answer": "Batas pembayaran UKT dapat dilihat di portal mahasiswa UNSAP pada menu Keuangan > Tagihan.",
+    "category": "keuangan"
+  },
+  {
+    "id": "03ed61ea-db3c-4fdf-a6f0-8da5b3aef41a",
+    "question": "Bagaimana prosedur peminjaman ruang kelas?",
+    "answer": "Peminjaman ruang kelas diajukan ke Bagian Sarana dan Prasarana minimal 3 hari sebelum penggunaan dengan mengisi formulir yang tersedia di Tata Usaha.",
+    "category": "fasilitas"
+  },
+  {
+    "id": "41a40772-4303-4c85-87e2-08e25eab2f4f",
+    "question": "Bagaimana cara mendapatkan surat keterangan aktif kuliah?",
+    "answer": "Surat keterangan aktif kuliah dapat diurus di Bagian Akademik dengan membawa KTM dan KRS semester berjalan.",
+    "category": "akademik"
+  },
+  {
+    "id": "d55d26e1-42be-4ce4-aaa1-4c6209c2e462",
+    "question": "Apa yang harus dilakukan jika ada masalah dengan akun SIAKAD?",
+    "answer": "Hubungi helpdesk IT UNSAP melalui sistem ini dengan melampirkan screenshot masalah dan NIM Anda.",
+    "category": "lainnya"
+  },
+  {
+    "id": "e1f7f507-2085-477e-a523-31d677d0a720",
+    "question": "Bagaimana cara mengajukan cuti akademik?",
+    "answer": "Untuk mengajukan cuti akademik, Anda harus mengisi form permohonan cuti yang dapat diunduh di portal akademik. Kemudian, minta persetujuan dari Dosen Wali dan serahkan ke BAAK selambat-lambatnya minggu ke-2 awal semester.",
+    "category": "akademik"
+  },
+  {
+    "id": "37d1eae2-9927-4bda-8ad3-941b7cf133f8",
+    "question": "Kapan batas waktu pengisian KRS?",
+    "answer": "Pengisian KRS biasanya ditutup 2 minggu sebelum perkuliahan dimulai. Pastikan Anda selalu mengecek kalender akademik terbaru di portal mahasiswa.",
+    "category": "akademik"
+  },
+  {
+    "id": "cd5d5881-6b77-403d-8b49-72ca8e245172",
+    "question": "Bagaimana cara membayar UKT jika telat?",
+    "answer": "Jika Anda telat membayar UKT sesuai jadwal, Anda akan dikenakan denda keterlambatan. Silakan hubungi bagian keuangan (Biro Keuangan) untuk mendapatkan rincian denda dan cara pembayarannya. Pembayaran tetap dilakukan melalui Virtual Account.",
+    "category": "keuangan"
+  },
+  {
+    "id": "65fe6fb6-7959-4d4b-ac24-4a69e6103114",
+    "question": "Saya sudah transfer biaya kuliah tapi statusnya masih belum lunas",
+    "answer": "Proses verifikasi bank bisa memakan waktu hingga 1x24 jam kerja. Jika lebih dari itu status belum berubah, buat tiket kategori Keuangan dan lampirkan bukti transfer yang sah.",
+    "category": "keuangan"
+  },
+  {
+    "id": "4d998c91-8c8a-4156-bde5-371980b8c56a",
+    "question": "Bagaimana cara meminjam proyektor untuk kegiatan kelas?",
+    "answer": "Peminjaman proyektor dapat dilakukan di bagian Perlengkapan kampus dengan menyerahkan Kartu Tanda Mahasiswa (KTM) yang masih aktif. Peminjaman maksimal dilakukan 1 jam sebelum kelas dimulai.",
+    "category": "fasilitas"
+  },
+  {
+    "id": "4d377d99-3b59-45aa-8f38-ea0147e1355e",
+    "question": "Saya kehilangan barang di area kampus, apa yang harus saya lakukan?",
+    "answer": "Segera laporkan kehilangan Anda ke Pos Satpam terdekat. Sebutkan secara detail ciri-ciri barang yang hilang, waktu, dan lokasi perkiraan barang tersebut tertinggal.",
+    "category": "keamanan"
+  }
+]

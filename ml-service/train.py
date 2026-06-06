@@ -9,18 +9,16 @@ from sklearn.pipeline import Pipeline
 from supabase import create_client, Client
 
 import nltk
-try:
-    nltk.data.find('corpora/stopwords')
-except LookupError:
-    nltk.download('stopwords', quiet=True)
-try:
-    nltk.data.find('tokenizers/punkt')
-except LookupError:
-    nltk.download('punkt', quiet=True)
-try:
-    nltk.data.find('tokenizers/punkt_tab')
-except LookupError:
-    nltk.download('punkt_tab', quiet=True)
+# Ensure NLTK resources are available
+def setup_nltk():
+    resources = ['stopwords', 'punkt']
+    for res in resources:
+        try:
+            nltk.download(res, quiet=True)
+        except Exception as e:
+            print(f"Warning: Failed to download NLTK resource {res}: {e}")
+
+setup_nltk()
 
 from utils.preprocessor import clean
 
