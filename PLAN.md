@@ -1556,7 +1556,7 @@ Setiap batch adalah unit kerja yang **bisa diselesaikan dalam satu sesi** (2–6
 
 #### Implementasi `/faq-suggest` di ML Service
 
-- [ ] Update `ml-service/main.py` — implementasi endpoint `/faq-suggest`:
+- [x] Update `ml-service/main.py` — implementasi endpoint `/faq-suggest`:
   ```python
   from sklearn.metrics.pairwise import cosine_similarity
   from sklearn.feature_extraction.text import TfidfVectorizer
@@ -1605,21 +1605,21 @@ Setiap batch adalah unit kerja yang **bisa diselesaikan dalam satu sesi** (2–6
 
 #### Sync FAQ dari DB ke ML Service
 
-- [ ] Buat `app/api/faq/route.ts`:
+- [x] Buat `app/api/faq/route.ts`:
   - GET: ambil semua FAQ aktif dari DB
   - Return dalam format yang bisa dipakai frontend dan ML
 
-- [ ] Tambah endpoint `GET /faq-data` di ML Service (tanpa API Key, internal):
+- [x] Tambah endpoint `GET /faq-data` di ML Service (tanpa API Key, internal):
   - Atau: load FAQ dari Supabase langsung via REST API saat startup ML Service
 
-- [ ] Tambah script `ml-service/sync_faqs.py`:
+- [x] Tambah script `ml-service/sync_faqs.py`:
   - Fetch FAQ dari Supabase via REST API
   - Simpan ke `datasets/faqs.json`
   - Reset FAQ index di memory
 
 #### API Route Proxy FAQ Suggest
 
-- [ ] Buat `app/api/ml/suggest/route.ts`:
+- [x] Buat `app/api/ml/suggest/route.ts`:
   ```typescript
   import { suggestFaq } from '@/lib/ml'
   import { requireAuth } from '@/lib/auth'
@@ -1635,7 +1635,7 @@ Setiap batch adalah unit kerja yang **bisa diselesaikan dalam satu sesi** (2–6
 
 #### Update Komponen FaqSuggestion
 
-- [ ] Update `components/ticket/FaqSuggestion.tsx`:
+- [x] Update `components/ticket/FaqSuggestion.tsx`:
   - Debounce 500ms dari prop `query`
   - Fetch `POST /api/ml/suggest` dengan query
   - Tampilkan card untuk setiap saran (question + expandable answer)
@@ -1660,7 +1660,7 @@ Setiap batch adalah unit kerja yang **bisa diselesaikan dalam satu sesi** (2–6
 
 #### Implementasi `/classify` di ML Service
 
-- [ ] Update `ml-service/main.py` — implementasi endpoint `/classify`:
+- [x] Update `ml-service/main.py` — implementasi endpoint `/classify`:
   ```python
   from utils.preprocessor import preprocess
   from utils.model_loader import get_model
@@ -1712,7 +1712,7 @@ Setiap batch adalah unit kerja yang **bisa diselesaikan dalam satu sesi** (2–6
 
 #### Buat Supabase Edge Function
 
-- [ ] Buat `supabase/functions/process-ticket-ml/index.ts`:
+- [x] Buat `supabase/functions/process-ticket-ml/index.ts`:
   ```typescript
   import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
@@ -1783,7 +1783,7 @@ Setiap batch adalah unit kerja yang **bisa diselesaikan dalam satu sesi** (2–6
 
 #### Setup DB Webhook
 
-- [ ] Di Supabase Dashboard → Database → Webhooks → Create Webhook:
+- [x] Di Supabase Dashboard → Database → Webhooks → Create Webhook:
   - Name: `process-ticket-ml`
   - Table: `tickets`
   - Events: `INSERT`

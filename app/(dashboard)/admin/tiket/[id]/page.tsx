@@ -21,6 +21,7 @@ export default function AdminTicketDetail({ params }: { params: Promise<{ id: st
   const [admins, setAdmins] = useState<{ id: string; full_name: string }[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [currentUserRole, setCurrentUserRole] = useState<string>('admin')
   const supabase = createClient()
 
   const fetchTicketAndAdmins = async () => {
@@ -38,6 +39,19 @@ export default function AdminTicketDetail({ params }: { params: Promise<{ id: st
         .in('role', ['admin', 'master_admin'])
       
       if (adminList) setAdmins(adminList)
+
+      // Fetch current user role
+      const { data: { user } } = await supabase.auth.getUser()
+      if (user) {
+        const currentUserProfile = adminList?.find(a => a.id === user.id)
+        if (currentUserProfile) {
+          setCurrentUserRole(currentUserProfile.role)
+        } else {
+          // If not in the adminList, fetch specifically (though they should be if they are admin)
+          const { data: myProfile } = await supabase.from('profiles').select('role').eq('id', user.id).single()
+          if (myProfile) setCurrentUserRole(myProfile.role)
+        }
+      }
 
     } catch (err: any) {
       setError(err.message)
@@ -176,15 +190,26 @@ export default function AdminTicketDetail({ params }: { params: Promise<{ id: st
 
             {/* ML Insights */}
             {(ticket.ml_confidence !== null || ticket.ml_model_version !== null) && (
-              <div className="border border-info/20 bg-info/5 rounded-xl p-4 flex gap-3 items-start">
-                <BrainCircuit className="w-5 h-5 text-info mt-0.5 shrink-0" />
-                <div>
-                  <h4 className="text-sm font-semibold text-text-primary mb-1">Analisis Machine Learning</h4>
-                  <p className="text-xs text-text-secondary">
-                    Prioritas otomatis ditentukan oleh model AI.
-                    {ticket.ml_confidence && ` Confidence Score: ${Math.round(ticket.ml_confidence * 100)}%.`}
-                  </p>
+              <div className="border border-info/20 bg-info/5 rounded-xl p-4 flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between mt-8">
+                <div className="flex gap-3 items-start">
+                  <BrainCircuit className="w-5 h-5 text-info mt-0.5 shrink-0" />
+                  <div>
+                    <h4 className="text-sm font-semibold text-text-primary mb-1">Analisis Machine Learning</h4>
+                    <p className="text-xs text-text-secondary">
+                      Prioritas otomatis ditentukan oleh model AI.
+                      {ticket.ml_confidence && ` Confidence Score: ${Math.round(ticket.ml_confidence * 100)}%.`}
+                    </p>
+                  </div>
                 </div>
+                
+                {currentUserRole === 'master_admin' && (
+                  <button 
+                    onClick={() => alert('Fitur Koreksi Label ML akan diimplementasikan pada B17')}
+                    className="shrink-0 px-3 py-1.5 bg-bg-surface border border-info/30 text-info text-xs font-semibold rounded-lg hover:bg-info hover:text-white transition-colors"
+                  >
+                    Koreksi Label ML
+                  </button>
+                )}
               </div>
             )}
           </div>
