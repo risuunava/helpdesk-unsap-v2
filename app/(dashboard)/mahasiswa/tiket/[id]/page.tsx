@@ -6,30 +6,42 @@ import { Ticket } from '@/hooks/useTickets'
 import { StatusBadge } from '@/components/ui/StatusBadge'
 import { PriorityBadge } from '@/components/ui/PriorityBadge'
 import { SlaIndicator } from '@/components/ui/SlaIndicator'
-import { ArrowLeft, Paperclip, Clock, MessageSquare, Loader2, Calendar } from 'lucide-react'
+import { ChatRoom } from '@/components/chat/ChatRoom'
+import { createClient } from '@/lib/supabase/client'
+import { ArrowLeft, Paperclip, Clock, Loader2, Calendar } from 'lucide-react'
 
 export default function TicketDetailPage() {
   const { id } = useParams()
   const router = useRouter()
   const [ticket, setTicket] = useState<Ticket | null>(null)
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const supabase = createClient()
 
   useEffect(() => {
-    async function fetchTicket() {
+    async function fetchData() {
       try {
-        const res = await fetch(`/api/tickets/${id}`)
-        if (!res.ok) throw new Error('Gagal memuat tiket')
-        const json = await res.json()
+        const [ticketRes, userRes] = await Promise.all([
+          fetch(`/api/tickets/${id}`),
+          supabase.auth.getUser()
+        ])
+
+        if (!ticketRes.ok) throw new Error('Gagal memuat tiket')
+        const json = await ticketRes.json()
         setTicket(json.data)
+        
+        if (userRes.data.user) {
+          setCurrentUserId(userRes.data.user.id)
+        }
       } catch (err: any) {
         setError(err.message)
       } finally {
         setLoading(false)
       }
     }
-    fetchTicket()
-  }, [id])
+    fetchData()
+  }, [id, supabase])
 
   if (loading) {
     return (
@@ -188,38 +200,11 @@ export default function TicketDetailPage() {
           </div>
         </div>
 
-        {/* Kolom Kanan: Chat Room Placeholder (40%) */}
+        {/* Kolom Kanan: Chat Room (40%) */}
         <div className="lg:col-span-2">
-          <div className="bg-bg-surface rounded-2xl border border-border flex flex-col h-[600px] shadow-capsule">
-            <div className="p-4 border-b border-border flex items-center gap-2">
-              <MessageSquare className="w-5 h-5 text-accent" />
-              <h3 className="font-semibold text-text-primary">Diskusi Tiket</h3>
-            </div>
-            
-            <div className="flex-1 p-6 flex flex-col items-center justify-center text-center">
-              <div className="w-16 h-16 bg-bg-elevated rounded-full flex items-center justify-center mb-4 border border-border">
-                <MessageSquare className="w-8 h-8 text-text-muted" />
-              </div>
-              <h4 className="text-text-primary font-medium mb-1">Live Chat Belum Tersedia</h4>
-              <p className="text-sm text-text-muted max-w-[250px]">
-                Fitur diskusi interaktif antara Anda dan admin akan hadir segera.
-              </p>
-            </div>
-
-            <div className="p-4 border-t border-border bg-bg-elevated">
-              <div className="flex gap-2">
-                <input
-                  type="text"
-                  disabled
-                  placeholder="Ketik pesan..."
-                  className="flex-1 px-4 py-2 text-sm rounded-xl border border-border bg-bg-base cursor-not-allowed"
-                />
-                <button disabled className="px-4 py-2 bg-text-muted text-text-inverse rounded-xl text-sm font-semibold cursor-not-allowed">
-                  Kirim
-                </button>
-              </div>
-            </div>
-          </div>
+          {currentUserId && (
+            <ChatRoom ticketId={id as string} currentUserId={currentUserId} />
+          )}
         </div>
 
       </div>

@@ -7,8 +7,9 @@ import { StatusBadge } from '@/components/ui/StatusBadge'
 import { PriorityBadge } from '@/components/ui/PriorityBadge'
 import { SlaIndicator } from '@/components/ui/SlaIndicator'
 import { TicketActions } from '@/components/ticket/TicketActions'
+import { ChatRoom } from '@/components/chat/ChatRoom'
 import { 
-  ArrowLeft, Paperclip, Clock, MessageSquare, Loader2, Calendar, 
+  ArrowLeft, Paperclip, Clock, Loader2, Calendar, 
   User, Building2, BrainCircuit
 } from 'lucide-react'
 
@@ -22,6 +23,7 @@ export default function AdminTicketDetail({ params }: { params: Promise<{ id: st
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [currentUserRole, setCurrentUserRole] = useState<string>('admin')
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null)
   const supabase = createClient()
 
   const fetchTicketAndAdmins = async () => {
@@ -37,16 +39,16 @@ export default function AdminTicketDetail({ params }: { params: Promise<{ id: st
         .from('profiles')
         .select('id, full_name, role')
         .in('role', ['admin', 'master_admin'])
-      
+
       if (adminList) setAdmins(adminList)
 
-      // Fetch current user role
+      // Fetch current user role and ID
       const { data: { user } } = await supabase.auth.getUser()
       if (user) {
+        setCurrentUserId(user.id)
         const currentUserProfile = adminList?.find(a => a.id === user.id)
         if (currentUserProfile) {
           setCurrentUserRole(currentUserProfile.role)
-        } else {
           // If not in the adminList, fetch specifically (though they should be if they are admin)
           const { data: myProfile } = await supabase.from('profiles').select('role').eq('id', user.id).single()
           if (myProfile) setCurrentUserRole(myProfile.role)
@@ -266,36 +268,9 @@ export default function AdminTicketDetail({ params }: { params: Promise<{ id: st
             onSuccess={fetchTicketAndAdmins}
           />
 
-          <div className="bg-bg-surface rounded-2xl border border-border flex flex-col h-[500px] shadow-capsule">
-            <div className="p-4 border-b border-border flex items-center gap-2">
-              <MessageSquare className="w-5 h-5 text-accent" />
-              <h3 className="font-semibold text-text-primary">Diskusi Internal & Pelapor</h3>
-            </div>
-            
-            <div className="flex-1 p-6 flex flex-col items-center justify-center text-center">
-              <div className="w-16 h-16 bg-bg-elevated rounded-full flex items-center justify-center mb-4 border border-border">
-                <MessageSquare className="w-8 h-8 text-text-muted" />
-              </div>
-              <h4 className="text-text-primary font-medium mb-1">Fitur Chat Segera Hadir</h4>
-              <p className="text-sm text-text-muted max-w-[250px]">
-                Diskusi _realtime_ pada tiket ini akan diimplementasikan pada pembaruan mendatang (B19).
-              </p>
-            </div>
-
-            <div className="p-4 border-t border-border bg-bg-elevated">
-              <div className="flex gap-2">
-                <input
-                  type="text"
-                  disabled
-                  placeholder="Ketik balasan..."
-                  className="flex-1 px-4 py-2 text-sm rounded-xl border border-border bg-bg-base cursor-not-allowed"
-                />
-                <button disabled className="px-4 py-2 bg-text-muted text-text-inverse rounded-xl text-sm font-semibold cursor-not-allowed">
-                  Kirim
-                </button>
-              </div>
-            </div>
-          </div>
+          {currentUserId && (
+            <ChatRoom ticketId={id} currentUserId={currentUserId} />
+          )}
         </div>
 
       </div>

@@ -14,17 +14,20 @@ CREATE TABLE IF NOT EXISTS public.faqs (
 -- RLS
 ALTER TABLE public.faqs ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "faqs_select_all" ON public.faqs;
 CREATE POLICY "faqs_select_all" ON public.faqs
     FOR SELECT USING (true);
 
+DROP POLICY IF EXISTS "faqs_all_admin" ON public.faqs;
 CREATE POLICY "faqs_all_admin" ON public.faqs
     FOR ALL USING (public.get_my_role() IN ('admin', 'master_admin'));
 
 -- Trigger updated_at
+DROP TRIGGER IF EXISTS handle_faqs_updated_at ON public.faqs;
 CREATE TRIGGER handle_faqs_updated_at
     BEFORE UPDATE ON public.faqs
     FOR EACH ROW
-    EXECUTE FUNCTION public.handle_updated_at();
+    EXECUTE FUNCTION public.update_updated_at();
 
 -- Insert Seed Data
 INSERT INTO public.faqs (category, question, answer) VALUES

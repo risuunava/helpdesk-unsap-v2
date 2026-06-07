@@ -1,18 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
-import { requireAuth } from '@/lib/auth'
-import { z } from 'zod'
-
-const sendMessageSchema = z.object({
-  ticket_id: z.string().uuid('ticket_id harus berformat UUID'),
-  content: z.string().min(1, 'Pesan tidak boleh kosong').max(1000, 'Pesan maksimal 1000 karakter'),
-})
+import { requireRole } from '@/lib/auth'
 
 export async function GET(request: NextRequest) {
   try {
-    const user = await requireAuth()
-    const supabase = await createClient()
-
+    const { user, profile } = await requireRole(['mahasiswa', 'admin', 'master_admin'])
     const { searchParams } = new URL(request.url)
     const ticketId = searchParams.get('ticket_id')
 
@@ -20,16 +12,12 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'ticket_id diperlukan' }, { status: 400 })
     }
 
-    // Verify access to this ticket
-    const { data: profile } = await supabase
-      .from('profiles')
-      .select('role')
-      .eq('id', user.id)
-      .single()
+    const supabase = await createClient()
 
+    // Cek akses ke tiket dan ambil info anonim
     const { data: ticket } = await supabase
       .from('tickets')
-      .select('reporter_id, assigned_to')
+      .select('reporter_id, assigned_to, is_anonymous, anonymous_code')
       .eq('id', ticketId)
       .single()
 
@@ -37,12 +25,12 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Tiket tidak ditemukan' }, { status: 404 })
     }
 
-    const isAdmin = profile?.role === 'admin' || profile?.role === 'master_admin'
-    const isOwner = ticket.reporter_id === user.id
-    const isAssignee = ticket.assigned_to === user.id
+    const hasAccess = ticket.reporter_id === user.id ||
+                      ticket.assigned_to === user.id ||
+                      ['admin', 'master_admin'].includes(profile.role)
 
-    if (!isAdmin && !isOwner && !isAssignee) {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+    if (!hasAccess) {
+      return NextResponse.json({ error: 'Akses ditolak' }, { status: 403 })
     }
 
     // Fetch messages
@@ -50,14 +38,31 @@ export async function GET(request: NextRequest) {
       .from('messages')
       .select(`
         *,
-        sender:profiles!messages_sender_id_fkey(id, full_name, role, avatar_url)
+        sender:profiles!messages_sender_id_fkey(id, full_name, role)
       `)
       .eq('ticket_id', ticketId)
       .order('created_at', { ascending: true })
 
     if (error) throw error
 
-    return NextResponse.json({ data: messages })
+    // Masking if anonymous
+    const isMasterAdmin = profile.role === 'master_admin'
+    const processedMessages = messages.map(msg => {
+      const isReporter = msg.sender_id === ticket.reporter_id
+      if (ticket.is_anonymous && isReporter && !isMasterAdmin && msg.sender_id !== user.id) {
+        return {
+          ...msg,
+          sender: {
+            ...msg.sender,
+            full_name: ticket.anonymous_code || 'Anonim',
+            id: 'hidden'
+          }
+        }
+      }
+      return msg
+    })
+
+    return NextResponse.json(processedMessages)
 
   } catch (error: any) {
     console.error('GET /api/chat error:', error)
@@ -65,62 +70,56 @@ export async function GET(request: NextRequest) {
   }
 }
 
-export async function POST(request: NextRequest) {
+export async function POST(request: Request) {
   try {
-    const user = await requireAuth()
+    const { user, profile } = await requireRole(['mahasiswa', 'admin', 'master_admin'])
+    const { ticket_id, content } = await request.json()
+
+    // Validasi
+    if (!content?.trim() || content.length > 1000)
+      return Response.json({ error: 'Pesan tidak valid' }, { status: 400 })
+
+    // Cek akses ke tiket
     const supabase = await createClient()
-
-    const rawData = await request.json()
-    const validated = sendMessageSchema.parse(rawData)
-
-    // Verify access to this ticket
-    const { data: profile } = await supabase
-      .from('profiles')
-      .select('role')
-      .eq('id', user.id)
-      .single()
-
     const { data: ticket } = await supabase
       .from('tickets')
-      .select('reporter_id, assigned_to')
-      .eq('id', validated.ticket_id)
+      .select('id, reporter_id, assigned_to, is_anonymous, anonymous_code')
+      .eq('id', ticket_id)
       .single()
 
-    if (!ticket) {
-      return NextResponse.json({ error: 'Tiket tidak ditemukan' }, { status: 404 })
-    }
+    if (!ticket) return Response.json({ error: 'Tiket tidak ditemukan' }, { status: 404 })
 
-    const isAdmin = profile?.role === 'admin' || profile?.role === 'master_admin'
-    const isOwner = ticket.reporter_id === user.id
-    const isAssignee = ticket.assigned_to === user.id
+    const hasAccess = ticket.reporter_id === user.id ||
+                      ticket.assigned_to === user.id ||
+                      ['admin', 'master_admin'].includes(profile.role)
 
-    if (!isAdmin && !isOwner && !isAssignee) {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
-    }
+    if (!hasAccess) return Response.json({ error: 'Akses ditolak' }, { status: 403 })
 
-    // Insert message
     const { data: message, error } = await supabase
       .from('messages')
-      .insert({
-        ticket_id: validated.ticket_id,
-        sender_id: user.id,
-        content: validated.content,
-      })
-      .select(`
-        *,
-        sender:profiles!messages_sender_id_fkey(id, full_name, role, avatar_url)
-      `)
+      .insert({ ticket_id, sender_id: user.id, content: content.trim() })
+      .select('*, sender:profiles!messages_sender_id_fkey(id, full_name, role)')
       .single()
 
-    if (error) throw error
+    if (error) return Response.json({ error: error.message }, { status: 500 })
 
-    return NextResponse.json({ data: message }, { status: 201 })
+    // Masking logic for POST response (though usually sender is the current user)
+    const isMasterAdmin = profile.role === 'master_admin'
+    const isReporter = message.sender_id === ticket.reporter_id
+    if (ticket.is_anonymous && isReporter && !isMasterAdmin && message.sender_id !== user.id) {
+      return Response.json({
+        ...message,
+        sender: {
+          ...message.sender,
+          full_name: ticket.anonymous_code || 'Anonim',
+          id: 'hidden'
+        }
+      })
+    }
 
+    return Response.json(message)
   } catch (error: any) {
     console.error('POST /api/chat error:', error)
-    if (error instanceof z.ZodError) {
-      return NextResponse.json({ error: error.issues }, { status: 400 })
-    }
-    return NextResponse.json({ error: error.message || 'Internal Server Error' }, { status: 500 })
+    return Response.json({ error: error.message || 'Internal Server Error' }, { status: 500 })
   }
 }
