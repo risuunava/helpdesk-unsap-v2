@@ -1,198 +1,380 @@
 'use client'
 
-import React from 'react'
+import React, { useRef } from 'react'
 import Link from 'next/link'
-import { motion } from 'framer-motion'
-import { useInView } from 'react-intersection-observer'
-import { ArrowRight, BookOpen, Brain, Clock, ShieldCheck, CheckCircle2 } from 'lucide-react'
+import { motion, useSpring } from 'framer-motion'
+import { 
+  ArrowRight, 
+  Brain, 
+  Clock, 
+  CaretRight,
+  ShieldChevron,
+  Pulse,
+  Monitor
+} from '@phosphor-icons/react'
 
-/* ── Animated wrapper ──────────────────────────────── */
-function FadeUp({ children, delay = 0, className = '' }: { children: React.ReactNode; delay?: number; className?: string }) {
-  const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 })
+/* ── Refined FadeUp Component ──────────────────────── */
+function FadeUp({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
   return (
-    <motion.div ref={ref} initial={{ opacity: 0, y: 30 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.8, delay, ease: [0.16, 1, 0.3, 1] }} className={className}>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ duration: 0.8, delay, ease: [0.16, 1, 0.3, 1] }}
+    >
       {children}
     </motion.div>
   )
 }
 
-/* ── Feature Card ──────────────────────────────────── */
-function FeatureCard({ title, desc, icon, delay }: { title: string; desc: string; icon: React.ReactNode; delay: number }) {
+/* ── Magnetic Button Wrapper ───────────────────────── */
+function MagneticButton({ children, className = '' }: { children: React.ReactNode; className?: string }) {
+  const ref = useRef<HTMLDivElement>(null)
+  const mouseX = useSpring(0, { stiffness: 150, damping: 15 })
+  const mouseY = useSpring(0, { stiffness: 150, damping: 15 })
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!ref.current) return
+    const { clientX, clientY } = e
+    const { left, top, width, height } = ref.current.getBoundingClientRect()
+    const x = (clientX - (left + width / 2)) * 0.35
+    const y = (clientY - (top + height / 2)) * 0.35
+    mouseX.set(x)
+    mouseY.set(y)
+  }
+
+  const handleMouseLeave = () => {
+    mouseX.set(0)
+    mouseY.set(0)
+  }
+
   return (
-    <FadeUp delay={delay}>
-      <motion.div whileHover={{ y: -4, boxShadow: '0 10px 40px -10px rgba(0,0,0,0.08)' }} transition={{ duration: 0.3 }} className="p-8 bg-bg-surface rounded-3xl border border-border relative group overflow-hidden">
-        <div className="absolute w-[200px] h-[200px] rounded-full blur-[60px] opacity-0 bg-emerald-100 top-0 right-0 -translate-y-1/2 translate-x-1/2 group-hover:opacity-100 transition-all duration-700 pointer-events-none" />
-        <div className="relative z-10">
-          <div className="w-12 h-12 rounded-full bg-emerald-50/50 flex items-center justify-center mb-6 text-emerald-600 border border-emerald-100">{icon}</div>
-          <h3 className="text-[20px] font-serif font-medium text-text-primary mb-3">{title}</h3>
-          <p className="text-[15px] text-text-secondary leading-[1.65] font-sans">{desc}</p>
-        </div>
-      </motion.div>
-    </FadeUp>
+    <motion.div
+      ref={ref}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{ x: mouseX, y: mouseY }}
+      className={className}
+    >
+      {children}
+    </motion.div>
   )
 }
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-bg-base text-text-primary flex flex-col relative overflow-x-hidden">
+    <div className="min-h-screen bg-bg-base selection:bg-accent/10 selection:text-accent grain-texture overflow-x-hidden">
       
-      {/* ── Background Glow Effects (Light Mode) ─────── */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-gradient-to-br from-emerald-100/60 via-teal-100/40 to-green-100/40 blur-[100px] rounded-full pointer-events-none opacity-70" />
-
-      {/* ── NAVBAR (Capsule Terbuka) ─────────────────── */}
-      <header className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-full max-w-3xl px-4">
-        <div className="flex items-center justify-between bg-bg-surface/80 backdrop-blur-xl border border-border/60 px-2 py-2 rounded-full shadow-capsule">
-          <div className="flex items-center gap-3 pl-3">
-             <div className="w-8 h-8 rounded-full bg-text-primary flex items-center justify-center">
-              <span className="text-[13px] font-bold text-bg-surface">U</span>
-            </div>
-            <span className="font-serif font-medium text-[16px] text-text-primary hidden sm:block">UNSAP</span>
-          </div>
+      {/* ── Navigation: Unified Capsule ───────────── */}
+      <header className="fixed top-8 left-1/2 -translate-x-1/2 w-[calc(100%-3rem)] max-w-5xl z-50">
+        <nav className="flex items-center justify-between px-3 py-2 bg-white/60 backdrop-blur-xl rounded-full border border-white/40 shadow-glass">
+          <Link href="/" className="flex items-center gap-2 px-3 py-1 group">
+            <img 
+              src="/assets/UNSAP.png" 
+              alt="UNSAP Logo" 
+              className="w-7 h-7 object-contain group-hover:scale-105 transition-transform"
+            />
+            <span className="font-serif font-bold text-[16px] tracking-tight text-text-primary hidden sm:block">UNSAP</span>
+          </Link>
           
-          <nav className="hidden md:flex items-center gap-6 font-sans text-[14px] text-text-secondary font-medium">
-            <Link href="#fitur" className="hover:text-text-primary transition-colors">Fitur</Link>
-            <Link href="#keunggulan" className="hover:text-text-primary transition-colors">Keunggulan</Link>
-          </nav>
-
-          <div className="flex items-center gap-2 pr-1">
-            <Link href="/login" className="font-sans font-medium text-[14px] text-text-primary px-4 py-2 hover:bg-bg-elevated rounded-full transition-colors hidden sm:block">
-              Masuk
-            </Link>
-            <Link href="/register" className="bg-text-primary text-bg-surface font-sans font-medium text-[14px] px-5 py-2.5 rounded-full hover:opacity-90 transition-opacity">
-              Mulai
-            </Link>
+          <div className="hidden md:flex items-center gap-8">
+            <Link href="#features" className="text-[13px] font-semibold text-text-secondary hover:text-accent transition-colors">Platform</Link>
+            <Link href="#about" className="text-[13px] font-semibold text-text-secondary hover:text-accent transition-colors">Ecosystem</Link>
+            <Link href="/login" className="text-[13px] font-semibold text-text-secondary hover:text-accent transition-colors">Log In</Link>
           </div>
-        </div>
+
+          <Link href="/register" className="h-10 px-6 bg-accent text-white rounded-full text-[13px] font-bold flex items-center gap-2 shadow-lg shadow-accent/20 hover:bg-emerald-900 transition-colors">
+            Mulai <ArrowRight weight="bold" size={14} />
+          </Link>
+        </nav>
       </header>
 
-      {/* ── HERO SECTION ─────────────────────────────── */}
-      <section className="relative z-10 flex flex-col items-center justify-center min-h-[90vh] px-6 text-center pt-32">
-        <FadeUp delay={0.1}>
-          <div className="inline-flex items-center gap-2 border border-border bg-white px-4 py-1.5 rounded-full mb-10 shadow-sm">
-            <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            <span className="text-[12px] font-sans font-semibold tracking-widest uppercase text-text-secondary">
-              HELPDESK CERDAS V2.0
-            </span>
-          </div>
-        </FadeUp>
-
-        <FadeUp delay={0.2}>
-          <h1 className="font-serif text-[56px] md:text-[80px] lg:text-[100px] leading-[1.05] tracking-tight text-text-primary mb-8 max-w-5xl mx-auto">
-            Platform Helpdesk <br className="hidden md:block" />
-            <span className="italic font-serif text-transparent bg-clip-text bg-gradient-to-r from-gray-800 via-emerald-800 to-emerald-600">Kampus.</span>
-          </h1>
-        </FadeUp>
-
-        <FadeUp delay={0.3}>
-          <p className="font-sans text-[17px] md:text-[20px] text-text-secondary max-w-2xl mx-auto leading-relaxed mb-12">
-            Sistem pelaporan dan penyelesaian keluhan terpadu. Kami memadukan <strong className="text-text-primary font-semibold">kecepatan</strong>, <strong className="text-text-primary font-semibold">transparansi</strong>, dan <strong className="text-text-primary font-semibold">AI</strong> dalam satu platform.
-          </p>
-        </FadeUp>
-
-        <FadeUp delay={0.4}>
-          <div className="flex flex-col sm:flex-row items-center gap-4">
-            <Link href="/register" className="bg-emerald-800 text-white font-sans font-medium text-[16px] px-8 py-4 rounded-full hover:bg-emerald-900 transition-colors flex items-center justify-center gap-2 w-full sm:w-auto shadow-lg shadow-emerald-900/20">
-              Mulai Sekarang <ArrowRight size={18} />
-            </Link>
-            <Link href="/login" className="bg-white border border-border text-text-primary font-sans font-medium text-[16px] px-8 py-4 rounded-full hover:bg-emerald-50 hover:border-emerald-200 transition-colors flex items-center justify-center gap-2 w-full sm:w-auto shadow-sm group">
-              <BookOpen size={18} className="text-text-secondary group-hover:text-emerald-600 transition-colors" /> Login Portal
-            </Link>
-          </div>
-        </FadeUp>
-      </section>
-
-      {/* ── FEATURES SECTION ─────────────────────────── */}
-      <section id="fitur" className="relative z-10 mx-auto max-w-6xl w-full px-6 py-24 md:py-32">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <FeatureCard 
-            title="Klasifikasi Cerdas" 
-            desc="Sistem NLP otomatis membaca keluhan Anda dan mengarahkan tiket ke departemen yang tepat secara instan." 
-            icon={<Brain size={20} />} 
-            delay={0.1} 
-          />
-          <FeatureCard 
-            title="SLA Terukur" 
-            desc="Setiap tiket memiliki batas waktu penyelesaian. Sistem memberikan prioritas otomatis berdasarkan tingkat urgensi." 
-            icon={<Clock size={20} />} 
-            delay={0.2} 
-          />
-          <FeatureCard 
-            title="Mode Anonim" 
-            desc="Laporkan masalah sensitif dengan identitas yang dilindungi. Komunikasi tetap berjalan dua arah secara aman." 
-            icon={<ShieldCheck size={20} />} 
-            delay={0.3} 
-          />
-        </div>
-      </section>
-
-      {/* ── INFO / SHOWCASE SECTION ──────────────────── */}
-      <section id="keunggulan" className="relative z-10 bg-white border-y border-border py-24 md:py-32 overflow-hidden">
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-emerald-100/50 blur-[120px] rounded-full pointer-events-none" />
-        
-        <div className="mx-auto max-w-6xl w-full px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          <FadeUp>
-            <h2 className="font-serif text-[44px] md:text-[64px] leading-[1.1] text-text-primary mb-6 tracking-tight">
-              Transparansi dalam <br/> <span className="italic text-gray-500">setiap resolusi.</span>
-            </h2>
-            <p className="font-sans text-[18px] text-text-secondary leading-relaxed mb-10 max-w-lg">
-              Tinggalkan cara lama. Kami mengubah tumpukan kertas dan antrean panjang menjadi alur kerja digital yang presisi, cepat, dan transparan bagi seluruh civitas akademika.
-            </p>
-            <div className="space-y-5">
-              {[
-                'Dashboard analitik untuk pimpinan',
-                'Notifikasi real-time via Web',
-                'Riwayat penyelesaian masalah',
-              ].map((text, i) => (
-                <div key={i} className="flex items-center gap-4">
-                  <div className="w-6 h-6 rounded-full bg-emerald-50 flex items-center justify-center shrink-0">
-                    <CheckCircle2 size={16} className="text-emerald-600" />
-                  </div>
-                  <span className="font-sans text-[16px] font-medium text-text-secondary">{text}</span>
-                </div>
-              ))}
-            </div>
-          </FadeUp>
-
-          <FadeUp delay={0.2}>
-            <div className="relative rounded-3xl border border-border bg-white p-6 shadow-2xl shadow-gray-200/50">
-              <div className="flex items-center gap-2 mb-6 pb-4 border-b border-border/60">
-                <div className="w-3 h-3 rounded-full bg-gray-200" />
-                <div className="w-3 h-3 rounded-full bg-gray-200" />
-                <div className="w-3 h-3 rounded-full bg-gray-200" />
+      <main>
+        {/* ── Hero: Centered Editorial Manifesto ───────── */}
+        <section className="relative pt-32 lg:pt-40 pb-32 overflow-hidden text-center">
+          <div className="max-w-5xl mx-auto px-6 relative z-10">
+            <FadeUp>
+              <h1 className="font-serif text-[clamp(48px,9vw,110px)] leading-[0.9] tracking-tight text-text-primary mb-10">
+                Kekuatan <span className="italic font-serif font-normal text-text-muted italic">Penyelesaian</span> <br /> di Tangan Anda.
+              </h1>
+              <p className="text-base md:text-lg text-text-secondary max-w-xl mx-auto leading-relaxed mb-14 text-balance">
+                Transformasi layanan kampus dengan AI dan transparansi total. Selesaikan kendala akademik lebih cepat dari sebelumnya.
+              </p>
+              <div className="flex flex-wrap justify-center gap-6">
+                <MagneticButton>
+                  <Link href="/register" className="h-16 px-10 bg-accent text-white rounded-full font-bold text-lg flex items-center gap-2 shadow-xl shadow-accent/20 hover:shadow-accent/30 transition-all">
+                    Buka Laporan <CaretRight weight="bold" size={20} />
+                  </Link>
+                </MagneticButton>
+                <Link href="/login" className="h-16 px-10 bg-white border border-border text-text-primary rounded-full font-bold text-lg flex items-center gap-2 hover:bg-zinc-50 transition-colors shadow-sm">
+                  Masuk Portal
+                </Link>
               </div>
+            </FadeUp>
+          </div>
+          
+          {/* Refined Graphic Accents: Intensified Depth */}
+          <div className="absolute inset-0 -z-10 pointer-events-none overflow-hidden">
+            {/* 1. Intensified Mesh Blobs */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full">
+              <motion.div 
+                animate={{ 
+                  scale: [1, 1.2, 1],
+                  x: [-20, 20, -20],
+                  y: [-20, 30, -20]
+                }}
+                transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute top-[-10%] left-[-10%] w-[60%] aspect-square bg-accent/[0.15] blur-[140px] rounded-full" 
+              />
+              <motion.div 
+                animate={{ 
+                  scale: [1.2, 1, 1.2],
+                  x: [30, -30, 30],
+                  y: [20, -40, 20]
+                }}
+                transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute bottom-[-10%] right-[-10%] w-[60%] aspect-square bg-emerald-500/[0.12] blur-[140px] rounded-full" 
+              />
+              <motion.div 
+                animate={{ opacity: [0.3, 0.6, 0.3] }}
+                transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[40%] aspect-square bg-white blur-[120px] rounded-full opacity-40" 
+              />
+            </div>
+
+            {/* 2. Primary Backdrop Gradient */}
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(6,95,70,0.08),transparent_70%)]" />
+
+            {/* 3. Architectural Grid Pattern */}
+            <div className="absolute inset-0 opacity-[0.07]" 
+                 style={{ backgroundImage: `radial-gradient(circle at 1px 1px, var(--color-text-primary) 1px, transparent 0)`, backgroundSize: '48px 48px' }} 
+            />
+            
+            {/* 4. Central Architectural Focal Point */}
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-[1000px] h-[1000px] border border-text-primary/[0.04] rounded-full" />
+              <div className="absolute w-full h-[1px] bg-gradient-to-r from-transparent via-text-primary/[0.12] to-transparent" />
+              <div className="absolute h-full w-[1px] bg-gradient-to-b from-transparent via-text-primary/[0.12] to-transparent" />
               
-              <div className="space-y-4">
-                <div className="p-5 rounded-2xl bg-gray-50 border border-border/60 flex items-start gap-4 hover:shadow-md transition-shadow">
-                  <div className="w-10 h-10 rounded-full bg-white border border-border flex items-center justify-center shrink-0 font-medium text-[13px]">MK</div>
-                  <div>
-                    <h4 className="font-sans text-[15px] font-semibold text-text-primary mb-1">Mila Kusuma</h4>
-                    <p className="font-sans text-[14px] text-text-secondary line-clamp-2">WiFi lantai 2 gedung B tidak stabil sejak kemarin pagi. Mohon segera diperbaiki.</p>
-                  </div>
+              <div className="absolute top-1/4 left-1/4 text-text-primary/[0.15] font-mono text-2xl">+</div>
+              <div className="absolute top-1/4 right-1/4 text-text-primary/[0.15] font-mono text-2xl">+</div>
+              <div className="absolute bottom-1/4 left-1/4 text-text-primary/[0.15] font-mono text-2xl">+</div>
+              <div className="absolute bottom-1/4 right-1/4 text-text-primary/[0.15] font-mono text-2xl">+</div>
+            </div>
+            
+            {/* 5. Massive Decorative Text */}
+            <div className="absolute -bottom-24 left-1/2 -translate-x-1/2 font-serif text-[26vw] font-bold text-text-primary/[0.02] whitespace-nowrap select-none tracking-tighter">
+              UNSAP HELPDESK
+            </div>
+
+            {/* 6. Edge Scrims */}
+            <div className="absolute inset-0 bg-gradient-to-b from-bg-base via-transparent to-bg-base opacity-80" />
+          </div>
+        </section>
+
+        {/* ── Logo Marquee ────────────────────────────── */}
+        <section className="py-20 border-y border-border/40 overflow-hidden bg-white/50 relative z-10">
+          <div className="max-w-7xl mx-auto px-6 mb-10 text-center lg:text-left">
+            <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-text-muted">Dipercaya oleh Unit Kerja Kampus</p>
+          </div>
+          <div className="flex gap-20 animate-marquee whitespace-nowrap">
+            {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+              <div key={i} className="flex items-center gap-12 text-text-muted opacity-40 hover:opacity-100 transition-opacity grayscale hover:grayscale-0">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-lg bg-zinc-200" />
+                  <span className="font-serif font-bold text-xl uppercase tracking-widest">Unit {i}</span>
                 </div>
-                
-                <div className="p-5 rounded-2xl bg-white border border-border/40 flex items-start gap-4 opacity-60">
-                  <div className="w-10 h-10 rounded-full bg-gray-50 border border-border flex items-center justify-center shrink-0 font-medium text-[13px]">AD</div>
-                  <div>
-                    <h4 className="font-sans text-[15px] font-semibold text-text-primary mb-1">Ahmad Dhani</h4>
-                    <p className="font-sans text-[14px] text-text-secondary line-clamp-2">AC Ruang Kelas 104 bocor, air menetes ke meja mahasiswa.</p>
-                  </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full bg-zinc-200" />
+                  <span className="font-serif font-bold text-xl uppercase tracking-widest">Fakultas {i}</span>
                 </div>
               </div>
+            ))}
+            {/* Duplicate for seamless loop */}
+            {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+              <div key={`dup-${i}`} className="flex items-center gap-12 text-text-muted opacity-40 hover:opacity-100 transition-opacity grayscale hover:grayscale-0">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-lg bg-zinc-200" />
+                  <span className="font-serif font-bold text-xl uppercase tracking-widest">Unit {i}</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full bg-zinc-200" />
+                  <span className="font-serif font-bold text-xl uppercase tracking-widest">Fakultas {i}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* ── Features: Bento Grid ────────────────────── */}
+        <section id="features" className="max-w-7xl mx-auto px-6 py-24">
+          <FadeUp>
+            <div className="mb-20 text-center lg:text-left">
+              <h2 className="font-serif text-[42px] md:text-[64px] leading-[1.05] tracking-tight text-text-primary mb-6">
+                Platform Modern untuk <br /> <span className="text-text-muted italic">Masa Depan Kampus.</span>
+              </h2>
             </div>
           </FadeUp>
-        </div>
-      </section>
 
-      {/* ── FOOTER ───────────────────────────────────── */}
-      <footer className="relative z-10 py-12 bg-white">
-        <div className="mx-auto max-w-6xl w-full px-6 flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-3">
-             <div className="w-8 h-8 rounded-full bg-emerald-800 flex items-center justify-center">
-              <span className="text-[12px] font-bold text-white">U</span>
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+            {/* Large Hero Card with Background Image */}
+            <div className="md:col-span-8 group relative overflow-hidden rounded-[2.5rem]">
+              <FadeUp delay={0.1}>
+                <div className="h-full min-h-[480px] p-12 bg-white border border-border shadow-sm hover:shadow-xl transition-all duration-500 flex flex-col justify-end relative overflow-hidden">
+                  <img 
+                    src="https://picsum.photos/seed/ai-neural/1200/800" 
+                    alt="AI Processing" 
+                    className="absolute inset-0 w-full h-full object-cover opacity-[0.03] group-hover:opacity-[0.07] transition-opacity"
+                  />
+                  <div className="relative z-10">
+                    <div className="w-16 h-16 rounded-2xl bg-accent text-white flex items-center justify-center mb-8 shadow-lg shadow-accent/20">
+                      <Brain size={36} weight="duotone" />
+                    </div>
+                    <h3 className="text-4xl font-bold text-text-primary mb-6">AI Klasifikasi Otomatis</h3>
+                    <p className="text-text-secondary max-w-md text-lg leading-relaxed">
+                      Lupakan proses manual. AI kami mendeteksi kategori laporan Anda dan meneruskannya ke departemen yang tepat secara instan.
+                    </p>
+                  </div>
+                </div>
+              </FadeUp>
             </div>
-            <span className="font-serif font-medium text-[18px] text-text-primary">UNSAP</span>
+
+            {/* Image Card (The visual break) */}
+            <div className="md:col-span-4 rounded-[2.5rem] overflow-hidden border border-border">
+              <FadeUp delay={0.2}>
+                <img 
+                  src="https://picsum.photos/seed/minimal-clock/800/1200" 
+                  alt="Precision" 
+                  className="w-full h-full min-h-[480px] object-cover grayscale hover:grayscale-0 transition-all duration-700"
+                />
+              </FadeUp>
+            </div>
+
+            {/* Small Card 1 */}
+            <div className="md:col-span-4 group">
+              <FadeUp delay={0.3}>
+                <div className="h-full p-10 rounded-[2.5rem] bg-accent text-white shadow-xl shadow-accent/20 hover:-translate-y-2 transition-transform duration-500 flex flex-col justify-between min-h-[320px]">
+                  <div className="w-14 h-14 rounded-xl bg-white/10 flex items-center justify-center">
+                    <Clock size={32} weight="bold" />
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-bold mb-4">SLA Terjamin</h3>
+                    <p className="text-white/80 leading-relaxed">
+                      Setiap keluhan memiliki batas waktu penyelesaian yang transparan dan terpantau.
+                    </p>
+                  </div>
+                </div>
+              </FadeUp>
+            </div>
+
+            {/* Medium Card with Data Visual */}
+            <div className="md:col-span-8 group">
+              <FadeUp delay={0.4}>
+                <div className="h-full min-h-[320px] p-12 rounded-[2.5rem] bg-white border border-border shadow-sm hover:shadow-xl transition-all duration-500 flex flex-col md:flex-row items-center gap-12 overflow-hidden">
+                  <div className="flex-1">
+                    <div className="w-14 h-14 rounded-xl bg-zinc-50 flex items-center justify-center text-text-primary mb-8">
+                      <Monitor size={32} weight="duotone" />
+                    </div>
+                    <h3 className="text-3xl font-bold text-text-primary mb-4">Dashboard Pimpinan</h3>
+                    <p className="text-text-secondary leading-relaxed">
+                      Pantau kinerja penyelesaian masalah di setiap fakultas melalui data visual yang akurat.
+                    </p>
+                  </div>
+                  <div className="flex flex-col gap-4 w-full md:w-64">
+                    {[80, 45, 95].map((w, i) => (
+                      <div key={i} className="space-y-2">
+                        <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest text-text-muted">
+                          <span>Department {i+1}</span>
+                          <span>{w}%</span>
+                        </div>
+                        <div className="h-2 w-full bg-zinc-100 rounded-full overflow-hidden">
+                          <motion.div 
+                            initial={{ width: 0 }} 
+                            whileInView={{ width: `${w}%` }} 
+                            transition={{ duration: 1, delay: 0.5 + (i * 0.1) }}
+                            className="h-full bg-accent" 
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </FadeUp>
+            </div>
           </div>
-          <p className="font-sans text-[14px] text-text-secondary">&copy; {new Date().getFullYear()} Universitas Sebelas April. All rights reserved.</p>
+        </section>
+
+        {/* ── Ecosystem Section ─────────────────────── */}
+        <section id="about" className="bg-zinc-950 text-white py-32 md:py-48 overflow-hidden relative">
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-accent/5 to-transparent" />
+          <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-32 items-center relative z-10">
+             <div>
+                <FadeUp>
+                  <div className="w-12 h-1 px-0 bg-accent mb-12" />
+                  <h2 className="font-serif text-[clamp(40px,6vw,72px)] leading-[1] tracking-tighter mb-10">
+                    Transparansi yang <br /> <span className="text-zinc-500 italic">Membangun Kepercayaan.</span>
+                  </h2>
+                  <p className="text-xl text-zinc-400 leading-relaxed mb-16 max-w-xl">
+                    Kami percaya bahwa setiap keluhan adalah peluang untuk tumbuh. Dengan UNSAP Helpdesk, seluruh proses resolusi dapat dipantau secara real-time.
+                  </p>
+                  
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-10">
+                    {[
+                      { label: 'Resolusi Tepat Waktu', val: '98%' },
+                      { label: 'Layanan Mandiri', val: '24/7' },
+                      { label: 'Kepuasan Pengguna', val: '4.9/5' },
+                      { label: 'Unit Terintegrasi', val: '12+' },
+                    ].map((stat, i) => (
+                      <div key={i} className="group cursor-default">
+                        <div className="text-5xl font-serif font-bold text-white mb-2 group-hover:text-accent transition-colors">{stat.val}</div>
+                        <div className="text-[10px] font-bold tracking-[0.15em] uppercase text-zinc-500">{stat.label}</div>
+                      </div>
+                    ))}
+                  </div>
+                </FadeUp>
+             </div>
+             
+             <div className="relative">
+                <FadeUp delay={0.2}>
+                  <div className="aspect-square rounded-[3rem] border border-white/10 overflow-hidden group shadow-2xl">
+                     <img 
+                        src="https://picsum.photos/seed/unsap-night/1000/1000" 
+                        alt="Security" 
+                        className="w-full h-full object-cover grayscale opacity-40 group-hover:opacity-100 group-hover:grayscale-0 transition-all duration-1000"
+                     />
+                     <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-transparent to-transparent" />
+                     <div className="absolute bottom-12 left-12 right-12">
+                        <div className="flex items-center gap-4 mb-6">
+                           <div className="w-10 h-10 rounded-full bg-accent/20 backdrop-blur-md border border-accent/20 flex items-center justify-center text-accent">
+                              <ShieldChevron weight="bold" size={20} />
+                           </div>
+                           <span className="text-xs font-bold tracking-widest uppercase text-white/60">Enkripsi Data 256-bit</span>
+                        </div>
+                        <h4 className="text-2xl font-bold text-white leading-tight">Privasi Anda adalah prioritas utama dalam setiap laporan.</h4>
+                     </div>
+                  </div>
+                </FadeUp>
+             </div>
+          </div>
+        </section>
+      </main>
+
+      {/* ── Footer ─────────────────────────────────── */}
+      <footer className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-8">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-xl bg-accent flex items-center justify-center text-white">
+              <span className="font-bold text-[12px]">U</span>
+            </div>
+            <span className="font-serif font-bold text-xl tracking-tight text-text-primary">UNSAP</span>
+          </div>
+          <p className="text-sm text-text-muted">
+            &copy; {new Date().getFullYear()} Universitas Sebelas April. Didukung oleh AI Terintegrasi.
+          </p>
+          <div className="flex gap-8">
+            <Link href="#" className="text-sm font-medium text-text-muted hover:text-accent transition-colors">Privacy</Link>
+            <Link href="#" className="text-sm font-medium text-text-muted hover:text-accent transition-colors">Terms</Link>
+          </div>
         </div>
       </footer>
     </div>

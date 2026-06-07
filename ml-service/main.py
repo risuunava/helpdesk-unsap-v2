@@ -161,14 +161,26 @@ def suggest_faq(req: FaqSuggestRequest, api_key: str = Depends(verify_api_key)):
             
     return {"suggestions": suggestions}
 
+POSITIVE_WORDS = ["terima kasih", "bagus", "baik", "puas", "membantu",       
+                  "cepat", "profesional", "ramah", "selesai"]
+NEGATIVE_WORDS = ["buruk", "lambat", "tidak", "belum", "kecewa", "parah",    
+                  "susah", "sulit", "lama", "tidak ada", "tidak bisa"]       
+
 @app.post("/sentiment")
 def analyze_sentiment(req: SentimentRequest, api_key: str = Depends(verify_api_key)):
-    # Placeholder for simple lexicon-based sentiment
-    cleaned_text = clean(req.text)
-    negative_words = ["kecewa", "buruk", "lambat", "susah", "error", "jelek"]
-    if any(word in cleaned_text for word in negative_words):
-        return {"sentiment": "negative", "score": -0.8}
-    return {"sentiment": "neutral", "score": 0.0}
+    text_lower = req.text.lower()
+    pos = sum(1 for w in POSITIVE_WORDS if w in text_lower)
+    neg = sum(1 for w in NEGATIVE_WORDS if w in text_lower)
+    total = pos + neg
+    
+    if total == 0:
+        score = 0.5
+        label = "neutral"
+    else:
+        score = pos / total
+        label = "positive" if score > 0.6 else "negative" if score < 0.4 else "neutral"
+        
+    return {"score": round(score, 3), "label": label}
 
 def background_train_task():
     import subprocess

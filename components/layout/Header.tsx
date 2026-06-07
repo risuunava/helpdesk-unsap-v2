@@ -1,40 +1,35 @@
 "use client"
 
 import React from 'react'
-import { Bell, Menu } from 'lucide-react'
+import { List } from '@phosphor-icons/react'
 import { NotificationBell } from './NotificationBell'
-import Link from 'next/link'
-import { Button } from '../ui/button' // Assuming Button component is in ui folder
+import { Button } from '../ui/button'
 
 interface HeaderProps {
-  onMenuClick?: () => void; // For mobile sidebar toggle
+  onMenuClick?: () => void;
 }
 
 export function Header({ onMenuClick }: HeaderProps) {
   return (
-    <header className="h-16 bg-bg-surface/80 backdrop-blur-md flex items-center justify-between px-6 border-b border-border z-50">
-      {/* Left section: Logo/Title for Desktop, Menu icon for Mobile */}
-      <div className="flex items-center gap-4">
-        {/* Mobile menu icon */}
+    <header className="sticky top-0 h-20 bg-white/80 backdrop-blur-xl flex items-center justify-between px-8 border-b border-border z-40">
+      <div className="flex items-center gap-6">
         <Button
           variant="ghost"
           size="icon"
-          className="md:hidden text-text-secondary hover:text-text-primary"
+          className="md:hidden text-text-secondary hover:text-accent hover:bg-accent/5 rounded-xl transition-all"
           onClick={onMenuClick}
         >
-          <Menu size={22} />
+          <List size={24} weight="bold" />
         </Button>
-        {/* Logo/Title */}
-        <Link href="/" className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg bg-emerald-800 flex items-center justify-center shadow-sm">
-            <span className="text-white font-serif font-bold text-[15px] leading-none">U</span>
-          </div>
-          <span className="font-serif font-bold text-[18px] text-text-primary">UNSAP Helpdesk</span>
-        </Link>
+        
+        <div className="hidden md:block">
+           <p className="text-[11px] font-bold text-text-muted uppercase tracking-[0.2em] opacity-60">Control Center</p>
+           <h2 className="text-[15px] font-bold text-text-primary mt-0.5">Layanan Helpdesk <span className="italic font-serif font-normal text-text-muted">Digital</span></h2>
+        </div>
       </div>
 
-      {/* Right section: Notification Bell */}
       <div className="flex items-center gap-4">
+        <div className="h-8 w-[1px] bg-border mx-2 hidden sm:block" />
         <NotificationBell />
       </div>
     </header>

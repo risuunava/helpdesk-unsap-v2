@@ -1,64 +1,60 @@
+'use client'
+
 import React from 'react'
+import { motion } from 'motion/react'
 import { LucideIcon } from 'lucide-react'
 
 interface KpiCardProps {
   title: string
-  value: number | string
-  subtitle?: string
+  value: string | number
   icon: LucideIcon
-  trend?: { value: number; label: string }
-  variant?: 'default' | 'danger' | 'success' | 'warning'
+  subtitle?: string
+  variant?: 'default' | 'success' | 'warning' | 'danger'
 }
 
-const variantStyles = {
-  default: {
-    iconBg: 'bg-bg-elevated',
-    iconColor: 'text-accent',
-    valuColor: 'text-text-primary',
-  },
-  danger: {
-    iconBg: 'bg-[#FEF2F2]',
-    iconColor: 'text-error',
-    valuColor: 'text-error',
-  },
-  success: {
-    iconBg: 'bg-[#ECFDF5]',
-    iconColor: 'text-success',
-    valuColor: 'text-success',
-  },
-  warning: {
-    iconBg: 'bg-[#FEF3C7]',
-    iconColor: 'text-warning',
-    valuColor: 'text-warning',
-  },
-}
+export function KpiCard({ title, value, icon: Icon, subtitle, variant = 'default' }: KpiCardProps) {
+  const variants = {
+    default: 'text-indigo-600 bg-indigo-50 border-indigo-100',
+    success: 'text-emerald-600 bg-emerald-50 border-emerald-100',
+    warning: 'text-amber-600 bg-amber-50 border-amber-100',
+    danger: 'text-rose-600 bg-rose-50 border-rose-100',
+  }
 
-export function KpiCard({ title, value, subtitle, icon: Icon, trend, variant = 'default' }: KpiCardProps) {
-  const styles = variantStyles[variant]
+  const iconVariants = {
+    default: 'bg-indigo-500/10 text-indigo-600',
+    success: 'bg-emerald-500/10 text-emerald-600',
+    warning: 'bg-amber-500/10 text-amber-600',
+    danger: 'bg-rose-500/10 text-rose-600',
+  }
 
   return (
-    <div className="p-5 rounded-2xl border border-border bg-bg-surface shadow-capsule hover:shadow-glow transition-shadow duration-300">
-      <div className="flex items-start justify-between mb-3">
-        <div className={`w-10 h-10 rounded-xl ${styles.iconBg} flex items-center justify-center`}>
-          <Icon className={`w-5 h-5 ${styles.iconColor}`} />
+    <motion.div
+      initial={{ opacity: 0, scale: 0.95 }}
+      whileHover={{ y: -5, scale: 1.02 }}
+      animate={{ opacity: 1, scale: 1 }}
+      className="group relative bg-white border border-zinc-200/60 rounded-[2rem] p-6 overflow-hidden shadow-glass transition-all duration-500"
+    >
+      <div className="flex flex-col h-full justify-between gap-4">
+        <div className="flex items-start justify-between">
+          <div className={`p-3 rounded-2xl ${iconVariants[variant]} transition-colors duration-500`}>
+            <Icon size={24} strokeWidth={2.5} />
+          </div>
+          <div className="text-right">
+            <h3 className="text-[10px] font-bold text-zinc-400 uppercase tracking-[0.2em]">{title}</h3>
+            <p className="text-3xl font-mono font-bold text-zinc-900 mt-1">{value}</p>
+          </div>
         </div>
-        {trend && (
-          <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${
-            trend.value >= 0 ? 'bg-[#ECFDF5] text-success' : 'bg-[#FEF2F2] text-error'
-          }`}>
-            {trend.value >= 0 ? '↑' : '↓'} {Math.abs(trend.value)}% {trend.label}
-          </span>
+        
+        {subtitle && (
+          <div className="flex items-center gap-2 mt-2">
+            <div className={`w-1.5 h-1.5 rounded-full ${variant === 'default' ? 'bg-indigo-400' : variant === 'success' ? 'bg-emerald-400' : variant === 'warning' ? 'bg-amber-400' : 'bg-rose-400'}`} />
+            <p className="text-[11px] font-bold text-zinc-500 line-clamp-1">{subtitle}</p>
+          </div>
         )}
       </div>
-      <div className={`text-3xl font-bold font-mono ${styles.valuColor} mb-0.5`}>
-        {value}
-      </div>
-      <div className="text-xs font-semibold text-text-muted uppercase tracking-wider">
-        {title}
-      </div>
-      {subtitle && (
-        <div className="text-xs text-text-secondary mt-1">{subtitle}</div>
-      )}
-    </div>
+
+      {/* Decorative background glow */}
+      <div className={`absolute -bottom-12 -right-12 w-24 h-24 blur-3xl rounded-full opacity-0 group-hover:opacity-20 transition-opacity duration-500 ${variant === 'default' ? 'bg-indigo-500' : variant === 'success' ? 'bg-emerald-500' : variant === 'warning' ? 'bg-amber-500' : 'bg-rose-500'}`} />
+    </motion.div>
   )
 }

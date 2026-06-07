@@ -140,14 +140,15 @@ export function useNotifications(userId: string | undefined) {
   const markAsRead = async (notificationId: string) => {
     await supabase
       .from('notifications')
-      .update({ is_read: true, updated_at: new Date().toISOString() })
+      .update({ is_read: true })
       .eq('id', notificationId);
   };
 
   const markAllAsRead = async () => {
+    if (!userId) return;
     await supabase
       .from('notifications')
-      .update({ is_read: true, updated_at: new Date().toISOString() })
+      .update({ is_read: true })
       .eq('user_id', userId)
       .eq('is_read', false);
     setUnreadCount(0);

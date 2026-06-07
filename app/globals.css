@@ -6,42 +6,39 @@
   --font-mono: var(--font-jetbrains-mono), monospace;
 
   /* Colors — Background (Light Theme) */
-  --color-bg-base: #faf9f6; /* Warm white */
+  --color-bg-base: #fafafa; /* Minimal clean white */
   --color-bg-surface: #ffffff;
   --color-bg-elevated: #f4f4f5;
-  --color-bg-overlay: rgba(0, 0, 0, 0.03);
+  --color-bg-overlay: rgba(0, 0, 0, 0.02);
 
   /* Colors — Text */
-  --color-text-primary: #18181b; /* Zinc 900 */
+  --color-text-primary: #09090b; /* Zinc 950 */
   --color-text-secondary: #52525b; /* Zinc 600 */
-  --color-text-muted: #a1a1aa; /* Zinc 400 */
+  --color-text-muted: #71717a; /* Zinc 500 */
   --color-text-inverse: #ffffff;
 
-  /* Colors — Accent (Adapted Brutalist for Light) */
-  --color-accent: #18181b;
-  --color-accent-subtle: rgba(0, 0, 0, 0.05);
-  --color-glow-cyan: #67e8f9;
-  --color-glow-pink: #f9a8d4;
-  --color-glow-purple: #d8b4fe;
+  /* Colors — Accent */
+  --color-accent: #065f46; /* Emerald 800 */
+  --color-accent-subtle: rgba(6, 95, 70, 0.05);
 
   /* Colors — Border */
   --color-border: #e4e4e7; /* Zinc 200 */
   --color-border-strong: #d4d4d8; /* Zinc 300 */
 
-  /* Colors — Semantic */
-  --color-success: #16a34a;
-  --color-warning: #ca8a04;
-  --color-error: #dc2626;
-  --color-info: #2563eb;
-
-  /* Shadows */
-  --shadow-glow: 0 0 80px -20px rgba(216, 180, 254, 0.4);
-  --shadow-capsule: 0 4px 20px -2px rgba(0, 0, 0, 0.05), 0 0 3px rgba(0,0,0,0.02);
+  /* Premium Shadows */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --shadow-glass: 
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.4),
+    0 1px 3px 0 rgba(0, 0, 0, 0.02),
+    0 4px 6px -1px rgba(0, 0, 0, 0.05);
 
   /* Keyframes */
   --animate-fade-up: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
   --animate-fade-in: fadeIn 0.8s ease both;
-  --animate-marquee: marquee 25s linear infinite;
+  --animate-marquee: marquee 30s linear infinite;
 
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(30px); }
@@ -52,9 +49,20 @@
     to { opacity: 1; }
   }
   @keyframes marquee {
-    0% { transform: translateX(0%); }
-    100% { transform: translateX(-100%); }
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
   }
+}
+
+.grain-texture::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 99;
+  background-image: url("https://grainy-gradients.vercel.app/noise.svg");
+  opacity: 0.03;
+  pointer-events: none;
+  filter: contrast(120%) brightness(100%);
 }
 
 :root {

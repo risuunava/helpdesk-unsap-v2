@@ -1,7 +1,8 @@
 'use client'
 
 import React, { useState } from 'react'
-import { Loader2, CheckCircle2, AlertCircle } from 'lucide-react'
+import { motion, AnimatePresence } from 'motion/react'
+import { Loader2, CheckCircle2, AlertCircle, UserCircle2, ShieldCheck, Zap } from 'lucide-react'
 
 interface TicketActionsProps {
   ticketId: string
@@ -31,7 +32,6 @@ export function TicketActions({
     setLoading(true)
     setMessage(null)
 
-    // Optimistic UI update
     if (field === 'status') setStatus(value)
     if (field === 'priority') setPriority(value)
     if (field === 'assigned_to') setAssignedTo(value)
@@ -41,9 +41,6 @@ export function TicketActions({
       if (value !== '') {
         payload[field] = value
       } else if (field === 'assigned_to') {
-        // Handle unassign (if needed, but our schema usually expects a UUID, so we might need special handling. For now, we omit it or send null)
-        // Since updateTicketSchema doesn't explicitly allow null for assigned_to, we just don't allow unassigning once assigned, or we bypass.
-        // Let's assume we can't unassign for now.
         return
       }
 
@@ -58,13 +55,11 @@ export function TicketActions({
         throw new Error(errorData.error || 'Gagal menyimpan perubahan')
       }
 
-      setMessage({ type: 'success', text: 'Perubahan berhasil disimpan' })
+      setMessage({ type: 'success', text: 'Perubahan berhasil diterapkan' })
       onSuccess()
       
-      // Auto-hide success message
       setTimeout(() => setMessage(null), 3000)
     } catch (err: any) {
-      // Revert state
       if (field === 'status') setStatus(initialStatus)
       if (field === 'priority') setPriority(initialPriority)
       if (field === 'assigned_to') setAssignedTo(initialAssignedTo || '')
@@ -76,80 +71,121 @@ export function TicketActions({
   }
 
   return (
-    <div className="bg-bg-surface rounded-2xl border border-border p-6 shadow-capsule space-y-5">
-      <h3 className="font-bold text-text-primary mb-2">Tindakan</h3>
-
-      {/* Select Status */}
-      <div className="space-y-1.5">
-        <label className="text-xs font-semibold text-text-muted uppercase">Status Tiket</label>
-        <select
-          value={status}
-          onChange={(e) => handleUpdate('status', e.target.value)}
-          disabled={loading}
-          className="w-full px-3 py-2 bg-bg-surface border border-border rounded-xl text-sm text-text-primary focus:outline-none focus:border-accent disabled:opacity-50"
-        >
-          <option value="open">Open</option>
-          <option value="in_progress">In Progress</option>
-          <option value="resolved">Resolved</option>
-          <option value="closed">Closed</option>
-        </select>
-      </div>
-
-      {/* Select Priority */}
-      <div className="space-y-1.5">
-        <label className="text-xs font-semibold text-text-muted uppercase">Prioritas</label>
-        <select
-          value={priority}
-          onChange={(e) => handleUpdate('priority', e.target.value)}
-          disabled={loading}
-          className="w-full px-3 py-2 bg-bg-surface border border-border rounded-xl text-sm text-text-primary focus:outline-none focus:border-accent disabled:opacity-50"
-        >
-          <option value="low">Low</option>
-          <option value="normal">Normal</option>
-          <option value="urgent">Urgent</option>
-        </select>
-        {priority !== initialPriority && !loading && (
-          <p className="text-[11px] text-warning flex items-center gap-1 mt-1">
-            <AlertCircle className="w-3 h-3" />
-            Anda mengesampingkan prioritas bawaan
-          </p>
-        )}
-      </div>
-
-      {/* Select Assignee */}
-      <div className="space-y-1.5">
-        <label className="text-xs font-semibold text-text-muted uppercase">Penanggung Jawab</label>
-        <select
-          value={assignedTo}
-          onChange={(e) => handleUpdate('assigned_to', e.target.value)}
-          disabled={loading}
-          className="w-full px-3 py-2 bg-bg-surface border border-border rounded-xl text-sm text-text-primary focus:outline-none focus:border-accent disabled:opacity-50"
-        >
-          <option value="" disabled>Belum Ditugaskan</option>
-          {admins.map(admin => (
-            <option key={admin.id} value={admin.id}>
-              {admin.full_name}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      {/* Messages / Loading */}
-      {loading && (
-        <div className="flex items-center gap-2 text-sm text-text-muted mt-4">
-          <Loader2 className="w-4 h-4 animate-spin text-accent" />
-          Menyimpan...
-        </div>
-      )}
+    <div className="bg-white rounded-[2.5rem] border border-zinc-200/60 p-8 shadow-glass space-y-8 relative overflow-hidden">
+      <div className="absolute top-0 right-0 w-32 h-32 bg-zinc-50 blur-3xl rounded-full -mr-16 -mt-16" />
       
-      {message && !loading && (
-        <div className={`flex items-center gap-2 text-sm mt-4 p-3 rounded-lg ${
-          message.type === 'success' ? 'bg-[#ECFDF5] text-success' : 'bg-[#FEF2F2] text-error'
-        }`}>
-          {message.type === 'success' ? <CheckCircle2 className="w-4 h-4" /> : <AlertCircle className="w-4 h-4" />}
-          {message.text}
+      <div className="relative z-10">
+        <h3 className="text-sm font-bold text-zinc-900 mb-6 flex items-center gap-2.5 uppercase tracking-widest">
+          <ShieldCheck className="w-4 h-4 text-indigo-500" />
+          Management Actions
+        </h3>
+
+        <div className="space-y-6">
+          {/* Select Status */}
+          <div className="space-y-3">
+            <label className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest ml-1">Workflow Status</label>
+            <div className="relative group">
+              <select
+                value={status}
+                onChange={(e) => handleUpdate('status', e.target.value)}
+                disabled={loading}
+                className="w-full pl-4 pr-10 py-3.5 bg-zinc-50 border border-zinc-100 rounded-2xl text-[14px] font-bold text-zinc-800 focus:outline-none focus:ring-4 focus:ring-indigo-500/5 focus:border-indigo-200 focus:bg-white transition-all appearance-none cursor-pointer disabled:opacity-50"
+              >
+                <option value="open">Open</option>
+                <option value="in_progress">Processing</option>
+                <option value="resolved">Resolved</option>
+                <option value="closed">Archived</option>
+              </select>
+              <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-zinc-400 group-hover:text-indigo-500 transition-colors">
+                <Zap size={16} />
+              </div>
+            </div>
+          </div>
+
+          {/* Select Priority */}
+          <div className="space-y-3">
+            <label className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest ml-1">Criticality Level</label>
+            <div className="relative group">
+              <select
+                value={priority}
+                onChange={(e) => handleUpdate('priority', e.target.value)}
+                disabled={loading}
+                className="w-full pl-4 pr-10 py-3.5 bg-zinc-50 border border-zinc-100 rounded-2xl text-[14px] font-bold text-zinc-800 focus:outline-none focus:ring-4 focus:ring-indigo-500/5 focus:border-indigo-200 focus:bg-white transition-all appearance-none cursor-pointer disabled:opacity-50"
+              >
+                <option value="low">Low Priority</option>
+                <option value="normal">Standard Priority</option>
+                <option value="urgent">Urgent Escalation</option>
+              </select>
+              <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-zinc-400 group-hover:text-indigo-500 transition-colors">
+                <AlertCircle size={16} />
+              </div>
+            </div>
+            {priority !== initialPriority && !loading && (
+              <motion.p 
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="text-[11px] font-bold text-amber-600 flex items-center gap-1.5 px-3 py-1 bg-amber-50 rounded-lg w-fit"
+              >
+                Manual Override Active
+              </motion.p>
+            )}
+          </div>
+
+          {/* Select Assignee */}
+          <div className="space-y-3">
+            <label className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest ml-1">Responsible Officer</label>
+            <div className="relative group">
+              <select
+                value={assignedTo}
+                onChange={(e) => handleUpdate('assigned_to', e.target.value)}
+                disabled={loading}
+                className="w-full pl-4 pr-10 py-3.5 bg-zinc-50 border border-zinc-100 rounded-2xl text-[14px] font-bold text-zinc-800 focus:outline-none focus:ring-4 focus:ring-indigo-500/5 focus:border-indigo-200 focus:bg-white transition-all appearance-none cursor-pointer disabled:opacity-50"
+              >
+                <option value="" disabled>Select Assignee</option>
+                {admins.map(admin => (
+                  <option key={admin.id} value={admin.id}>
+                    {admin.full_name}
+                  </option>
+                ))}
+              </select>
+              <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-zinc-400 group-hover:text-indigo-500 transition-colors">
+                <UserCircle2 size={16} />
+              </div>
+            </div>
+          </div>
         </div>
-      )}
+
+        {/* Messaging Area */}
+        <AnimatePresence>
+          {loading && (
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="flex items-center justify-center gap-3 text-xs font-bold text-zinc-400 uppercase tracking-widest mt-8"
+            >
+              <Loader2 className="w-4 h-4 animate-spin text-indigo-500" />
+              Updating Metadata...
+            </motion.div>
+          )}
+          
+          {message && !loading && (
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className={`flex items-center gap-3 text-sm font-bold mt-8 p-4 rounded-[1.2rem] border ${
+                message.type === 'success' 
+                  ? 'bg-emerald-50 border-emerald-100 text-emerald-700' 
+                  : 'bg-rose-50 border-rose-100 text-rose-700'
+              }`}
+            >
+              {message.type === 'success' ? <CheckCircle2 className="w-4 h-4" /> : <AlertCircle className="w-4 h-4" />}
+              {message.text}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
     </div>
   )
 }

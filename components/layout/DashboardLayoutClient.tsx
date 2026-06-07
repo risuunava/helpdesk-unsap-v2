@@ -3,7 +3,7 @@
 import React, { useState } from 'react'
 import { Sidebar } from './Sidebar'
 import { Header } from './Header'
-import { AnimatePresence, motion } from 'framer-motion' // Assuming framer-motion is installed
+import { AnimatePresence, motion } from 'motion/react'
 
 interface DashboardLayoutClientProps {
   role: 'mahasiswa' | 'admin' | 'master_admin';
@@ -19,7 +19,7 @@ export function DashboardLayoutClient({ role, userName, children }: DashboardLay
   }
 
   return (
-    <div className="flex min-h-screen bg-bg-base text-text-primary">
+    <div className="flex h-screen overflow-hidden bg-bg-base text-text-primary selection:bg-accent/10 selection:text-accent">
       {/* Overlay for mobile sidebar */}
       <AnimatePresence>
         {isSidebarOpen && (
@@ -33,19 +33,21 @@ export function DashboardLayoutClient({ role, userName, children }: DashboardLay
         )}
       </AnimatePresence>
 
-      {/* Sidebar */}
+      {/* Sidebar - Using fixed/absolute for high stability in App Shell */}
       <div className={`fixed inset-y-0 left-0 transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}
-                  md:relative md:translate-x-0 transition-transform duration-200 ease-in-out z-50`}>
+                  md:relative md:translate-x-0 md:flex-shrink-0 transition-transform duration-200 ease-in-out z-50`}>
         <Sidebar role={role} userName={userName} isMobileOpen={isSidebarOpen} onClose={toggleSidebar} />
       </div>
 
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col min-w-0 h-full relative">
         {/* Header */}
         <Header onMenuClick={toggleSidebar} />
 
-        {/* Main Content */}
-        <main className="flex-1 p-6 lg:p-8 overflow-y-auto">
-          {children}
+        {/* Main Content Area with internal scroll */}
+        <main className="flex-1 p-8 lg:p-12 bg-bg-base overflow-y-auto scroll-smooth">
+          <div className="max-w-7xl mx-auto min-h-full">
+            {children}
+          </div>
         </main>
       </div>
     </div>

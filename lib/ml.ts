@@ -6,24 +6,45 @@ const headers = { 'Content-Type': 'application/json', 'X-API-Key': ML_KEY }
 export async function classifyTicket(text: string) {
   try {
     const res = await fetch(`${ML_URL}/classify`, {
-      method: 'POST', headers,
+      method: 'POST',
+      headers,
       body: JSON.stringify({ text }),
-      signal: AbortSignal.timeout(5000)  // timeout 5 detik
+      signal: AbortSignal.timeout(5000)
     })
     if (!res.ok) return null
     return await res.json()
-  } catch { return null }  // fail-safe: return null jika timeout/error
+  } catch (error) {
+    return null
+  }
 }
 
-export async function suggestFaq(text: string, topK = 3) {
+export async function analyzeSentiment(text: string) {
+  try {
+    const res = await fetch(`${ML_URL}/sentiment`, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({ text }),
+      signal: AbortSignal.timeout(3000)
+    })
+    if (!res.ok) return { score: 0.5, label: 'neutral' }
+    return await res.json()
+  } catch (error) {
+    return { score: 0.5, label: 'neutral' }
+  }
+}
+
+export async function suggestFaq(text: string) {
   try {
     const res = await fetch(`${ML_URL}/faq-suggest`, {
-      method: 'POST', headers,
-      body: JSON.stringify({ text, top_k: topK }),
+      method: 'POST',
+      headers,
+      body: JSON.stringify({ text }),
       signal: AbortSignal.timeout(3000)
     })
     if (!res.ok) return []
     const data = await res.json()
-    return data.suggestions ?? []
-  } catch { return [] }
+    return data.suggestions || []
+  } catch (error) {
+    return []
+  }
 }

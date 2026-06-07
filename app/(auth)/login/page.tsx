@@ -45,44 +45,44 @@ function LoginForm() {
   return (
     <>
       {errorMsg && (
-        <div className="mb-6 p-4 rounded-2xl bg-red-50 border border-red-100 text-red-600 text-[14px] font-sans">
+        <div className="mb-6 p-4 rounded-2xl bg-red-50 border border-red-100 text-red-600 text-[13px] font-semibold tracking-tight">
           {errorMsg === 'Invalid login credentials' 
             ? 'Email atau password salah.' 
             : errorMsg}
         </div>
       )}
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <div className="space-y-2">
-          <label className="text-[14px] font-medium text-text-secondary">Email</label>
+          <label className="text-[13px] font-bold uppercase tracking-wider text-text-muted ml-1">Email</label>
           <input
             {...register('email')}
             type="email"
             placeholder="mahasiswa@unsap.ac.id"
-            className="w-full px-4 py-3 rounded-2xl bg-bg-base border border-border focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all font-sans text-[15px]"
+            className="w-full px-5 py-4 rounded-2xl bg-zinc-50 border border-border focus:outline-none focus:ring-2 focus:ring-accent/10 focus:border-accent transition-all font-sans text-[15px] placeholder:text-text-muted/50"
           />
           {errors.email && (
-            <p className="text-red-500 text-[13px]">{errors.email.message}</p>
+            <p className="text-red-500 text-[12px] font-medium ml-1">{errors.email.message}</p>
           )}
         </div>
 
         <div className="space-y-2">
-          <label className="text-[14px] font-medium text-text-secondary">Password</label>
+          <label className="text-[13px] font-bold uppercase tracking-wider text-text-muted ml-1">Password</label>
           <input
             {...register('password')}
             type="password"
             placeholder="••••••••"
-            className="w-full px-4 py-3 rounded-2xl bg-bg-base border border-border focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all font-sans text-[15px]"
+            className="w-full px-5 py-4 rounded-2xl bg-zinc-50 border border-border focus:outline-none focus:ring-2 focus:ring-accent/10 focus:border-accent transition-all font-sans text-[15px] placeholder:text-text-muted/50"
           />
           {errors.password && (
-            <p className="text-red-500 text-[13px]">{errors.password.message}</p>
+            <p className="text-red-500 text-[12px] font-medium ml-1">{errors.password.message}</p>
           )}
         </div>
 
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full bg-emerald-800 text-white font-sans font-medium text-[15px] py-3.5 rounded-2xl hover:bg-emerald-900 transition-colors shadow-lg shadow-emerald-900/20 flex items-center justify-center gap-2 mt-2"
+          className="w-full bg-accent text-white font-sans font-bold text-[15px] py-4 rounded-2xl hover:bg-emerald-900 transition-all shadow-xl shadow-accent/20 flex items-center justify-center gap-2 mt-2 active:scale-[0.98]"
         >
           {isSubmitting && <Loader2 size={18} className="animate-spin" />}
           {isSubmitting ? 'Memproses...' : 'Masuk Sekarang'}
@@ -95,20 +95,20 @@ function LoginForm() {
 export default function LoginPage() {
   return (
     <div>
-      <h2 className="text-[22px] font-serif font-medium text-text-primary mb-6">
-        Masuk ke Akun Anda
+      <h2 className="text-2xl font-serif font-bold text-text-primary mb-8 tracking-tight">
+        Selamat <span className="italic text-text-muted">Datang.</span>
       </h2>
 
-      <Suspense fallback={<div className="flex justify-center p-4"><Loader2 className="animate-spin text-emerald-800" /></div>}>
+      <Suspense fallback={<div className="flex justify-center p-4"><Loader2 className="animate-spin text-accent" /></div>}>
         <LoginForm />
       </Suspense>
 
-      <div className="mt-8 text-center">
-        <p className="text-[14px] text-text-secondary font-sans">
+      <div className="mt-10 text-center pt-8 border-t border-zinc-100">
+        <p className="text-[13px] text-text-secondary font-medium">
           Belum punya akun?{' '}
           <Link
             href="/register"
-            className="text-emerald-700 font-medium hover:text-emerald-800 underline underline-offset-4"
+            className="text-accent font-bold hover:underline underline-offset-4"
           >
             Daftar di sini
           </Link>
