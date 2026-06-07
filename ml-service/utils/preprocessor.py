@@ -17,17 +17,20 @@ except ImportError:
 class Preprocessor:
     def __init__(self):
         # Initialize Stemmer
-        factory = StemmerFactory()
-        self.stemmer = factory.create_stemmer()
+        try:
+            factory = StemmerFactory()
+            self.stemmer = factory.create_stemmer()
+        except:
+            print("Warning: Sastrawi not found. Stemming disabled.")
+            self.stemmer = None
         
         # We assume NLTK data is downloaded. If not, train.py/main.py will have to download it.
         try:
             self.stop_words = set(stopwords.words('indonesian'))
         except:
-            # Fallback custom stopwords if NLTK data is missing (useful for cold starts)
+            # Fallback custom stopwords
             self.stop_words = {"yang", "di", "ke", "dari", "pada", "dalam", "untuk", "dengan", "dan", "atau", "ini", "itu", "saya", "kami", "kita", "mereka", "dia"}
             
-        # Add extra custom domain stop words if necessary
         self.custom_stopwords = {"unsap", "helpdesk", "kampus", "mohon", "bantu", "tolong", "admin", "bapak", "ibu"}
         self.stop_words.update(self.custom_stopwords)
 
@@ -38,23 +41,24 @@ class Preprocessor:
         # 1. Lowercase
         text = text.lower()
         
-        # 2. Remove punctuation & numbers
-        text = re.sub(r'\d+', '', text)
-        text = text.translate(str.maketrans('', '', string.punctuation))
-        
-        # 3. Tokenisasi & Remove Stopwords
-        # Fallback simple split if word_tokenize is unavailable
+        # 2. Tokenisasi
         try:
             tokens = word_tokenize(text)
         except:
             tokens = text.split()
             
-        filtered_tokens = [w for w in tokens if w not in self.stop_words and len(w) > 2]
+        # 3. Remove Stopwords
+        filtered_tokens = [w for w in tokens if w not in self.stop_words]
         
-        # 4. Stemming
-        stemmed_text = " ".join([self.stemmer.stem(w) for w in filtered_tokens])
-        
-        return stemmed_text
+        # 4. Stemming (optional if available)
+        if self.stemmer:
+            try:
+                stemmed_text = " ".join([self.stemmer.stem(w) for w in filtered_tokens])
+                return stemmed_text
+            except:
+                pass
+                
+        return " ".join(filtered_tokens)
 
 # Singleton instance
 _preprocessor = None

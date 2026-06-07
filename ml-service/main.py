@@ -13,7 +13,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 app = FastAPI(title="UNSAP ML Service", version="2.0")
 
-API_KEY = os.environ.get("ML_API_KEY", "dev-key-insecure")
+API_KEY = os.environ.get("ML_API_KEY", "dev-key-123")
 api_key_header = APIKeyHeader(name="X-API-Key", auto_error=True)
 
 def verify_api_key(key: str = Security(api_key_header)):
@@ -49,7 +49,7 @@ def predict_priority(req: ClassifyRequest, api_key: str = Depends(verify_api_key
     model, vectorizer, model_version = get_model()
     
     if not model or not vectorizer:
-        # Fallback if model is not trained yet
+        print("Fallback triggered: Model or Vectorizer not loaded.")
         return ClassifyResponse(
             priority="normal",
             confidence=1.0,
@@ -57,6 +57,9 @@ def predict_priority(req: ClassifyRequest, api_key: str = Depends(verify_api_key
         )
         
     cleaned_text = clean(req.text)
+    print(f"--- Inference ---")
+    print(f"Input: {req.text}")
+    print(f"Cleaned: {cleaned_text}")
     
     URGENT_KEYWORDS = [
         "krs", "ukt", "uang kuliah", "spp", "beasiswa",
@@ -70,6 +73,7 @@ def predict_priority(req: ClassifyRequest, api_key: str = Depends(verify_api_key
     matched_keyword = next((kw for kw in URGENT_KEYWORDS if kw in text_lower), None)
     
     if matched_keyword:
+        print(f"Keyword match: {matched_keyword} -> priority: urgent")
         return ClassifyResponse(
             priority="urgent",
             confidence=1.0,
@@ -85,11 +89,14 @@ def predict_priority(req: ClassifyRequest, api_key: str = Depends(verify_api_key
     pred = model.predict(vec)[0]
     
     # Confidence
+    confidence = 1.0
     if hasattr(model, "predict_proba"):
         probs = model.predict_proba(vec)[0]
         confidence = float(max(probs))
-    else:
-        confidence = 1.0
+        
+    print(f"Model prediction: {pred} (confidence: {confidence:.4f})")
+    print(f"Model version: {model_version}")
+    print(f"-----------------")
         
     return ClassifyResponse(
         priority=pred,

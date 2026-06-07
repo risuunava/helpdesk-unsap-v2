@@ -39,10 +39,12 @@ def load_data():
         try:
             print("Fetching data from Supabase...")
             supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
-            response = supabase.table("ml_training_data").select("text, label").execute()
+            response = supabase.table("ml_training_data").select("text_input, corrected_label").execute()
             
             if response.data and len(response.data) > 0:
                 df = pd.DataFrame(response.data)
+                # Rename columns for consistency if needed, but here we just use them
+                df = df.rename(columns={"text_input": "text", "corrected_label": "label"})
                 print(f"Loaded {len(df)} rows from Supabase.")
         except Exception as e:
             print(f"Failed to fetch from Supabase: {e}")
@@ -52,8 +54,29 @@ def load_data():
         csv_path = DATA_DIR / "dataset.csv"
         if csv_path.exists():
             print(f"Loading data from {csv_path}...")
-            df = pd.read_csv(csv_path)
-            print(f"Loaded {len(df)} rows from CSV.")
+            try:
+                # Manual parsing to handle commas inside text (e.g. "2,0")
+                data = []
+                with open(csv_path, "r", encoding="utf-8") as f:
+                    header = f.readline() # skip header
+                    for line in f:
+                        line = line.strip()
+                        if not line: continue
+                        # Split from the right, only 1 split (last comma is the label)
+                        parts = line.rsplit(",", 1)
+                        if len(parts) == 2:
+                            data.append({"text": parts[0], "label": parts[1]})
+                
+                if data:
+                    df = pd.DataFrame(data)
+                    print(f"Loaded {len(df)} rows from CSV (manually parsed).")
+            except Exception as e:
+                print(f"Failed to parse CSV manually: {e}")
+                # Last resort fallback to standard pandas
+                try:
+                    df = pd.read_csv(csv_path)
+                except:
+                    pass
         else:
             # Generate a dummy dataset if neither exists (for testing purposes)
             print("No database or CSV found. Generating dummy dataset...")
@@ -95,7 +118,10 @@ def train():
 
     # Feature extraction & Model
     print("Training model...")
-    vectorizer = TfidfVectorizer(max_features=5000)
+    print(f"Class distribution:\n{df['label'].value_counts()}")
+    
+    # Use n-grams (1, 2) to capture phrases like "kurang dari" or "tidak bisa"
+    vectorizer = TfidfVectorizer(max_features=5000, ngram_range=(1, 2))
     model = LogisticRegression(max_iter=1000, class_weight='balanced')
     
     X = vectorizer.fit_transform(df['cleaned_text'])

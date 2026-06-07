@@ -28,7 +28,7 @@ export function Sidebar({ role = 'mahasiswa', userName = 'User', onClose }: Side
     : [
         { href: '/admin', label: 'Dashboard', icon: SquaresFour },
         { href: '/admin/analytics', label: 'Analytics', icon: ChartBar },
-        ...(role === 'master_admin' ? [{ href: '/admin/ml', label: 'Kelola ML', icon: Brain }] : []),
+        { href: '/admin/ml', label: 'Kelola ML', icon: Brain },
       ]
 
   const roleLabel = role.replace('_', ' ')

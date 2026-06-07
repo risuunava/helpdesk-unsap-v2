@@ -48,3 +48,17 @@ export async function suggestFaq(text: string) {
     return []
   }
 }
+
+export async function triggerRetrain() {
+  try {
+    const res = await fetch(`${ML_URL}/retrain`, {
+      method: 'POST',
+      headers,
+      signal: AbortSignal.timeout(5000)
+    })
+    if (!res.ok) return { success: false, error: await res.text() }
+    return { success: true, ...(await res.json()) }
+  } catch (error) {
+    return { success: false, error: 'Failed to trigger retrain' }
+  }
+}
