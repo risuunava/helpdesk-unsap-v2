@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase/server'
+import { createClient, createAdminClient } from '@/lib/supabase/server'
 import { requireAuth } from '@/lib/auth'
 import { updateTicketSchema } from '@/lib/validations/ticket.schema'
 
@@ -104,6 +104,30 @@ export async function PATCH(
       .single()
 
     if (error) throw error
+
+    // --- NOTIFICATION LOGIC ---
+    const adminClient = await createAdminClient()
+    const notificationTitle = `Update Tiket ${ticket.ticket_number}`
+    let notificationBody = ''
+
+    if (validatedData.status) {
+      notificationBody = `Status tiket Anda telah berubah menjadi ${validatedData.status.toUpperCase()}.`
+    } else if (validatedData.priority) {
+      notificationBody = `Prioritas tiket Anda telah diubah menjadi ${validatedData.priority.toUpperCase()}.`
+    } else if (validatedData.assigned_to) {
+      notificationBody = `Tiket Anda telah ditugaskan ke admin baru.`
+    }
+
+    if (notificationBody && ticket.reporter_id) {
+      await adminClient.from('notifications').insert({
+        user_id: ticket.reporter_id,
+        type: 'ticket_update',
+        title: notificationTitle,
+        body: notificationBody,
+        ticket_id: ticket.id
+      })
+    }
+    // --- END NOTIFICATION LOGIC ---
 
     return NextResponse.json({ data: ticket })
 

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase/server'
+import { createClient, createAdminClient } from '@/lib/supabase/server'
 import { requireAuth } from '@/lib/auth'
 import { createTicketSchema } from '@/lib/validations/ticket.schema'
 import { checkTicketRateLimit, incrementRateLimit } from '@/lib/rateLimit'
@@ -185,7 +185,25 @@ export async function POST(request: NextRequest) {
 
     if (error) throw error
 
-    // 6. Increment rate limit
+    // 6. Notify Admins
+    const adminClient = await createAdminClient()
+    const { data: admins } = await adminClient
+      .from('profiles')
+      .select('id')
+      .in('role', ['admin', 'master_admin'])
+
+    if (admins && admins.length > 0) {
+      const notifications = admins.map(a => ({
+        user_id: a.id,
+        type: 'new_ticket',
+        title: 'Laporan Baru Masuk',
+        body: `${ticket.ticket_number}: ${ticket.title} (${priority.toUpperCase()})`,
+        ticket_id: ticket.id
+      }))
+      await adminClient.from('notifications').insert(notifications)
+    }
+
+    // 7. Increment rate limit
     await incrementRateLimit(user.id)
 
     return NextResponse.json({ data: ticket }, { status: 201 })

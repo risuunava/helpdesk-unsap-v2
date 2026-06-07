@@ -1,4 +1,3 @@
-'use client'
 import React from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -7,9 +6,11 @@ import { LayoutDashboard, PlusCircle, BarChart3, Brain, LogOut } from 'lucide-re
 interface SidebarProps {
   role?: 'mahasiswa' | 'admin' | 'master_admin'
   userName?: string
+  isMobileOpen?: boolean;
+  onClose?: () => void;
 }
 
-export function Sidebar({ role = 'mahasiswa', userName = 'User' }: SidebarProps) {
+export function Sidebar({ role = 'mahasiswa', userName = 'User', onClose }: SidebarProps) {
   const pathname = usePathname()
 
   const links = role === 'mahasiswa' 
@@ -31,7 +32,7 @@ export function Sidebar({ role = 'mahasiswa', userName = 'User' }: SidebarProps)
     : 'bg-text-primary text-text-inverse'
 
   return (
-    <aside className="w-[240px] bg-bg-elevated border-r border-border min-h-screen hidden md:flex flex-col">
+    <aside className="w-[240px] bg-bg-elevated border-r border-border min-h-screen flex flex-col">
       <div className="p-6">
         <div className="flex items-center gap-2.5">
           <div className="w-8 h-8 rounded-lg bg-emerald-800 flex items-center justify-center shadow-sm">
@@ -50,6 +51,7 @@ export function Sidebar({ role = 'mahasiswa', userName = 'User' }: SidebarProps)
             <Link
               key={link.href}
               href={link.href}
+              onClick={onClose}
               className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-[14px] font-sans font-medium transition-all ${
                 isActive 
                   ? 'bg-emerald-800 text-white shadow-sm shadow-emerald-900/20' 

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase/server'
+import { createClient, createAdminClient } from '@/lib/supabase/server'
 import { requireRole } from '@/lib/auth'
 
 export async function GET(request: NextRequest) {
@@ -83,7 +83,7 @@ export async function POST(request: Request) {
     const supabase = await createClient()
     const { data: ticket } = await supabase
       .from('tickets')
-      .select('id, reporter_id, assigned_to, is_anonymous, anonymous_code')
+      .select('id, reporter_id, assigned_to, title, is_anonymous, anonymous_code') // Include anonymous fields
       .eq('id', ticket_id)
       .single()
 
@@ -102,6 +102,60 @@ export async function POST(request: Request) {
       .single()
 
     if (error) return Response.json({ error: error.message }, { status: 500 })
+
+    // --- NOTIFICATION LOGIC ---
+    let notificationTitle: string = '';
+    let notificationBody: string = '';
+
+    const senderName = profile.full_name || 'Pengguna'; // Use sender's name for notification
+
+    const adminClient = await createAdminClient();
+
+    if (user.id === ticket.reporter_id) { // Student (reporter) sent the message
+      notificationTitle = `Pesan Baru di Tiket ${ticket.title}`;
+      notificationBody = `${senderName}: ${content.trim().substring(0, 50)}${content.trim().length > 50 ? '...' : ''}`;
+
+      if (ticket.assigned_to) { // Notify assigned admin
+        await adminClient.from('notifications').insert({
+          user_id: ticket.assigned_to,
+          type: 'new_message',
+          title: notificationTitle,
+          body: notificationBody,
+          ticket_id: ticket_id,
+        });
+      } else {
+        // Notify all admins if not assigned
+        const { data: admins } = await adminClient
+          .from('profiles')
+          .select('id')
+          .in('role', ['admin', 'master_admin']);
+        
+        if (admins) {
+          const notifications = admins.map(a => ({
+            user_id: a.id,
+            type: 'new_message',
+            title: notificationTitle,
+            body: notificationBody,
+            ticket_id: ticket_id,
+          }));
+          await adminClient.from('notifications').insert(notifications);
+        }
+      }
+    } else if (['admin', 'master_admin'].includes(profile.role)) { // Admin sent the message
+      if (user.id !== ticket.reporter_id && ticket.reporter_id) { // Notify student (reporter), if not admin messaging self
+         notificationTitle = `Balasan Admin di Tiket ${ticket.title}`;
+         notificationBody = `${senderName}: ${content.trim().substring(0, 50)}${content.trim().length > 50 ? '...' : ''}`;
+         
+         await adminClient.from('notifications').insert({
+          user_id: ticket.reporter_id,
+          type: 'new_message',
+          title: notificationTitle,
+          body: notificationBody,
+          ticket_id: ticket_id,
+        });
+      }
+    }
+    // --- END NOTIFICATION LOGIC ---
 
     // Masking logic for POST response (though usually sender is the current user)
     const isMasterAdmin = profile.role === 'master_admin'
