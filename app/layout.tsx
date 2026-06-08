@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Playfair_Display, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({
   variable: "--font-body",
@@ -22,8 +23,8 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Smart Campus Helpdesk UNSAP",
-  description: "Sistem pelaporan dan penyelesaian keluhan mahasiswa Universitas Sebelas April",
+  title: "UNSAP Helpdesk — Smart Campus",
+  description: "Platform pelaporan keluhan mahasiswa Universitas Sebelas April",
 };
 
 export default function RootLayout({
@@ -33,7 +34,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${inter.variable} ${playfair.variable} ${jetbrainsMono.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col grain-texture">{children}</body>
+      <body className="min-h-full flex flex-col grain-texture">
+        {children}
+        <Toaster />
+      </body>
     </html>
   );
 }

@@ -16,6 +16,9 @@ import {
 } from 'lucide-react'
 import { clsx } from 'clsx'
 
+import { CardSkeleton } from '@/components/ui/LoadingSkeleton'
+import { NoTicketsState } from '@/components/ui/EmptyState'
+
 export default function MahasiswaDashboard() {
   const { tickets, loading, error } = useTickets()
   const router = useRouter()
@@ -82,18 +85,12 @@ export default function MahasiswaDashboard() {
       {/* Main Content */}
       <AnimatePresence mode="wait">
         {loading ? (
-          <motion.div key="loading" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-col items-center justify-center py-32 space-y-3">
-            <Loader2 className="w-6 h-6 animate-spin text-zinc-300" />
-            <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Sinkronisasi Data</p>
+          <motion.div key="loading" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[1, 2, 3].map(i => <CardSkeleton key={i} />)}
           </motion.div>
         ) : tickets.length === 0 ? (
-          <motion.div key="empty" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-col items-center justify-center py-32 text-center bg-white border border-dashed border-zinc-200 rounded-xl">
-            <Inbox size={40} className="text-zinc-200 mb-4" />
-            <h3 className="text-sm font-bold text-zinc-900">Belum Ada Laporan</h3>
-            <p className="text-xs text-zinc-500 mt-1 max-w-[200px]">Anda belum pernah mengirimkan keluhan ke sistem.</p>
-            <Link href="/mahasiswa/submit" className="mt-6 text-xs font-bold text-indigo-600 hover:underline flex items-center gap-1">
-              Buat laporan pertama Anda <ArrowRight size={12} />
-            </Link>
+          <motion.div key="empty" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+            <NoTicketsState onCreateClick={() => router.push('/mahasiswa/submit')} />
           </motion.div>
         ) : viewMode === 'grid' ? (
           <motion.div key="grid" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -108,7 +105,7 @@ export default function MahasiswaDashboard() {
                   <StatusBadge status={t.status as any} />
                 </div>
                 <h4 className="font-bold text-zinc-900 line-clamp-2 min-h-[40px] text-sm group-hover:text-emerald-700 transition-colors">{t.title}</h4>
-                <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest mt-2">{t.category} • {new Date(t.created_at).toLocaleDateString('id-ID')}</p>
+                <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest mt-2">{t.category} • {t.created_at ? new Date(t.created_at).toLocaleDateString('id-ID') : '-'}</p>
                 <div className="flex items-center justify-between pt-4 border-t border-zinc-50 mt-4">
                   <PriorityBadge priority={t.priority as any} />
                   {t.status !== 'resolved' && t.status !== 'closed' && <SlaIndicator deadline={t.sla_deadline} />}
@@ -138,7 +135,7 @@ export default function MahasiswaDashboard() {
                       </div>
                     </td>
                     <td className="px-6 py-5"><StatusBadge status={t.status as any} /></td>
-                    <td className="px-6 py-5 text-right text-zinc-500 font-medium">{new Date(t.created_at).toLocaleDateString('id-ID')}</td>
+                    <td className="px-6 py-5 text-right text-zinc-500 font-medium">{t.created_at ? new Date(t.created_at).toLocaleDateString('id-ID') : '-'}</td>
                   </tr>
                 ))}
               </tbody>

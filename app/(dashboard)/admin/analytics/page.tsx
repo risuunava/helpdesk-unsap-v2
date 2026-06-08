@@ -90,6 +90,8 @@ export default function AnalyticsPage() {
     )
   }
 
+  if (!data) return null
+
   return (
     <div className="max-w-7xl mx-auto space-y-10 pb-20">
       {/* Technical Header */}

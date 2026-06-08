@@ -14,6 +14,7 @@
     "@radix-ui/react-popover": "^1.1.16",
     "@radix-ui/react-separator": "^1.1.9",
     "@radix-ui/react-slot": "^1.2.5",
+    "@radix-ui/react-toast": "^1.2.16",
     "@supabase/ssr": "^0.10.3",
     "@supabase/supabase-js": "^2.107.0",
     "class-variance-authority": "^0.7.1",

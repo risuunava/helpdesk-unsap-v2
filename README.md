@@ -1,36 +1,57 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Smart Campus Helpdesk UNSAP (v2.0)
 
-## Getting Started
+Platform pelaporan keluhan mahasiswa Universitas Sebelas April yang terintegrasi dengan Machine Learning untuk klasifikasi otomatis dan FAQ suggestion.
 
-First, run the development server:
+## Tech Stack
 
+- **Frontend:** Next.js 16 (App Router), TypeScript, Tailwind CSS, Framer Motion
+- **Backend:** Supabase (Auth, Database, Storage, Edge Functions, Realtime)
+- **ML Service:** Python, FastAPI, Scikit-learn, NLTK
+- **Monitoring:** Recharts (Analytics Dashboard)
+- **Deployment:** Vercel (Frontend), Railway (ML Service)
+
+## Fitur Utama
+
+- 🚀 **Klasifikasi Tiket Otomatis:** Menggunakan ML untuk menentukan prioritas laporan.
+- 💡 **FAQ Suggestion:** Saran jawaban otomatis saat mahasiswa mengetik laporan.
+- 💬 **Live Chat Realtime:** Komunikasi langsung antara mahasiswa dan admin.
+- 📊 **Analytics Dashboard:** Visualisasi data performa layanan (SLA, volume tiket, sentimen).
+- 🔒 **Privacy Focused:** Opsi pelaporan anonim untuk isu sensitif.
+- 🔔 **Notifikasi Realtime:** Update status laporan secara instan.
+
+## Setup Lokal
+
+### 1. Prasyarat
+- Node.js >= 18
+- Python >= 3.11
+- Supabase CLI
+
+### 2. Instalasi Dependensi
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+cd ml-service && python -m venv venv && source venv/bin/activate && pip install -r requirements.txt
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 3. Konfigurasi Environment
+Salin `.env.local.example` ke `.env.local` dan isi dengan credential Supabase & ML Service Anda.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 4. Menjalankan Development Server
+```bash
+npm run dev
+# Di terminal lain (ml-service):
+uvicorn main:app --reload --port 5000
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Struktur Proyek
+- `app/`: Next.js pages & API routes
+- `components/`: Reusable UI components
+- `lib/`: Shared utilities & validations
+- `hooks/`: Custom React hooks
+- `ml-service/`: Python ML service & datasets
+- `supabase/`: Migrations & Edge Functions
 
-## Learn More
+## Lisensi
+MIT
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+*Dibuat untuk Universitas Sebelas April (UNSAP)*

@@ -2,9 +2,10 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient, createAdminClient } from '@/lib/supabase/server'
 import { requireAuth } from '@/lib/auth'
 import { createTicketSchema } from '@/lib/validations/ticket.schema'
-import { checkTicketRateLimit, incrementRateLimit } from '@/lib/rateLimit'
+import { checkTicketRateLimit, incrementRateLimit, checkIpRateLimit } from '@/lib/rateLimit'
 import { generateAnonymousCode } from '@/lib/anonymize'
 import { classifyTicket } from '@/lib/ml'
+import { headers } from 'next/headers'
 
 export async function GET(request: NextRequest) {
   try {
@@ -93,6 +94,16 @@ export async function POST(request: NextRequest) {
   try {
     const user = await requireAuth()
     const supabase = await createClient()
+
+    // 0. IP Rate Limit
+    const headerList = await headers()
+    const ip = headerList.get('x-forwarded-for') || '127.0.0.1'
+    if (!checkIpRateLimit(ip)) {
+      return NextResponse.json(
+        { error: 'Terlalu banyak permintaan. Silakan coba lagi dalam satu menit.' },
+        { status: 429 }
+      )
+    }
 
     // 1. Check rate limit
     const isAllowed = await checkTicketRateLimit(user.id)

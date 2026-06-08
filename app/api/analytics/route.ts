@@ -3,6 +3,8 @@ import { createClient } from '@/lib/supabase/server'
 import { requireAuth } from '@/lib/auth'
 import { analyzeSentiment } from '@/lib/ml'
 
+export const revalidate = 300 // cache 5 menit
+
 export async function GET(request: NextRequest) {
   try {
     const user = await requireAuth()

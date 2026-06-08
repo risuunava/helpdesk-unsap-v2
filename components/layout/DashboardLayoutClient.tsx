@@ -5,6 +5,8 @@ import { Sidebar } from './Sidebar'
 import { Header } from './Header'
 import { AnimatePresence, motion } from 'motion/react'
 
+import { ErrorBoundary } from '@/components/ui/ErrorBoundary'
+
 interface DashboardLayoutClientProps {
   role: 'mahasiswa' | 'admin' | 'master_admin';
   userName: string;
@@ -46,7 +48,9 @@ export function DashboardLayoutClient({ role, userName, children }: DashboardLay
         {/* Main Content Area with internal scroll */}
         <main className="flex-1 p-8 lg:p-12 bg-bg-base overflow-y-auto scroll-smooth">
           <div className="max-w-7xl mx-auto min-h-full">
-            {children}
+            <ErrorBoundary>
+              {children}
+            </ErrorBoundary>
           </div>
         </main>
       </div>
