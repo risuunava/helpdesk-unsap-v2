@@ -32,7 +32,7 @@ export function KpiCard({ title, value, icon: Icon, subtitle, variant = 'default
       initial={{ opacity: 0, scale: 0.95 }}
       whileHover={{ y: -5, scale: 1.02 }}
       animate={{ opacity: 1, scale: 1 }}
-      className="group relative bg-white border border-zinc-200/60 rounded-[2rem] p-6 overflow-hidden shadow-glass transition-all duration-500"
+      className="group relative bg-card border border-border/60 rounded-[2rem] p-6 overflow-hidden shadow-glass transition-all duration-500"
     >
       <div className="flex flex-col h-full justify-between gap-4">
         <div className="flex items-start justify-between">
@@ -40,15 +40,15 @@ export function KpiCard({ title, value, icon: Icon, subtitle, variant = 'default
             <Icon size={24} strokeWidth={2.5} />
           </div>
           <div className="text-right">
-            <h3 className="text-[10px] font-bold text-zinc-400 uppercase tracking-[0.2em]">{title}</h3>
-            <p className="text-3xl font-mono font-bold text-zinc-900 mt-1">{value}</p>
+            <h3 className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em]">{title}</h3>
+            <p className="text-3xl font-mono font-bold text-foreground mt-1">{value}</p>
           </div>
         </div>
         
         {subtitle && (
           <div className="flex items-center gap-2 mt-2">
             <div className={`w-1.5 h-1.5 rounded-full ${variant === 'default' ? 'bg-indigo-400' : variant === 'success' ? 'bg-emerald-400' : variant === 'warning' ? 'bg-amber-400' : 'bg-rose-400'}`} />
-            <p className="text-[11px] font-bold text-zinc-500 line-clamp-1">{subtitle}</p>
+            <p className="text-[11px] font-bold text-muted-foreground line-clamp-1">{subtitle}</p>
           </div>
         )}
       </div>

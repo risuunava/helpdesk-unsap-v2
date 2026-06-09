@@ -3,14 +3,17 @@
 import React from 'react'
 import { motion } from 'motion/react'
 import {
-  AreaChart,
-  Area,
+  BarChart,
+  Bar,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
+  Cell,
+  ReferenceLine
 } from 'recharts'
+import { cn } from '@/lib/utils'
 
 interface SentimentData {
   month: string
@@ -21,91 +24,161 @@ interface SentimentChartProps {
   data: SentimentData[]
 }
 
-export function SentimentChart({ data }: SentimentChartProps) {
+const CustomSentimentBar = (props: any) => {
+  const { fill, x, y, width, height } = props;
+  const radius = 6;
+  
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      className="group relative flex flex-col bg-white border border-zinc-200/60 rounded-[2.5rem] p-10 overflow-hidden shadow-glass hover:shadow-2xl transition-all duration-700"
-    >
-      <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500/5 blur-[100px] rounded-full -mr-32 -mt-32 group-hover:bg-indigo-500/10 transition-all duration-700" />
-      
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
-        <div>
-          <h3 className="text-[11px] font-bold text-indigo-500 uppercase tracking-[0.3em] mb-2">Public Perception</h3>
-          <p className="text-3xl font-serif italic text-zinc-900 leading-tight">Sentiment Analytics</p>
-          <p className="text-sm text-zinc-400 mt-2 max-w-md font-medium">Melacak kepuasan mahasiswa melalui analisis bahasa pada laporan tiket.</p>
-        </div>
-        <div className="flex items-center gap-8 bg-zinc-50/80 backdrop-blur-md px-8 py-5 rounded-[1.5rem] border border-zinc-100">
-          <div className="text-center">
-            <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest mb-1">Current Score</p>
-            <p className="text-2xl font-mono font-bold text-indigo-600">{(data[data.length - 1]?.score * 100).toFixed(0)}%</p>
-          </div>
-          <div className="w-[1px] h-8 bg-zinc-200" />
-          <div className="text-center">
-            <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest mb-1">Sentiment</p>
-            <p className="text-2xl font-bold text-zinc-800 italic">Positif</p>
-          </div>
-        </div>
-      </div>
+    <g>
+      <rect 
+        x={x} 
+        y={y} 
+        width={width} 
+        height={height} 
+        fill={fill} 
+        rx={radius}
+        className="filter drop-shadow-[0_0_8px_rgba(var(--primary-rgb),0.3)]"
+      >
+        <animate attributeName="opacity" from="0.5" to="1" dur="1s" repeatCount="1" />
+      </rect>
+      {/* Gloss Effect */}
+      <rect 
+        x={x + 2} 
+        y={y + 2} 
+        width={width / 3} 
+        height={height - 4} 
+        fill="white" 
+        fillOpacity={0.1} 
+        rx={radius / 2} 
+      />
+    </g>
+  );
+};
 
-      <div className="h-[300px] w-full">
-        <ResponsiveContainer width="100%" height="100%">
-          <AreaChart data={data} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-            <defs>
-              <linearGradient id="sentimentGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#6366f1" stopOpacity={0.15} />
-                <stop offset="95%" stopColor="#6366f1" stopOpacity={0.01} />
-              </linearGradient>
-            </defs>
-            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f3f4f6" />
-            <XAxis 
-              dataKey="month" 
-              fontSize={11} 
-              fontFamily="var(--font-mono)"
-              tickLine={false} 
-              axisLine={false} 
-              tick={{ fill: '#94a3b8' }}
-              dy={15}
-            />
-            <YAxis 
-              fontSize={11} 
-              fontFamily="var(--font-mono)"
-              tickLine={false} 
-              axisLine={false} 
-              tick={{ fill: '#94a3b8' }}
-              domain={[0, 1]}
-              tickFormatter={(val) => `${(val * 100).toFixed(0)}%`}
-            />
-            <Tooltip
-              content={({ active, payload }) => {
-                if (active && payload && payload.length) {
-                  return (
-                    <div className="bg-white border border-zinc-100 p-4 rounded-2xl shadow-2xl backdrop-blur-xl">
-                      <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest mb-2">{payload[0].payload.month}</p>
-                      <div className="flex items-center gap-3">
-                        <div className="w-2 h-2 rounded-full bg-indigo-500" />
-                        <p className="text-sm font-bold text-zinc-800">Score: {Number(payload[0].value).toFixed(2)}</p>
-                      </div>
+export function SentimentChart({ data }: SentimentChartProps) {
+  const getSentimentColor = (score: number) => {
+    if (score >= 0.7) return '#10b981' // emerald-500
+    if (score >= 0.5) return '#f59e0b' // amber-500
+    return '#f43f5e' // rose-500
+  }
+
+  const getSentimentLabel = (score: number) => {
+    if (score >= 0.7) return 'Optimized'
+    if (score >= 0.5) return 'Stable'
+    return 'Critical'
+  }
+
+  return (
+    <div className="w-full h-full min-h-[350px] relative">
+      <ResponsiveContainer width="100%" height="100%">
+        <BarChart 
+            data={data} 
+            margin={{ top: 20, right: 30, left: -20, bottom: 0 }}
+        >
+          <defs>
+            <linearGradient id="barGradient" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="currentColor" stopOpacity={1} />
+              <stop offset="100%" stopColor="currentColor" stopOpacity={0.6} />
+            </linearGradient>
+          </defs>
+          
+          <CartesianGrid 
+            strokeDasharray="1 4" 
+            vertical={false} 
+            stroke="var(--foreground)" 
+            strokeOpacity={0.1} 
+          />
+          
+          <XAxis 
+            dataKey="month" 
+            fontSize={10} 
+            fontFamily="var(--font-mono)"
+            tickLine={false} 
+            axisLine={false} 
+            tick={{ fill: 'var(--muted-foreground)', fontWeight: 700 }}
+            dy={10}
+            tickFormatter={(val) => val.toUpperCase()}
+          />
+          
+          <YAxis 
+            fontSize={10} 
+            fontFamily="var(--font-mono)"
+            tickLine={false} 
+            axisLine={false} 
+            tick={{ fill: 'var(--muted-foreground)', fontWeight: 700 }}
+            domain={[0, 1]}
+            tickFormatter={(val) => `${(val * 100).toFixed(0)}`}
+          />
+
+          <Tooltip
+            cursor={{ fill: 'var(--muted)', opacity: 0.1 }}
+            content={({ active, payload }) => {
+              if (active && payload && payload.length) {
+                const score = payload[0].value as number;
+                return (
+                  <div className="bg-background/90 backdrop-blur-xl border border-border p-5 rounded-2xl shadow-2xl min-w-[180px]">
+                    <p className="text-[9px] font-black text-muted-foreground uppercase tracking-[0.3em] mb-3">
+                        Period: {payload[0].payload.month}
+                    </p>
+                    
+                    <div className="space-y-4">
+                        <div className="flex items-end justify-between gap-4">
+                            <span className="text-4xl font-black text-foreground font-mono tracking-tighter">
+                                {(score * 100).toFixed(0)}
+                            </span>
+                            <div 
+                                className="text-[9px] font-black uppercase tracking-widest px-2 py-1 rounded border"
+                                style={{ 
+                                    backgroundColor: `${getSentimentColor(score)}10`, 
+                                    color: getSentimentColor(score),
+                                    borderColor: `${getSentimentColor(score)}30`
+                                }}
+                            >
+                                {getSentimentLabel(score)}
+                            </div>
+                        </div>
+                        
+                        <div className="space-y-1.5">
+                            <div className="flex justify-between text-[8px] font-black uppercase tracking-widest text-muted-foreground">
+                                <span>Polarity Index</span>
+                                <span>{(score * 10).toFixed(1)}/10</span>
+                            </div>
+                            <div className="w-full h-1 bg-muted rounded-full overflow-hidden">
+                                <div 
+                                    className="h-full transition-all duration-1000" 
+                                    style={{ width: `${score * 100}%`, backgroundColor: getSentimentColor(score) }} 
+                                />
+                            </div>
+                        </div>
                     </div>
-                  )
-                }
-                return null
-              }}
-            />
-            <Area
-              type="monotone"
-              dataKey="score"
-              stroke="#6366f1"
-              strokeWidth={4}
-              fillOpacity={1}
-              fill="url(#sentimentGradient)"
-              animationDuration={2000}
-            />
-          </AreaChart>
-        </ResponsiveContainer>
-      </div>
-    </motion.div>
+                  </div>
+                )
+              }
+              return null
+            }}
+          />
+
+          <ReferenceLine 
+            y={0.5} 
+            stroke="var(--border)" 
+            strokeDasharray="4 4" 
+            label={{ value: 'NEUTRAL_BASE', position: 'right', fill: 'var(--muted-foreground)', fontSize: 8, fontWeight: 900 }} 
+          />
+
+          <Bar 
+            dataKey="score" 
+            barSize={40}
+            shape={<CustomSentimentBar />}
+          >
+            {data.map((entry, index) => (
+              <Cell 
+                key={`cell-${index}`} 
+                fill={getSentimentColor(entry.score)} 
+              />
+            ))}
+          </Bar>
+        </BarChart>
+      </ResponsiveContainer>
+    </div>
   )
 }

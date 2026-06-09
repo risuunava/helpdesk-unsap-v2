@@ -1,149 +1,240 @@
-'use client'
+"use client";
 
-import React from 'react'
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import { motion, AnimatePresence } from 'motion/react'
-import { useTickets, Ticket } from '@/hooks/useTickets'
-import { StatusBadge } from '@/components/ui/StatusBadge'
-import { PriorityBadge } from '@/components/ui/PriorityBadge'
-import { SlaIndicator } from '@/components/ui/SlaIndicator'
-import { KpiCard } from '@/components/dashboard/KpiCard'
-import { 
-  Plus, Inbox, Loader2, Sparkles, Ticket as TicketIcon, 
-  Clock, CheckCircle2, LayoutGrid, List as ListIcon,
-  ChevronRight, ArrowRight, Activity
-} from 'lucide-react'
-import { clsx } from 'clsx'
-
-import { CardSkeleton } from '@/components/ui/LoadingSkeleton'
-import { NoTicketsState } from '@/components/ui/EmptyState'
+import React from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { AnimatePresence, motion } from "motion/react";
+import { useTickets } from "@/hooks/useTickets";
+import { StatusBadge } from "@/components/ui/StatusBadge";
+import { PriorityBadge } from "@/components/ui/PriorityBadge";
+import { SlaIndicator } from "@/components/ui/SlaIndicator";
+import { cn } from "@/lib/utils";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardAction,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import PageContainer from "@/components/layout/page-container";
+import { Icons } from "@/components/icons";
 
 export default function MahasiswaDashboard() {
-  const { tickets, loading, error } = useTickets()
-  const router = useRouter()
-  const [viewMode, setViewMode] = React.useState<'table' | 'grid'>('grid')
+  const { tickets, loading } = useTickets();
+  const router = useRouter();
+  const [viewMode, setViewMode] = React.useState<"table" | "grid">("grid");
 
   const stats = {
     total: tickets.length,
-    open: tickets.filter(t => t.status === 'open').length,
-    in_progress: tickets.filter(t => t.status === 'in_progress').length,
-    resolved: tickets.filter(t => t.status === 'resolved' || t.status === 'closed').length
-  }
+    open: tickets.filter((t) => t.status === "open").length,
+    in_progress: tickets.filter((t) => t.status === "in_progress").length,
+    resolved: tickets.filter((t) => t.status === "resolved" || t.status === "closed")
+      .length,
+  };
 
   const navigateToDetail = (id: string) => {
-    router.push(`/mahasiswa/tiket/${id}`)
-  }
+    router.push(`/mahasiswa/tiket/${id}`);
+  };
+
+  const infoContent = {
+    title: "Laporan Saya",
+    sections: [
+      {
+        title: "Transparansi Laporan",
+        description: "Semua laporan Anda diproses secara transparan. Anda dapat melihat status dan estimasi penyelesaian di sini.",
+      },
+      {
+        title: "SLA (Service Level Agreement)",
+        description: "Batas waktu penyelesaian ditentukan berdasarkan prioritas masalah. Tim kami berusaha menyelesaikan sebelum batas waktu.",
+      }
+    ]
+  };
 
   return (
-    <div className="max-w-6xl mx-auto space-y-10 pb-20">
-      {/* Clean Header */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-zinc-200 pb-8">
-        <div className="space-y-1">
-          <h1 className="text-2xl font-bold text-zinc-900 tracking-tight">Laporan Saya</h1>
-          <p className="text-sm font-medium text-zinc-500">Pantau perkembangan keluhan Anda secara transparan.</p>
-        </div>
-        <div className="flex items-center gap-3">
-          <div className="flex bg-zinc-100 p-1 rounded-lg">
-            <button
-              onClick={() => setViewMode('table')}
-              className={clsx(
-                "px-3 py-1.5 text-xs font-bold rounded-md transition-all",
-                viewMode === 'table' ? "bg-white text-zinc-900 shadow-sm" : "text-zinc-500"
-              )}
-            >
-              <ListIcon size={14} />
-            </button>
-            <button
-              onClick={() => setViewMode('grid')}
-              className={clsx(
-                "px-3 py-1.5 text-xs font-bold rounded-md transition-all",
-                viewMode === 'grid' ? "bg-white text-zinc-900 shadow-sm" : "text-zinc-500"
-              )}
-            >
-              <LayoutGrid size={14} />
-            </button>
-          </div>
-          <Link
-            href="/mahasiswa/submit"
-            className="flex items-center gap-2 px-5 py-2 bg-zinc-900 text-white rounded-lg font-bold text-sm hover:bg-zinc-800 transition-all shadow-sm"
-          >
-            <Plus size={16} />
+    <PageContainer
+      pageTitle="Laporan Saya"
+      pageDescription="Pantau perkembangan keluhan Anda secara transparan."
+      infoContent={infoContent}
+      pageHeaderAction={
+        <Button size="sm" asChild className="rounded-xl shadow-lg shadow-accent/20">
+          <Link href="/mahasiswa/submit">
+            <Icons.add className="mr-2 h-4 w-4" />
             Buat Laporan
           </Link>
+        </Button>
+      }
+    >
+      <div className="flex flex-1 flex-col gap-4">
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          <Card className="@container/card *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card shadow-sm">
+            <CardHeader className="pb-2">
+              <CardDescription>Semua Laporan</CardDescription>
+              <CardTitle className="text-2xl font-bold tabular-nums @[250px]/card:text-3xl">{loading ? "--" : stats.total}</CardTitle>
+              <CardAction>
+                <Icons.stack className="h-4 w-4 text-muted-foreground" />
+              </CardAction>
+            </CardHeader>
+          </Card>
+          <Card className="@container/card border-amber-500/20 bg-amber-500/5 shadow-sm">
+            <CardHeader className="pb-2">
+              <CardDescription className="text-amber-600 dark:text-amber-400 font-medium">Menunggu</CardDescription>
+              <CardTitle className="text-2xl font-bold tabular-nums text-amber-500 @[250px]/card:text-3xl">{loading ? "--" : stats.open}</CardTitle>
+              <CardAction>
+                <Icons.clock className="h-4 w-4 text-amber-500" />
+              </CardAction>
+            </CardHeader>
+          </Card>
+          <Card className="@container/card border-blue-500/20 bg-blue-500/5 shadow-sm">
+            <CardHeader className="pb-2">
+              <CardDescription className="text-blue-600 dark:text-blue-400 font-medium">Diproses</CardDescription>
+              <CardTitle className="text-2xl font-bold tabular-nums text-blue-500 @[250px]/card:text-3xl">{loading ? "--" : stats.in_progress}</CardTitle>
+              <CardAction>
+                <Icons.activity className="h-4 w-4 text-blue-500" />
+              </CardAction>
+            </CardHeader>
+          </Card>
+          <Card className="@container/card border-green-500/20 bg-green-500/5 shadow-sm">
+            <CardHeader className="pb-2">
+              <CardDescription className="text-green-600 dark:text-green-400 font-medium">Selesai</CardDescription>
+              <CardTitle className="text-2xl font-bold tabular-nums text-green-500 @[250px]/card:text-3xl">{loading ? "--" : stats.resolved}</CardTitle>
+              <CardAction>
+                <Icons.check className="h-4 w-4 text-green-500" />
+              </CardAction>
+            </CardHeader>
+          </Card>
+        </div>
+
+        <div className="flex flex-col gap-4 mt-2">
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2">
+               <h3 className="text-[10px] font-bold text-text-muted uppercase tracking-[0.2em] px-2 opacity-60">Daftar Aktivitas</h3>
+            </div>
+            <div className="flex bg-muted/40 p-1 rounded-lg border border-border/40">
+              <Button
+                variant={viewMode === "table" ? "secondary" : "ghost"}
+                size="icon"
+                className="h-7 w-7 rounded-md"
+                onClick={() => setViewMode("table")}
+              >
+                <Icons.list className="h-3.5 w-3.5" />
+              </Button>
+              <Button
+                variant={viewMode === "grid" ? "secondary" : "ghost"}
+                size="icon"
+                className="h-7 w-7 rounded-md"
+                onClick={() => setViewMode("grid")}
+              >
+                <Icons.dashboard className="h-3.5 w-3.5" />
+              </Button>
+            </div>
+          </div>
+
+          <div className="rounded-xl border bg-card/50 overflow-hidden shadow-sm border-border/40">
+            <AnimatePresence mode="wait">
+              {loading ? (
+                <div className="flex flex-col items-center justify-center py-24 space-y-4">
+                  <Icons.spinner className="h-8 w-8 animate-spin text-accent" />
+                  <p className="text-xs font-bold text-muted-foreground uppercase tracking-[0.2em]">Memuat Laporan...</p>
+                </div>
+              ) : tickets.length === 0 ? (
+                <div className="flex flex-col items-center justify-center py-20 text-center">
+                  <div className="p-4 bg-muted/30 rounded-full mb-4">
+                    <Icons.help className="h-10 w-10 text-muted-foreground/40" />
+                  </div>
+                  <h3 className="text-sm font-bold text-text-primary uppercase tracking-widest">Belum ada laporan</h3>
+                  <p className="text-[11px] text-muted-foreground mt-1 mb-6 max-w-[240px]">
+                    Anda belum pernah mengirimkan keluhan atau laporan.
+                  </p>
+                  <Button size="sm" asChild className="rounded-xl h-8 text-[11px] font-bold uppercase tracking-widest">
+                    <Link href="/mahasiswa/submit">Buat Laporan Sekarang</Link>
+                  </Button>
+                </div>
+              ) : viewMode === "grid" ? (
+                <div className="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 bg-muted/5">
+                  {tickets.map((t) => (
+                    <Card
+                      key={t.id}
+                      onClick={() => navigateToDetail(t.id)}
+                      className="cursor-pointer hover:border-accent/40 transition-all border-border/60 bg-card group shadow-sm overflow-hidden"
+                    >
+                      <CardHeader className="pb-3 border-b border-border/20 bg-muted/30">
+                        <div className="flex items-center justify-between mb-1">
+                          <CardDescription className="font-mono font-bold text-accent text-[11px]">
+                            ID:{t.ticket_number}
+                          </CardDescription>
+                          <StatusBadge status={t.status as any} />
+                        </div>
+                        <CardTitle className="text-sm font-bold line-clamp-2 mt-2 leading-tight group-hover:text-accent transition-colors h-[40px]">{t.title}</CardTitle>
+                      </CardHeader>
+                      <CardContent className="pt-4">
+                        <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest leading-relaxed">
+                          {t.category} • {t.created_at ? new Date(t.created_at).toLocaleDateString() : "-"}
+                        </p>
+                        <div className="flex items-center justify-between mt-6 pt-4 border-t border-border/40">
+                          <PriorityBadge priority={t.priority as any} />
+                          {t.status !== "resolved" && t.status !== "closed" && (
+                            <SlaIndicator deadline={t.sla_deadline} />
+                          )}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm border-collapse">
+                    <thead>
+                      <tr className="hover:bg-transparent border-b bg-muted/30">
+                        <th className="h-10 px-6 text-left align-middle font-bold text-muted-foreground text-[10px] uppercase tracking-[0.1em]">
+                          No. Tiket
+                        </th>
+                        <th className="h-10 px-6 text-left align-middle font-bold text-muted-foreground text-[10px] uppercase tracking-[0.1em]">
+                          Judul Laporan
+                        </th>
+                        <th className="h-10 px-6 text-left align-middle font-bold text-muted-foreground text-[10px] uppercase tracking-[0.1em]">
+                          Status
+                        </th>
+                        <th className="h-10 px-6 text-right align-middle font-bold text-muted-foreground text-[10px] uppercase tracking-[0.1em]">
+                          Tanggal
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-border/20">
+                      {tickets.map((t) => (
+                        <tr
+                          key={t.id}
+                          onClick={() => navigateToDetail(t.id)}
+                          className="transition-colors hover:bg-muted/40 cursor-pointer group"
+                        >
+                          <td className="h-[64px] px-6 align-middle font-mono font-bold text-accent text-xs">
+                            <span className="bg-accent/5 px-2 py-1 rounded">#{t.ticket_number}</span>
+                          </td>
+                          <td className="h-[64px] px-6 align-middle">
+                            <div className="flex flex-col">
+                              <span className="font-bold text-foreground group-hover:text-accent transition-colors truncate max-w-md">{t.title}</span>
+                              <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-tight mt-0.5">
+                                {t.category}
+                              </span>
+                            </div>
+                          </td>
+                          <td className="h-[64px] px-6 align-middle">
+                            <StatusBadge status={t.status as any} />
+                          </td>
+                          <td className="h-[64px] px-6 align-middle text-right text-[11px] font-bold text-muted-foreground uppercase tracking-tighter">
+                            {t.created_at ? new Date(t.created_at).toLocaleDateString() : "-"}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </AnimatePresence>
+          </div>
         </div>
       </div>
-
-      {/* Mini Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <KpiCard title="Total" value={loading ? '-' : stats.total} icon={TicketIcon} />
-        <KpiCard title="Menunggu" value={loading ? '-' : stats.open} icon={Clock} variant="warning" />
-        <KpiCard title="Diproses" value={loading ? '-' : stats.in_progress} icon={Activity} />
-        <KpiCard title="Selesai" value={loading ? '-' : stats.resolved} icon={CheckCircle2} variant="success" />
-      </div>
-
-      {/* Main Content */}
-      <AnimatePresence mode="wait">
-        {loading ? (
-          <motion.div key="loading" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[1, 2, 3].map(i => <CardSkeleton key={i} />)}
-          </motion.div>
-        ) : tickets.length === 0 ? (
-          <motion.div key="empty" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-            <NoTicketsState onCreateClick={() => router.push('/mahasiswa/submit')} />
-          </motion.div>
-        ) : viewMode === 'grid' ? (
-          <motion.div key="grid" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {tickets.map((t) => (
-              <div
-                key={t.id}
-                onClick={() => navigateToDetail(t.id)}
-                className="bg-white border border-zinc-200 rounded-xl p-5 shadow-sm hover:border-emerald-300 hover:shadow-md transition-all cursor-pointer group"
-              >
-                <div className="flex items-start justify-between mb-4">
-                  <span className="font-mono font-bold text-emerald-600 text-xs">#{t.ticket_number}</span>
-                  <StatusBadge status={t.status as any} />
-                </div>
-                <h4 className="font-bold text-zinc-900 line-clamp-2 min-h-[40px] text-sm group-hover:text-emerald-700 transition-colors">{t.title}</h4>
-                <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest mt-2">{t.category} • {t.created_at ? new Date(t.created_at).toLocaleDateString('id-ID') : '-'}</p>
-                <div className="flex items-center justify-between pt-4 border-t border-zinc-50 mt-4">
-                  <PriorityBadge priority={t.priority as any} />
-                  {t.status !== 'resolved' && t.status !== 'closed' && <SlaIndicator deadline={t.sla_deadline} />}
-                </div>
-              </div>
-            ))}
-          </motion.div>
-        ) : (
-          <motion.div key="table" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-white border border-zinc-200 rounded-xl shadow-sm overflow-hidden overflow-x-auto">
-            <table className="w-full text-left text-[13px] whitespace-nowrap">
-              <thead className="bg-zinc-50 text-zinc-500 border-b border-zinc-100">
-                <tr>
-                  <th className="px-6 py-4 font-bold uppercase tracking-widest text-[10px]">No. Tiket</th>
-                  <th className="px-6 py-4 font-bold uppercase tracking-widest text-[10px]">Judul Laporan</th>
-                  <th className="px-6 py-4 font-bold uppercase tracking-widest text-[10px]">Status</th>
-                  <th className="px-6 py-4 font-bold uppercase tracking-widest text-[10px] text-right">Tanggal</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-zinc-50">
-                {tickets.map((t) => (
-                  <tr key={t.id} onClick={() => navigateToDetail(t.id)} className="cursor-pointer hover:bg-zinc-50/50 transition-colors group">
-                    <td className="px-6 py-5 font-mono font-bold text-emerald-600">#{t.ticket_number}</td>
-                    <td className="px-6 py-5">
-                      <div className="flex flex-col">
-                        <span className="font-bold text-zinc-900 group-hover:text-emerald-700 transition-colors">{t.title}</span>
-                        <span className="text-[10px] font-bold text-zinc-400 uppercase">{t.category}</span>
-                      </div>
-                    </td>
-                    <td className="px-6 py-5"><StatusBadge status={t.status as any} /></td>
-                    <td className="px-6 py-5 text-right text-zinc-500 font-medium">{t.created_at ? new Date(t.created_at).toLocaleDateString('id-ID') : '-'}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  )
+    </PageContainer>
+  );
 }
-

@@ -33,7 +33,7 @@ export function ChatMessage({ message, isSelf }: ChatMessageProps) {
       {!isSelf && (
         <div className={clsx(
           "w-8 h-8 rounded-xl flex items-center justify-center shrink-0 border transition-all duration-500 group-hover:scale-110",
-          isAdmin ? "bg-indigo-900 border-indigo-800 text-white" : "bg-zinc-100 border-zinc-200 text-zinc-400"
+          isAdmin ? "bg-primary border-primary text-primary-foreground" : "bg-muted border-border text-muted-foreground"
         )}>
           {isAdmin ? <ShieldCheck size={14} /> : <User size={14} />}
         </div>
@@ -46,23 +46,23 @@ export function ChatMessage({ message, isSelf }: ChatMessageProps) {
       )}>
         {!isSelf && (
           <div className="flex items-center gap-1.5 mb-1 px-1">
-            <span className="text-[10px] font-bold text-zinc-900 uppercase tracking-widest">
+            <span className="text-[10px] font-bold text-foreground uppercase tracking-widest">
               {message.sender?.full_name || 'Anonymous User'}
             </span>
-            {isAdmin && <span className="text-[8px] font-bold bg-indigo-50 text-indigo-600 px-1.5 py-0.5 rounded uppercase">Staff</span>}
+            {isAdmin && <span className="text-[8px] font-bold bg-primary/10 text-primary px-1.5 py-0.5 rounded uppercase border border-primary/20">Staff</span>}
           </div>
         )}
 
         <div className={clsx(
           'px-5 py-3 rounded-[1.5rem] text-[14px] font-medium leading-relaxed break-words shadow-sm',
           isSelf 
-            ? 'bg-zinc-900 text-white rounded-tr-none' 
-            : 'bg-white text-zinc-800 rounded-tl-none border border-zinc-100'
+            ? 'bg-primary text-primary-foreground rounded-tr-none' 
+            : 'bg-card text-foreground rounded-tl-none border border-border'
         )}>
           {message.content}
         </div>
 
-        <span className="text-[9px] font-bold text-zinc-400 mt-1.5 px-2 uppercase tracking-tighter">
+        <span className="text-[9px] font-bold text-muted-foreground mt-1.5 px-2 uppercase tracking-tighter">
           {formatTime(message.created_at)}
         </span>
       </div>

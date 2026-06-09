@@ -50,20 +50,20 @@ export function ChatRoom({ ticketId, currentUserId }: ChatRoomProps) {
   }
 
   return (
-    <div className="flex flex-col h-[600px] bg-white">
+    <div className="flex flex-col h-[600px] bg-card">
       {/* Messages Area */}
       <div 
         ref={scrollRef}
-        className="flex-1 overflow-y-auto p-6 space-y-4 bg-zinc-50/30 scroll-smooth custom-scrollbar"
+        className="flex-1 overflow-y-auto p-6 space-y-4 bg-muted/30 scroll-smooth custom-scrollbar"
       >
         <AnimatePresence initial={false}>
           {isLoading ? (
             <motion.div 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="flex flex-col items-center justify-center h-full gap-3 text-zinc-400"
+              className="flex flex-col items-center justify-center h-full gap-3 text-muted-foreground"
             >
-              <Loader2 className="w-8 h-8 animate-spin text-indigo-500" />
+              <Loader2 className="w-8 h-8 animate-spin text-primary" />
               <span className="text-[10px] font-bold uppercase tracking-widest">Securing Connection</span>
             </motion.div>
           ) : messages.length === 0 ? (
@@ -72,11 +72,11 @@ export function ChatRoom({ ticketId, currentUserId }: ChatRoomProps) {
               animate={{ opacity: 1, scale: 1 }}
               className="flex flex-col items-center justify-center h-full text-center p-8"
             >
-              <div className="w-16 h-16 bg-white rounded-3xl flex items-center justify-center mb-4 border border-zinc-100 shadow-sm">
-                <Sparkles className="w-8 h-8 text-zinc-200" />
+              <div className="w-16 h-16 bg-card rounded-3xl flex items-center justify-center mb-4 border border-border shadow-sm">
+                <Sparkles className="w-8 h-8 text-muted-foreground/30" />
               </div>
-              <h4 className="text-sm font-bold text-zinc-900 uppercase tracking-tight">Channel Established</h4>
-              <p className="text-xs text-zinc-400 mt-2 max-w-[200px] leading-relaxed font-medium">
+              <h4 className="text-sm font-bold text-foreground uppercase tracking-tight">Channel Established</h4>
+              <p className="text-xs text-muted-foreground mt-2 max-w-[200px] leading-relaxed font-medium">
                 Mulai diskusi aman dengan tim admin terkait laporan ini.
               </p>
             </motion.div>
@@ -99,7 +99,7 @@ export function ChatRoom({ ticketId, currentUserId }: ChatRoomProps) {
       </div>
 
       {/* Input Area */}
-      <div className="p-6 bg-white border-t border-zinc-100">
+      <div className="p-6 bg-card border-t border-border">
         <form 
           onSubmit={handleSend}
           className="relative group"
@@ -110,7 +110,7 @@ export function ChatRoom({ ticketId, currentUserId }: ChatRoomProps) {
             onKeyDown={handleKeyDown}
             placeholder="Ketik pesan balasan..."
             rows={1}
-            className="w-full pl-6 pr-16 py-4 text-[14px] font-medium rounded-2xl border-none bg-zinc-50 focus:ring-4 focus:ring-indigo-500/5 focus:bg-white transition-all resize-none max-h-32 placeholder:text-zinc-300"
+            className="w-full pl-6 pr-16 py-4 text-[14px] font-medium rounded-2xl border-none bg-muted focus:ring-4 focus:ring-primary/5 focus:bg-card transition-all resize-none max-h-32 placeholder:text-muted-foreground/50 text-foreground"
             style={{ height: 'auto' }}
             onInput={(e) => {
               const target = e.target as HTMLTextAreaElement
@@ -122,7 +122,7 @@ export function ChatRoom({ ticketId, currentUserId }: ChatRoomProps) {
             <button 
               type="submit"
               disabled={!input.trim() || sending}
-              className="p-3 bg-zinc-900 text-white rounded-xl hover:bg-zinc-800 disabled:opacity-30 disabled:cursor-not-allowed transition-all shadow-lg active:scale-95"
+              className="p-3 bg-primary text-primary-foreground rounded-xl hover:bg-primary/90 disabled:opacity-30 disabled:cursor-not-allowed transition-all shadow-lg active:scale-95"
             >
               {sending ? (
                 <Loader2 className="w-5 h-5 animate-spin" />
@@ -136,7 +136,7 @@ export function ChatRoom({ ticketId, currentUserId }: ChatRoomProps) {
         <div className="mt-3 flex items-center justify-between">
           <div className="flex items-center gap-1.5 ml-1">
             <div className={`w-1.5 h-1.5 rounded-full ${isConnected ? 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.4)]' : 'bg-rose-500 animate-pulse'}`} />
-            <span className="text-[9px] font-bold text-zinc-400 uppercase tracking-widest">
+            <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest">
               {isConnected ? 'Signal Active' : 'Disconnected'}
             </span>
           </div>

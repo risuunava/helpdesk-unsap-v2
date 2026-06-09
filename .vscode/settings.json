@@ -2,5 +2,11 @@
     "python.defaultInterpreterPath": "${workspaceFolder}/ml-service/venv/Scripts/python.exe",
     "python.analysis.extraPaths": [
         "${workspaceFolder}/ml-service"
-    ]
+    ],
+    "deno.enablePaths": [
+        "./supabase/functions"
+    ],
+    "deno.unstable": true,
+    "deno.lint": true,
+    "deno.config": "./supabase/functions/deno.json"
 }

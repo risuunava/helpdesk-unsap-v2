@@ -30,7 +30,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
       <div className="relative z-10 w-full max-w-md px-6 py-12">
         <div className="flex flex-col items-center mb-10">
           <Link href="/" className="flex items-center gap-3 mb-8 group">
-            <div className="p-2 bg-white rounded-2xl shadow-glass border border-white/40 group-hover:scale-105 transition-transform">
+            <div className="p-2 bg-card rounded-2xl shadow-glass border border-border/40 group-hover:scale-105 transition-transform">
               <img src="/assets/UNSAP.png" alt="UNSAP Logo" className="w-10 h-10 object-contain" />
             </div>
             <span className="font-serif font-bold text-2xl tracking-tight text-text-primary">UNSAP</span>
@@ -45,7 +45,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
           </div>
         </div>
 
-        <div className="bg-white/60 backdrop-blur-xl p-8 md:p-10 rounded-[2.5rem] border border-white/40 shadow-glass relative overflow-hidden group">
+        <div className="bg-card/60 backdrop-blur-xl p-8 md:p-10 rounded-[2.5rem] border border-border/40 shadow-glass relative overflow-hidden group">
           {/* Subtle card glow */}
           <div className="absolute -top-24 -right-24 w-48 h-48 bg-accent/5 blur-3xl rounded-full group-hover:bg-accent/10 transition-colors" />
           

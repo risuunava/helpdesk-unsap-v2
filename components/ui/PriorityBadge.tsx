@@ -2,17 +2,29 @@ import React from 'react'
 
 export function PriorityBadge({ priority, overridden }: { priority: 'low' | 'normal' | 'urgent', overridden?: boolean }) {
   const config = {
-    low: { dot: 'bg-text-muted', label: 'LOW', chipBg: 'bg-bg-overlay', chipText: 'text-text-secondary', chipBorder: 'border-border' },
-    normal: { dot: 'bg-info', label: 'NORMAL', chipBg: 'bg-[#EFF6FF]', chipText: 'text-info', chipBorder: 'border-[#BFDBFE]' },
-    urgent: { dot: 'bg-error shadow-[0_0_6px_rgba(192,57,43,0.5)]', label: 'URGENT', chipBg: 'bg-[#FEF2F2]', chipText: 'text-error', chipBorder: 'border-[#FECACA]' },
+    low: { 
+      dot: 'bg-slate-500', 
+      label: 'LOW', 
+      chipClass: 'bg-slate-500/10 border-slate-500/20 text-slate-700 dark:text-slate-400' 
+    },
+    normal: { 
+      dot: 'bg-blue-500', 
+      label: 'NORMAL', 
+      chipClass: 'bg-blue-500/10 border-blue-500/20 text-blue-700 dark:text-blue-400' 
+    },
+    urgent: { 
+      dot: 'bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.4)]', 
+      label: 'URGENT', 
+      chipClass: 'bg-rose-500/10 border-rose-500/20 text-rose-700 dark:text-rose-400' 
+    },
   }
   const c = config[priority]
 
   return (
-    <span className={`inline-flex items-center gap-1.5 ${c.chipBg} border ${c.chipBorder} rounded-full px-2.5 py-1 text-[11px] font-body font-semibold uppercase tracking-wider ${c.chipText} shrink-0`}>
-      <span className={`w-1.5 h-1.5 rounded-full ${c.dot}`} />
+    <span className={`inline-flex items-center gap-1.5 border rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider ${c.chipClass} shrink-0`}>
+      <span className={`w-1 h-1 rounded-full ${c.dot}`} />
       {c.label}
-      {overridden && <span className="ml-0.5 normal-case tracking-normal" title="Prioritas dioverride">⚠️</span>}
+      {overridden && <span className="ml-1 text-[8px]" title="Prioritas dioverride">⚠️</span>}
     </span>
   )
 }
