@@ -8,6 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2 } from 'lucide-react'
 import { loginSchema, type LoginInput } from '@/lib/validations/auth.schema'
 import { createClient } from '@/lib/supabase/client'
+import { motion } from 'motion/react'
 
 function LoginForm() {
   const router = useRouter()
@@ -39,13 +40,13 @@ function LoginForm() {
     }
 
     router.push(nextPath)
-    router.refresh() // Just in case, to update layouts
+    router.refresh()
   }
 
   return (
     <>
       {errorMsg && (
-        <div className="mb-6 p-4 rounded-2xl bg-red-50 border border-red-100 text-red-600 text-[13px] font-semibold tracking-tight">
+        <div className="mb-6 p-4 rounded-md bg-destructive/10 border border-destructive/20 text-destructive text-[13px] font-medium tracking-tight">
           {errorMsg === 'Invalid login credentials' 
             ? 'Email atau password salah.' 
             : errorMsg}
@@ -54,38 +55,38 @@ function LoginForm() {
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <div className="space-y-2">
-          <label className="text-[13px] font-bold uppercase tracking-wider text-text-muted ml-1">Email</label>
+          <label className="text-[11px] font-mono uppercase tracking-widest text-muted-foreground">Alamat Email</label>
           <input
             {...register('email')}
             type="email"
             placeholder="mahasiswa@unsap.ac.id"
-            className="w-full px-5 py-4 rounded-2xl bg-zinc-50 border border-border focus:outline-none focus:ring-2 focus:ring-accent/10 focus:border-accent transition-all font-sans text-[15px] placeholder:text-text-muted/50"
+            className="w-full px-4 py-3 rounded-md bg-transparent border border-border focus:outline-none focus:ring-1 focus:ring-foreground focus:border-foreground transition-all font-sans text-[15px] placeholder:text-muted-foreground/40"
           />
           {errors.email && (
-            <p className="text-red-500 text-[12px] font-medium ml-1">{errors.email.message}</p>
+            <p className="text-destructive text-[12px] font-medium mt-1">{errors.email.message}</p>
           )}
         </div>
 
         <div className="space-y-2">
-          <label className="text-[13px] font-bold uppercase tracking-wider text-text-muted ml-1">Password</label>
+          <label className="text-[11px] font-mono uppercase tracking-widest text-muted-foreground">Kata Sandi</label>
           <input
             {...register('password')}
             type="password"
             placeholder="••••••••"
-            className="w-full px-5 py-4 rounded-2xl bg-zinc-50 border border-border focus:outline-none focus:ring-2 focus:ring-accent/10 focus:border-accent transition-all font-sans text-[15px] placeholder:text-text-muted/50"
+            className="w-full px-4 py-3 rounded-md bg-transparent border border-border focus:outline-none focus:ring-1 focus:ring-foreground focus:border-foreground transition-all font-sans text-[15px] placeholder:text-muted-foreground/40"
           />
           {errors.password && (
-            <p className="text-red-500 text-[12px] font-medium ml-1">{errors.password.message}</p>
+            <p className="text-destructive text-[12px] font-medium mt-1">{errors.password.message}</p>
           )}
         </div>
 
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full bg-accent text-white font-sans font-bold text-[15px] py-4 rounded-2xl hover:bg-emerald-900 transition-all shadow-xl shadow-accent/20 flex items-center justify-center gap-2 mt-2 active:scale-[0.98]"
+          className="w-full bg-foreground text-background font-medium text-[14px] py-4 rounded-md hover:bg-foreground/90 transition-all flex items-center justify-center gap-2 mt-4 active:scale-[0.98]"
         >
-          {isSubmitting && <Loader2 size={18} className="animate-spin" />}
-          {isSubmitting ? 'Memproses...' : 'Masuk Sekarang'}
+          {isSubmitting && <Loader2 size={16} className="animate-spin" />}
+          {isSubmitting ? 'Memproses...' : 'Masuk ke Portal'}
         </button>
       </form>
     </>
@@ -94,26 +95,33 @@ function LoginForm() {
 
 export default function LoginPage() {
   return (
-    <div>
-      <h2 className="text-2xl font-serif font-bold text-text-primary mb-8 tracking-tight">
-        Selamat <span className="italic text-text-muted">Datang.</span>
+    <motion.div
+      initial={{ opacity: 0, y: 16, filter: "blur(8px)" }}
+      animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+    >
+      <h2 className="text-3xl font-medium tracking-tight mb-2">
+        Selamat Datang.
       </h2>
+      <p className="text-muted-foreground mb-10">
+        Silakan masuk ke akun Anda untuk melanjutkan.
+      </p>
 
-      <Suspense fallback={<div className="flex justify-center p-4"><Loader2 className="animate-spin text-accent" /></div>}>
+      <Suspense fallback={<div className="flex justify-center p-4"><Loader2 className="animate-spin text-foreground/50" /></div>}>
         <LoginForm />
       </Suspense>
 
-      <div className="mt-10 text-center pt-8 border-t border-zinc-100">
-        <p className="text-[13px] text-text-secondary font-medium">
-          Belum punya akun?{' '}
+      <div className="mt-10 pt-8 border-t border-border/50">
+        <p className="text-[13px] text-muted-foreground">
+          Belum mempunyai akses?{' '}
           <Link
             href="/register"
-            className="text-accent font-bold hover:underline underline-offset-4"
+            className="text-foreground font-medium hover:underline underline-offset-4 transition-all"
           >
-            Daftar di sini
+            Daftar akun baru
           </Link>
         </p>
       </div>
-    </div>
+    </motion.div>
   )
 }

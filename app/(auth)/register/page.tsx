@@ -8,6 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2 } from 'lucide-react'
 import { registerSchema, type RegisterInput } from '@/lib/validations/auth.schema'
 import { createClient } from '@/lib/supabase/client'
+import { motion } from 'motion/react'
 
 export default function RegisterPage() {
   const router = useRouter()
@@ -53,95 +54,102 @@ export default function RegisterPage() {
   }
 
   return (
-    <div>
-      <h2 className="text-2xl font-serif font-bold text-text-primary mb-8 tracking-tight">
-        Daftar Akun <span className="italic text-text-muted">Baru.</span>
+    <motion.div
+      initial={{ opacity: 0, y: 16, filter: "blur(8px)" }}
+      animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+    >
+      <h2 className="text-3xl font-medium tracking-tight mb-2">
+        Daftar Akun Baru.
       </h2>
+      <p className="text-muted-foreground mb-10">
+        Bergabung untuk kemudahan akses layanan terpadu kampus.
+      </p>
 
       {errorMsg && (
-        <div className="mb-6 p-4 rounded-2xl bg-red-50 border border-red-100 text-red-600 text-[13px] font-semibold tracking-tight">
+        <div className="mb-6 p-4 rounded-md bg-destructive/10 border border-destructive/20 text-destructive text-[13px] font-medium tracking-tight">
           {errorMsg}
         </div>
       )}
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
         
         <div className="space-y-2">
-          <label className="text-[13px] font-bold uppercase tracking-wider text-text-muted ml-1">NIM</label>
+          <label className="text-[11px] font-mono uppercase tracking-widest text-muted-foreground">NIM</label>
           <input
             {...register('nim')}
             type="text"
             placeholder="12345678"
-            className="w-full px-5 py-3.5 rounded-2xl bg-zinc-50 border border-border focus:outline-none focus:ring-2 focus:ring-accent/10 focus:border-accent transition-all font-sans text-[15px] placeholder:text-text-muted/50"
+            className="w-full px-4 py-3 rounded-md bg-transparent border border-border focus:outline-none focus:ring-1 focus:ring-foreground focus:border-foreground transition-all font-sans text-[15px] placeholder:text-muted-foreground/40"
           />
-          {errors.nim && <p className="text-red-500 text-[12px] font-medium ml-1">{errors.nim.message}</p>}
+          {errors.nim && <p className="text-destructive text-[12px] font-medium mt-1">{errors.nim.message}</p>}
         </div>
 
         <div className="space-y-2">
-          <label className="text-[13px] font-bold uppercase tracking-wider text-text-muted ml-1">Nama Lengkap</label>
+          <label className="text-[11px] font-mono uppercase tracking-widest text-muted-foreground">Nama Lengkap</label>
           <input
             {...register('full_name')}
             type="text"
             placeholder="Budi Santoso"
-            className="w-full px-5 py-3.5 rounded-2xl bg-zinc-50 border border-border focus:outline-none focus:ring-2 focus:ring-accent/10 focus:border-accent transition-all font-sans text-[15px] placeholder:text-text-muted/50"
+            className="w-full px-4 py-3 rounded-md bg-transparent border border-border focus:outline-none focus:ring-1 focus:ring-foreground focus:border-foreground transition-all font-sans text-[15px] placeholder:text-muted-foreground/40"
           />
-          {errors.full_name && <p className="text-red-500 text-[12px] font-medium ml-1">{errors.full_name.message}</p>}
+          {errors.full_name && <p className="text-destructive text-[12px] font-medium mt-1">{errors.full_name.message}</p>}
         </div>
 
         <div className="space-y-2">
-          <label className="text-[13px] font-bold uppercase tracking-wider text-text-muted ml-1">Email</label>
+          <label className="text-[11px] font-mono uppercase tracking-widest text-muted-foreground">Email Institusi</label>
           <input
             {...register('email')}
             type="email"
             placeholder="mahasiswa@unsap.ac.id"
-            className="w-full px-5 py-3.5 rounded-2xl bg-zinc-50 border border-border focus:outline-none focus:ring-2 focus:ring-accent/10 focus:border-accent transition-all font-sans text-[15px] placeholder:text-text-muted/50"
+            className="w-full px-4 py-3 rounded-md bg-transparent border border-border focus:outline-none focus:ring-1 focus:ring-foreground focus:border-foreground transition-all font-sans text-[15px] placeholder:text-muted-foreground/40"
           />
-          {errors.email && <p className="text-red-500 text-[12px] font-medium ml-1">{errors.email.message}</p>}
+          {errors.email && <p className="text-destructive text-[12px] font-medium mt-1">{errors.email.message}</p>}
         </div>
 
         <div className="space-y-2">
-          <label className="text-[13px] font-bold uppercase tracking-wider text-text-muted ml-1">Password</label>
+          <label className="text-[11px] font-mono uppercase tracking-widest text-muted-foreground">Kata Sandi</label>
           <input
             {...register('password')}
             type="password"
             placeholder="••••••••"
-            className="w-full px-5 py-3.5 rounded-2xl bg-zinc-50 border border-border focus:outline-none focus:ring-2 focus:ring-accent/10 focus:border-accent transition-all font-sans text-[15px] placeholder:text-text-muted/50"
+            className="w-full px-4 py-3 rounded-md bg-transparent border border-border focus:outline-none focus:ring-1 focus:ring-foreground focus:border-foreground transition-all font-sans text-[15px] placeholder:text-muted-foreground/40"
           />
-          {errors.password && <p className="text-red-500 text-[12px] font-medium ml-1">{errors.password.message}</p>}
+          {errors.password && <p className="text-destructive text-[12px] font-medium mt-1">{errors.password.message}</p>}
         </div>
 
         <div className="space-y-2">
-          <label className="text-[13px] font-bold uppercase tracking-wider text-text-muted ml-1">Konfirmasi Password</label>
+          <label className="text-[11px] font-mono uppercase tracking-widest text-muted-foreground">Konfirmasi Kata Sandi</label>
           <input
             {...register('confirm_password')}
             type="password"
             placeholder="••••••••"
-            className="w-full px-5 py-3.5 rounded-2xl bg-zinc-50 border border-border focus:outline-none focus:ring-2 focus:ring-accent/10 focus:border-accent transition-all font-sans text-[15px] placeholder:text-text-muted/50"
+            className="w-full px-4 py-3 rounded-md bg-transparent border border-border focus:outline-none focus:ring-1 focus:ring-foreground focus:border-foreground transition-all font-sans text-[15px] placeholder:text-muted-foreground/40"
           />
-          {errors.confirm_password && <p className="text-red-500 text-[12px] font-medium ml-1">{errors.confirm_password.message}</p>}
+          {errors.confirm_password && <p className="text-destructive text-[12px] font-medium mt-1">{errors.confirm_password.message}</p>}
         </div>
 
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full bg-accent text-white font-sans font-bold text-[15px] py-4 rounded-2xl hover:bg-emerald-900 transition-all shadow-xl shadow-accent/20 flex items-center justify-center gap-2 mt-4 active:scale-[0.98]"
+          className="w-full bg-foreground text-background font-medium text-[14px] py-4 rounded-md hover:bg-foreground/90 transition-all flex items-center justify-center gap-2 mt-6 active:scale-[0.98]"
         >
-          {isSubmitting && <Loader2 size={18} className="animate-spin" />}
+          {isSubmitting && <Loader2 size={16} className="animate-spin" />}
           {isSubmitting ? 'Mendaftarkan...' : 'Daftar Sekarang'}
         </button>
       </form>
 
-      <div className="mt-10 text-center pt-8 border-t border-zinc-100">
-        <p className="text-[13px] text-text-secondary font-medium">
-          Sudah punya akun?{' '}
+      <div className="mt-10 pt-8 border-t border-border/50">
+        <p className="text-[13px] text-muted-foreground">
+          Sudah mempunyai akses?{' '}
           <Link
             href="/login"
-            className="text-accent font-bold hover:underline underline-offset-4"
+            className="text-foreground font-medium hover:underline underline-offset-4 transition-all"
           >
             Masuk di sini
           </Link>
         </p>
       </div>
-    </div>
+    </motion.div>
   )
 }

@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react'
 import { Sidebar } from './Sidebar'
-import { Header } from './Header'
+import Header from './Header'
 import { AnimatePresence, motion } from 'motion/react'
 import { ErrorBoundary } from '@/components/ui/ErrorBoundary'
 import KBar from '@/components/kbar'
@@ -22,7 +22,7 @@ export function DashboardLayoutClient({ role, userName, children }: DashboardLay
   }
 
   return (
-    <KBar role={role}>
+    <KBar>
       <InfobarProvider defaultOpen={false}>
         <div className="flex h-screen overflow-hidden bg-bg-base text-text-primary selection:bg-accent/10 selection:text-accent">
           {/* Overlay for mobile sidebar */}

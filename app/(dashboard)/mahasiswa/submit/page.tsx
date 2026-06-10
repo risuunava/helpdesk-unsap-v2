@@ -9,8 +9,6 @@ import { FaqSuggestion } from '@/components/ticket/FaqSuggestion'
 import { detectUrgentKeywords } from '@/lib/escalation'
 import {
   Send,
-  Paperclip,
-  X,
   CheckCircle2,
   AlertTriangle,
   ArrowLeft,
@@ -18,17 +16,46 @@ import {
   Loader2,
   Upload,
   ChevronRight,
-  Info
+  Info,
+  GraduationCap,
+  Wallet,
+  Building2,
+  ShieldCheck,
+  Settings2,
+  Calendar,
+  Clock,
+  Layout
 } from 'lucide-react'
 import Link from 'next/link'
-import { clsx } from 'clsx'
+import { cn } from '@/lib/utils'
+import PageContainer from '@/components/layout/page-container'
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardFooter,
+} from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Textarea } from '@/components/ui/textarea'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import { Icons } from '@/components/icons'
 
 const CATEGORIES = [
-  { id: 'akademik', label: 'Akademik', icon: '🎓' },
-  { id: 'keuangan', label: 'Keuangan', icon: '💰' },
-  { id: 'fasilitas', label: 'Fasilitas', icon: '🏢' },
-  { id: 'keamanan', label: 'Keamanan', icon: '🛡️' },
-  { id: 'lainnya', label: 'Lainnya', icon: '⚙️' },
+  { id: 'akademik', label: 'Akademik', icon: GraduationCap },
+  { id: 'keuangan', label: 'Keuangan', icon: Wallet },
+  { id: 'fasilitas', label: 'Fasilitas', icon: Building2 },
+  { id: 'keamanan', label: 'Keamanan', icon: ShieldCheck },
+  { id: 'lainnya', label: 'Lainnya', icon: Settings2 },
 ]
 
 const DEPARTMENTS = [
@@ -82,6 +109,15 @@ export default function SubmitTicketPage() {
     e.preventDefault()
     setTouchedFields(new Set(['title', 'category', 'department', 'description']))
     
+    if (!title || !category || !department || !description) {
+      toast({
+        title: "Data Belum Lengkap",
+        description: "Harap isi semua kolom yang wajib diisi.",
+        variant: "destructive",
+      })
+      return
+    }
+
     await submitTicket({ 
       title, 
       description, 
@@ -93,292 +129,356 @@ export default function SubmitTicketPage() {
 
   const urgentKeywords = detectUrgentKeywords(description)
 
+  const infoContent = {
+    title: "Panduan Pelaporan",
+    sections: [
+      {
+        title: "Detail Laporan",
+        description: "Berikan detail yang jelas dan objektif untuk mempercepat proses identifikasi masalah oleh tim bantuan."
+      },
+      {
+        title: "Privasi Laporan",
+        description: "Gunakan fitur anonim jika laporan mengandung informasi sensitif. Nama Anda akan tetap tercatat di sistem namun disembunyikan dari petugas operasional."
+      }
+    ]
+  }
+
   if (success) {
     return (
-      <div className="max-w-2xl mx-auto py-12 px-4">
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="bg-card border border-border rounded-3xl p-10 text-center shadow-xl shadow-emerald-500/5"
-        >
-          <div className="w-20 h-20 bg-emerald-500/10 rounded-2xl flex items-center justify-center mx-auto mb-8 border border-emerald-500/20">
-            <CheckCircle2 className="w-10 h-10 text-emerald-500" />
-          </div>
-          <h1 className="text-2xl font-bold text-foreground mb-2">Laporan Terkirim!</h1>
-          <p className="text-muted-foreground mb-8">Nomor tiket Anda adalah <span className="font-mono font-bold text-foreground">#{ticketNumber}</span></p>
-          
-          <div className="bg-muted rounded-2xl p-6 mb-8 text-left border border-border">
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              Tim admin akan meninjau laporan Anda sesegera mungkin. Anda dapat memantau status perkembangan laporan melalui dashboard.
-            </p>
-          </div>
-
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link 
-              href={`/mahasiswa/tiket/${ticketId}`}
-              className="px-8 py-3 bg-primary text-primary-foreground rounded-xl font-bold text-sm hover:bg-primary/90 transition-all flex items-center justify-center gap-2"
-            >
-              Lihat Detail Laporan
-              <ChevronRight size={16} />
-            </Link>
-            <Link 
-              href="/mahasiswa"
-              className="px-8 py-3 bg-card border border-border text-muted-foreground rounded-xl font-bold text-sm hover:bg-muted transition-all"
-            >
-              Kembali ke Dashboard
-            </Link>
-          </div>
-        </motion.div>
-      </div>
+      <PageContainer>
+        <div className="max-w-2xl mx-auto py-20 px-4">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            <Card className="border-border/40 shadow-glass overflow-hidden bg-card/50 backdrop-blur-sm p-4 text-center">
+              <CardHeader>
+                <div className="w-16 h-16 bg-emerald-500/10 rounded-2xl flex items-center justify-center mx-auto mb-6 border border-emerald-500/20 shadow-inner">
+                  <CheckCircle2 className="w-8 h-8 text-emerald-500" />
+                </div>
+                <CardTitle className="text-2xl font-bold">Laporan Terkirim!</CardTitle>
+                <CardDescription className="text-base mt-2 text-muted-foreground">
+                  Nomor tiket Anda adalah <span className="font-mono font-bold text-foreground">#{ticketNumber}</span>
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="bg-muted/30 rounded-2xl p-6 text-left border border-border/50 max-w-md mx-auto">
+                  <p className="text-sm text-muted-foreground leading-relaxed font-medium">
+                    Terima kasih telah melapor. Tim operasional akan meninjau laporan Anda dalam waktu maksimal 3x24 jam kerja. Anda dapat memantau perkembangan tiket secara real-time melalui dashboard.
+                  </p>
+                </div>
+              </CardContent>
+              <CardFooter className="flex flex-col sm:flex-row gap-3 justify-center pt-6">
+                <Button 
+                  asChild
+                  className="rounded-xl px-8 h-12 font-bold flex items-center gap-2 shadow-lg"
+                >
+                  <Link href={`/mahasiswa/tiket/${ticketId}`}>
+                    Lihat Detail Laporan
+                    <ChevronRight size={16} />
+                  </Link>
+                </Button>
+                <Button 
+                  variant="outline"
+                  asChild
+                  className="rounded-xl px-8 h-12 font-bold"
+                >
+                  <Link href="/mahasiswa">
+                    Kembali ke Dashboard
+                  </Link>
+                </Button>
+              </CardFooter>
+            </Card>
+          </motion.div>
+        </div>
+      </PageContainer>
     )
   }
 
   return (
-    <div className="max-w-5xl mx-auto space-y-10 pb-20">
-      {/* Header */}
-      <div className="flex flex-col gap-1 pt-4 border-b border-border pb-10">
-        <Link 
-          href="/mahasiswa" 
-          className="flex items-center gap-2 text-xs font-bold text-muted-foreground hover:text-foreground transition-colors uppercase tracking-widest mb-4 group"
-        >
-          <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
-          Kembali ke Dashboard
-        </Link>
-        <h1 className="text-4xl font-bold text-foreground tracking-tight">Buat <span className="text-muted-foreground">Laporan Baru</span></h1>
-        <p className="text-muted-foreground text-sm font-medium mt-2 max-w-xl">
-          Sampaikan keluhan, aspirasi, atau pertanyaan Anda. Gunakan bahasa yang sopan dan jelas agar kami dapat membantu lebih cepat.
-        </p>
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
-        {/* Form Column */}
-        <form onSubmit={handleSubmit} className="lg:col-span-7 space-y-8">
-          {error && (
-            <div className="p-4 bg-rose-500/10 border border-rose-500/20 rounded-xl flex items-start gap-3 text-rose-500">
-              <AlertTriangle className="w-5 h-5 shrink-0" />
-              <div className="text-sm font-medium leading-relaxed">{error}</div>
-            </div>
-          )}
-
-          {urgentKeywords.length > 0 && (
-            <motion.div 
-              initial={{ opacity: 0, y: -10 }} 
-              animate={{ opacity: 1, y: 0 }}
-              className="p-4 bg-amber-500/10 border border-amber-500/20 rounded-xl flex items-start gap-3 text-amber-600 shadow-sm"
-            >
-              <AlertTriangle className="w-5 h-5 shrink-0" />
-              <div className="text-xs font-medium leading-relaxed">
-                <span className="font-bold">Prioritas Urgent Terdeteksi:</span> Laporan Anda mengandung kata kunci darurat ({urgentKeywords.join(', ')}) dan akan otomatis mendapat prioritas tinggi.
-              </div>
-            </motion.div>
-          )}
-
-          {/* Title */}
-          <div className="space-y-3">
-            <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest block">Judul Laporan</label>
-            <input 
-              type="text"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              onBlur={() => setTouchedFields(prev => new Set(prev).add('title'))}
-              placeholder="Contoh: Masalah Pembayaran UKT Semester Ganjil"
-              className={clsx(
-                "w-full px-6 py-4 bg-card border rounded-2xl text-sm font-semibold focus:outline-none transition-all placeholder:text-muted-foreground/50",
-                fieldErrors.title && touchedFields.has('title') ? "border-rose-500 ring-4 ring-rose-500/5" : "border-border focus:border-muted-foreground/30 focus:ring-4 focus:ring-foreground/5"
+    <PageContainer
+      pageTitle="Buat Laporan Baru"
+      pageDescription="Sampaikan keluhan, aspirasi, atau kendala Anda secara profesional melalui sistem bantuan terintegrasi."
+      infoContent={infoContent}
+    >
+      <div className="flex flex-1 flex-col gap-8 pb-12">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          {/* Form Section */}
+          <div className="lg:col-span-8 flex flex-col gap-6">
+            <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+              {error && (
+                <div className="p-4 bg-destructive/10 border border-destructive/20 rounded-xl flex items-start gap-3 text-destructive shadow-sm">
+                  <AlertTriangle className="w-5 h-5 shrink-0" />
+                  <div className="text-sm font-bold leading-relaxed">{error}</div>
+                </div>
               )}
-            />
-            {fieldErrors.title && touchedFields.has('title') && <p className="text-[10px] font-bold text-rose-500 uppercase px-1">{fieldErrors.title}</p>}
-          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* Category */}
-            <div className="space-y-3">
-              <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest block">Kategori</label>
-              <div className="grid grid-cols-2 gap-2">
-                {CATEGORIES.map((cat) => (
-                  <button
-                    key={cat.id}
-                    type="button"
-                    onClick={() => {
-                        setCategory(cat.id)
-                        setTouchedFields(prev => new Set(prev).add('category'))
-                    }}
-                    className={clsx(
-                      "flex items-center gap-3 px-4 py-3 rounded-xl border text-xs font-bold transition-all",
-                      category === cat.id 
-                        ? "bg-primary border-primary text-primary-foreground shadow-lg" 
-                        : "bg-card border-border text-muted-foreground hover:border-muted-foreground/30"
+              {urgentKeywords.length > 0 && (
+                <motion.div 
+                  initial={{ opacity: 0, y: -10 }} 
+                  animate={{ opacity: 1, y: 0 }}
+                  className="p-4 bg-amber-500/10 border border-amber-500/20 rounded-xl flex items-start gap-3 text-amber-600 shadow-sm"
+                >
+                  <AlertTriangle className="w-5 h-5 shrink-0" />
+                  <div className="text-xs font-bold leading-relaxed">
+                    Prioritas Tinggi Terdeteksi: Laporan Anda mengandung kata kunci darurat ({urgentKeywords.join(', ')}) dan akan mendapat penanganan prioritas.
+                  </div>
+                </motion.div>
+              )}
+
+              {/* Title Card */}
+              <Card className="border-border/40 shadow-glass overflow-hidden bg-card/50 backdrop-blur-sm">
+                <CardContent className="pt-6 space-y-4">
+                  <div className="space-y-2">
+                    <Label className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em]">Judul Laporan</Label>
+                    <Input 
+                      value={title}
+                      onChange={(e) => setTitle(e.target.value)}
+                      onBlur={() => setTouchedFields(prev => new Set(prev).add('title'))}
+                      placeholder="Gunakan judul yang singkat dan deskriptif..."
+                      className={cn(
+                        "rounded-xl h-12 font-semibold",
+                        fieldErrors.title && touchedFields.has('title') && "border-destructive focus-visible:ring-destructive"
+                      )}
+                    />
+                    {fieldErrors.title && touchedFields.has('title') && (
+                      <p className="text-[10px] font-bold text-destructive uppercase px-1">{fieldErrors.title}</p>
                     )}
-                  >
-                    <span>{cat.icon}</span>
-                    {cat.label}
-                  </button>
-                ))}
-              </div>
-              {fieldErrors.category && touchedFields.has('category') && <p className="text-[10px] font-bold text-rose-500 uppercase px-1">{fieldErrors.category}</p>}
-            </div>
+                  </div>
 
-            {/* Department */}
-            <div className="space-y-3">
-              <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest block">Tujuan Laporan</label>
-              <select
-                value={department}
-                onChange={(e) => {
-                    setDepartment(e.target.value)
-                    setTouchedFields(prev => new Set(prev).add('department'))
-                }}
-                className={clsx(
-                  "w-full px-6 py-4 bg-card border rounded-2xl text-xs font-bold focus:outline-none transition-all appearance-none cursor-pointer",
-                  fieldErrors.department && touchedFields.has('department') ? "border-rose-500 text-foreground" : "border-border text-foreground focus:border-muted-foreground/30"
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {/* Category Selection */}
+                    <div className="space-y-2">
+                      <Label className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em]">Kategori Layanan</Label>
+                      <div className="grid grid-cols-1 gap-2">
+                        <Select 
+                          value={category} 
+                          onValueChange={(val) => {
+                            setCategory(val)
+                            setTouchedFields(prev => new Set(prev).add('category'))
+                          }}
+                        >
+                          <SelectTrigger className={cn(
+                            "rounded-xl h-12 font-bold",
+                            fieldErrors.category && touchedFields.has('category') && "border-destructive focus-visible:ring-destructive"
+                          )}>
+                            <SelectValue placeholder="Pilih Kategori" />
+                          </SelectTrigger>
+                          <SelectContent className="rounded-xl">
+                            {CATEGORIES.map((cat) => (
+                              <SelectItem key={cat.id} value={cat.id} className="rounded-lg font-bold">
+                                <div className="flex items-center gap-2">
+                                  <cat.icon size={14} className="text-primary" />
+                                  <span>{cat.label}</span>
+                                </div>
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      {fieldErrors.category && touchedFields.has('category') && (
+                        <p className="text-[10px] font-bold text-destructive uppercase px-1">{fieldErrors.category}</p>
+                      )}
+                    </div>
+
+                    {/* Department Selection */}
+                    <div className="space-y-2">
+                      <Label className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em]">Tujuan Unit/Fakultas</Label>
+                      <Select 
+                        value={department} 
+                        onValueChange={(val) => {
+                          setDepartment(val)
+                          setTouchedFields(prev => new Set(prev).add('department'))
+                        }}
+                      >
+                        <SelectTrigger className={cn(
+                          "rounded-xl h-12 font-bold",
+                          fieldErrors.department && touchedFields.has('department') && "border-destructive focus-visible:ring-destructive"
+                        )}>
+                          <SelectValue placeholder="Pilih Tujuan" />
+                        </SelectTrigger>
+                        <SelectContent className="rounded-xl max-h-[300px]">
+                          {DEPARTMENTS.map((d) => (
+                            <SelectItem key={d} value={d} className="rounded-lg font-bold">
+                              {d}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      {fieldErrors.department && touchedFields.has('department') && (
+                        <p className="text-[10px] font-bold text-destructive uppercase px-1">{fieldErrors.department}</p>
+                      )}
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Description Card */}
+              <Card className="border-border/40 shadow-glass overflow-hidden bg-card/50 backdrop-blur-sm">
+                <CardContent className="pt-6 space-y-4">
+                  <div className="space-y-2">
+                    <Label className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em]">Detail Deskripsi</Label>
+                    <Textarea 
+                      value={description}
+                      onChange={(e) => setDescription(e.target.value)}
+                      onBlur={() => setTouchedFields(prev => new Set(prev).add('description'))}
+                      placeholder="Jelaskan secara rinci permasalahan, waktu kejadian, dan pihak terkait..."
+                      rows={6}
+                      className={cn(
+                        "rounded-2xl font-medium leading-relaxed resize-none",
+                        fieldErrors.description && touchedFields.has('description') && "border-destructive focus-visible:ring-destructive"
+                      )}
+                    />
+                    {fieldErrors.description && touchedFields.has('description') && (
+                      <p className="text-[10px] font-bold text-destructive uppercase px-1">{fieldErrors.description}</p>
+                    )}
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em]">Lampiran Pendukung (Opsional)</Label>
+                    <div 
+                      onClick={() => fileInputRef.current?.click()}
+                      className={cn(
+                        "group border-2 border-dashed rounded-2xl p-6 flex flex-col items-center justify-center gap-3 cursor-pointer transition-all bg-muted/20 hover:bg-muted/40",
+                        file ? "border-emerald-500/30 bg-emerald-500/5" : "border-border hover:border-muted-foreground/30"
+                      )}
+                    >
+                      <input 
+                        type="file"
+                        ref={fileInputRef}
+                        onChange={handleFileChange}
+                        className="hidden"
+                        accept="image/*,application/pdf"
+                      />
+                      {file ? (
+                        <div className="flex flex-col items-center gap-2">
+                          <div className="w-10 h-10 bg-emerald-500/10 rounded-xl flex items-center justify-center border border-emerald-500/20">
+                            <CheckCircle2 size={18} className="text-emerald-500" />
+                          </div>
+                          <div className="text-center">
+                            <p className="text-xs font-bold text-foreground truncate max-w-[250px]">{file.name}</p>
+                            <button 
+                              type="button" 
+                              onClick={(e) => { e.stopPropagation(); setFile(null); }}
+                              className="text-[9px] font-bold text-destructive uppercase tracking-widest mt-1 hover:underline"
+                            >
+                              Hapus File
+                            </button>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="flex flex-col items-center gap-2">
+                          <div className="w-10 h-10 bg-card rounded-xl border border-border flex items-center justify-center group-hover:scale-110 transition-transform shadow-sm">
+                            <Upload size={18} className="text-muted-foreground" />
+                          </div>
+                          <div className="text-center">
+                            <p className="text-xs font-bold text-foreground">Pilih file atau tarik ke sini</p>
+                            <p className="text-[9px] text-muted-foreground font-black uppercase tracking-widest mt-0.5">Maksimal 2MB (PDF/JPG/PNG)</p>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Anonymous Toggle */}
+              <div 
+                onClick={() => setIsAnonymous(!isAnonymous)}
+                className={cn(
+                    "p-5 rounded-2xl border transition-all cursor-pointer flex items-center justify-between group shadow-sm",
+                    isAnonymous 
+                      ? "bg-primary border-primary text-primary-foreground" 
+                      : "bg-card/50 backdrop-blur-sm border-border/40 hover:border-muted-foreground/30"
                 )}
               >
-                <option value="" className="bg-card">Pilih Departemen/Unit</option>
-                {DEPARTMENTS.map((d) => (
-                  <option key={d} value={d} className="bg-card">{d}</option>
-                ))}
-              </select>
-              {fieldErrors.department && touchedFields.has('department') && <p className="text-[10px] font-bold text-rose-500 uppercase px-1">{fieldErrors.department}</p>}
-            </div>
-          </div>
-
-          {/* Description */}
-          <div className="space-y-3">
-            <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest block">Detail Deskripsi</label>
-            <textarea 
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              onBlur={() => setTouchedFields(prev => new Set(prev).add('description'))}
-              placeholder="Jelaskan secara rinci permasalahan Anda..."
-              rows={8}
-              className={clsx(
-                "w-full px-6 py-4 bg-card border rounded-3xl text-sm font-medium leading-relaxed focus:outline-none transition-all placeholder:text-muted-foreground/50 resize-none",
-                fieldErrors.description && touchedFields.has('description') ? "border-rose-500 ring-4 ring-rose-500/5" : "border-border focus:border-muted-foreground/30 focus:ring-4 focus:ring-foreground/5"
-              )}
-            />
-            {fieldErrors.description && touchedFields.has('description') && <p className="text-[10px] font-bold text-rose-500 uppercase px-1">{fieldErrors.description}</p>}
-          </div>
-
-          {/* File Upload */}
-          <div className="space-y-3">
-            <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest block">Lampiran (Opsional, Max 2MB)</label>
-            <div 
-              onClick={() => fileInputRef.current?.click()}
-              className={clsx(
-                "group border-2 border-dashed rounded-3xl p-8 flex flex-col items-center justify-center gap-3 cursor-pointer transition-all",
-                file ? "bg-emerald-500/10 border-emerald-500/20" : "border-border hover:border-muted-foreground/30 hover:bg-muted/50"
-              )}
-            >
-              <input 
-                type="file"
-                ref={fileInputRef}
-                onChange={handleFileChange}
-                className="hidden"
-                accept="image/*,application/pdf"
-              />
-              {file ? (
-                <>
-                  <div className="w-12 h-12 bg-card rounded-xl shadow-sm border border-emerald-500/20 flex items-center justify-center">
-                    <CheckCircle2 className="text-emerald-500" />
+                <div className="flex items-center gap-4">
+                  <div className={cn(
+                    "w-10 h-10 rounded-xl flex items-center justify-center border transition-colors", 
+                    isAnonymous ? "bg-primary-foreground/10 border-primary-foreground/20" : "bg-muted border-border"
+                  )}>
+                    <EyeOff size={18} className={isAnonymous ? "text-primary-foreground" : "text-muted-foreground"} />
                   </div>
-                  <div className="text-center">
-                    <p className="text-sm font-bold text-foreground truncate max-w-[200px]">{file.name}</p>
-                    <button 
-                      type="button" 
-                      onClick={(e) => { e.stopPropagation(); setFile(null); }}
-                      className="text-[10px] font-bold text-rose-500 uppercase tracking-widest mt-2 hover:underline"
-                    >
-                      Hapus Lampiran
-                    </button>
+                  <div className="space-y-0.5">
+                    <p className="text-sm font-bold">Kirim Secara Anonim</p>
+                    <p className={cn("text-[10px] font-medium leading-tight", isAnonymous ? "text-primary-foreground/70" : "text-muted-foreground")}>
+                      Identitas Anda disembunyikan dari petugas biasa.
+                    </p>
                   </div>
-                </>
-              ) : (
-                <>
-                  <div className="w-12 h-12 bg-card rounded-xl border border-border flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <Upload className="text-muted-foreground" />
-                  </div>
-                  <div className="text-center">
-                    <p className="text-sm font-bold text-foreground">Pilih file atau tarik ke sini</p>
-                    <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-tighter mt-1">PNG, JPG, PDF</p>
-                  </div>
-                </>
-              )}
-            </div>
-          </div>
-
-          {/* Anonymous Option */}
-          <div 
-            onClick={() => setIsAnonymous(!isAnonymous)}
-            className={clsx(
-                "p-6 rounded-3xl border transition-all cursor-pointer flex items-center justify-between group",
-                isAnonymous ? "bg-primary border-primary text-primary-foreground shadow-xl" : "bg-card border-border hover:border-muted-foreground/30"
-            )}
-          >
-            <div className="flex items-center gap-4">
-              <div className={clsx("w-12 h-12 rounded-xl flex items-center justify-center border transition-colors", isAnonymous ? "bg-primary-foreground/10 border-primary-foreground/20" : "bg-muted border-border group-hover:bg-muted/80")}>
-                <EyeOff size={20} className={isAnonymous ? "text-primary-foreground" : "text-muted-foreground"} />
+                </div>
+                <div className={cn(
+                  "w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all", 
+                  isAnonymous ? "bg-primary-foreground border-primary-foreground" : "border-border"
+                )}>
+                  {isAnonymous && <Icons.check size={12} className="text-primary" />}
+                </div>
               </div>
-              <div className="space-y-0.5">
-                <p className="text-sm font-bold">Kirim secara Anonim</p>
-                <p className={clsx("text-[10px] font-medium leading-relaxed", isAnonymous ? "text-primary-foreground/70" : "text-muted-foreground")}>Nama asli Anda akan disembunyikan dari petugas biasa.</p>
-              </div>
-            </div>
-            <div className={clsx("w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all", isAnonymous ? "bg-primary-foreground border-primary-foreground" : "border-border")}>
-              {isAnonymous && <CheckCircle2 size={16} className="text-primary" />}
-            </div>
+
+              {/* Action */}
+              <Button
+                type="submit"
+                disabled={loading}
+                className="h-14 rounded-2xl font-bold text-base shadow-lg shadow-primary/20 flex items-center justify-center gap-3 active:scale-[0.98]"
+              >
+                {loading ? (
+                  <>
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                    Memproses Laporan...
+                  </>
+                ) : (
+                  <>
+                    Kirim Laporan Sekarang
+                    <Send size={18} />
+                  </>
+                )}
+              </Button>
+            </form>
           </div>
 
-          {/* Submit */}
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full h-16 bg-primary text-primary-foreground rounded-3xl font-bold text-lg hover:bg-primary/90 disabled:bg-muted disabled:text-muted-foreground transition-all flex items-center justify-center gap-3 shadow-xl"
-          >
-            {loading ? (
-              <>
-                <Loader2 className="w-6 h-6 animate-spin" />
-                Mengirim...
-              </>
-            ) : (
-              <>
-                Kirim Laporan Sekarang
-                <Send size={20} />
-              </>
-            )}
-          </button>
-        </form>
+          {/* Info Section */}
+          <aside className="lg:col-span-4 flex flex-col gap-6">
+            <FaqSuggestion query={title} />
 
-        {/* Info Column */}
-        <aside className="lg:col-span-5 space-y-10">
-          <FaqSuggestion query={title} />
-
-          <div className="bg-card border border-border rounded-3xl overflow-hidden shadow-sm">
-            <div className="p-6 bg-muted/50 border-b border-border flex items-center gap-3">
-                <Info size={16} className="text-muted-foreground" />
-                <h3 className="text-xs font-bold text-foreground uppercase tracking-widest">Informasi Penting</h3>
-            </div>
-            <div className="p-8 space-y-8">
+            <Card className="border-border/40 shadow-glass overflow-hidden bg-card/50 backdrop-blur-sm">
+              <CardHeader className="bg-muted/30 border-b border-border/50 py-4">
+                <div className="flex items-center gap-2">
+                  <Info size={14} className="text-primary" />
+                  <CardTitle className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">Ketentuan Layanan</CardTitle>
+                </div>
+              </CardHeader>
+              <CardContent className="pt-6 space-y-6">
                 <div className="flex gap-4">
-                    <div className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-600 flex items-center justify-center shrink-0 border border-emerald-500/20">
-                        <CheckCircle2 size={16} />
-                    </div>
-                    <div className="space-y-1">
-                        <p className="text-xs font-bold text-foreground">SLA Resolution</p>
-                        <p className="text-[11px] text-muted-foreground leading-relaxed font-medium">Laporan akan ditangani dalam waktu maksimal 3x24 jam kerja sesuai prioritas.</p>
-                    </div>
+                  <div className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-600 flex items-center justify-center shrink-0 border border-emerald-500/20 shadow-sm">
+                    <Clock size={16} />
+                  </div>
+                  <div className="space-y-1">
+                    <p className="text-xs font-bold text-foreground">Respon Cepat</p>
+                    <p className="text-[10px] text-muted-foreground leading-relaxed font-medium">Laporan akan diproses dalam waktu 3 hari kerja.</p>
+                  </div>
                 </div>
                 <div className="flex gap-4">
-                    <div className="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-600 flex items-center justify-center shrink-0 border border-amber-500/20">
-                        <AlertTriangle size={16} />
-                    </div>
-                    <div className="space-y-1">
-                        <p className="text-xs font-bold text-foreground">Validitas Data</p>
-                        <p className="text-[11px] text-muted-foreground leading-relaxed font-medium">Pastikan data yang Anda lampirkan benar. Laporan palsu dapat dikenakan sanksi etik.</p>
-                    </div>
+                  <div className="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-600 flex items-center justify-center shrink-0 border border-amber-500/20 shadow-sm">
+                    <ShieldCheck size={16} />
+                  </div>
+                  <div className="space-y-1">
+                    <p className="text-xs font-bold text-foreground">Data Valid</p>
+                    <p className="text-[10px] text-muted-foreground leading-relaxed font-medium">Laporan palsu atau tidak pantas akan dikenakan sanksi administrasi.</p>
+                  </div>
                 </div>
-            </div>
-          </div>
-        </aside>
+                <div className="flex gap-4">
+                  <div className="w-8 h-8 rounded-lg bg-blue-500/10 text-blue-600 flex items-center justify-center shrink-0 border border-blue-500/20 shadow-sm">
+                    <Layout size={16} />
+                  </div>
+                  <div className="space-y-1">
+                    <p className="text-xs font-bold text-foreground">Satu Pintu</p>
+                    <p className="text-[10px] text-muted-foreground leading-relaxed font-medium">Pantau semua progres laporan Anda melalui dashboard mahasiswa.</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </aside>
+        </div>
       </div>
-    </div>
+    </PageContainer>
   )
 }

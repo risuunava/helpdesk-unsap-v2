@@ -6,7 +6,7 @@ import {
   KBarPositioner,
   KBarAnimator,
   KBarSearch,
-  RenderResults,
+  KBarResults as KBarResultsComp,
   useMatches,
 } from "kbar";
 import { useRouter } from "next/navigation";
@@ -82,7 +82,7 @@ function KBarResults() {
   const { results } = useMatches();
 
   return (
-    <RenderResults
+    <KBarResultsComp
       items={results}
       onRender={({ item, active }) =>
         typeof item === "string" ? (

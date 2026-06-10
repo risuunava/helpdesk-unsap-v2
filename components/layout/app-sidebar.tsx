@@ -48,7 +48,7 @@ export default function AppSidebar({ role = 'mahasiswa', userName = 'Guest' }: A
   const handleLogout = async () => {
     const supabase = createClient();
     await supabase.auth.signOut();
-    router.push("/auth/sign-in");
+    router.push("/");
   };
 
   return (

@@ -616,7 +616,6 @@ export default function DemoForm() {
                               selected={field.state.value}
                               onSelect={field.handleChange}
                               disabled={(date) => date > new Date()}
-                              initialFocus
                             />
                           </PopoverContent>
                         </Popover>
@@ -684,7 +683,6 @@ export default function DemoForm() {
                               selected={range}
                               onSelect={field.handleChange}
                               numberOfMonths={2}
-                              initialFocus
                             />
                           </PopoverContent>
                         </Popover>
