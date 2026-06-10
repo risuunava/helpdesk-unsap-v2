@@ -18,7 +18,7 @@ export default async function NotificationsPage() {
           Semua pemberitahuan dan pembaruan terkait pelaporan yang Anda ajukan atau tangani akan muncul di sini. Klik notifikasi untuk menandainya sebagai sudah dibaca.
         </p>
       </div>
-      <NotificationsClient userId={profile.id} />
+      <NotificationsClient userId={profile.id} role={profile.role} />
     </div>
   )
 }

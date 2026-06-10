@@ -3,7 +3,9 @@
 import { useState, useRef, useEffect } from 'react';
 import { Bell, MailOpen } from 'lucide-react';
 import { useNotifications } from '@/hooks/useNotifications';
-import { useAuth } from '@/hooks/useAuth'; // Assuming useAuth hook exists
+import { useAuth } from '@/hooks/useAuth';
+import { useProfile } from '@/hooks/useProfile';
+import { useRouter } from 'next/navigation';
 import {
   Popover,
   PopoverContent,
@@ -17,8 +19,10 @@ import { id } from 'date-fns/locale'; // For Indonesian locale
 
 export function NotificationBell() {
   const { user } = useAuth(); // Get authenticated user
+  const { profile } = useProfile();
   const { notifications, unreadCount, isLoading, markAsRead, markAllAsRead } = useNotifications(user?.id);
   const [isOpen, setIsOpen] = useState(false);
+  const router = useRouter();
 
   // Close popover when clicking outside
   const popoverRef = useRef<HTMLDivElement>(null);
@@ -37,12 +41,11 @@ export function NotificationBell() {
   const handleNotificationClick = async (notificationId: string, ticketId: string | null) => {
     await markAsRead(notificationId);
     setIsOpen(false);
-    // Navigate to ticket detail page
+    
     if (ticketId) {
-      // Assuming admin and mahasiswa ticket paths. Needs to be more robust for roles.
-      // For now, let's assume all notifications lead to /mahasiswa/tiket/[id]
-      // In a real app, you might check user role and navigate to /admin/tiket/[id] or /mahasiswa/tiket/[id]
-      window.location.href = `/mahasiswa/tiket/${ticketId}`;
+      const role = profile?.role || 'mahasiswa';
+      const baseRoute = (role === 'admin' || role === 'master_admin') ? '/admin' : '/mahasiswa';
+      router.push(`${baseRoute}/tiket/${ticketId}`);
     }
   };
 

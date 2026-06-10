@@ -1,13 +1,26 @@
 'use client'
 
 import React from 'react'
-import { useNotifications } from '@/hooks/useNotifications'
+import { useNotifications, Notification } from '@/hooks/useNotifications'
 import { Loader2, Bell, CheckCircle2, AlertCircle, Info } from 'lucide-react'
 import { formatDistanceToNow } from 'date-fns'
 import { id } from 'date-fns/locale'
+import { useRouter } from 'next/navigation'
 
-export default function NotificationsClient({ userId }: { userId: string }) {
+export default function NotificationsClient({ userId, role }: { userId: string; role: string }) {
   const { notifications, isLoading, markAsRead, markAllAsRead } = useNotifications(userId)
+  const router = useRouter()
+
+  const handleNotificationClick = (notif: Notification) => {
+    if (!notif.is_read) {
+      markAsRead(notif.id)
+    }
+
+    if (notif.ticket_id) {
+      const baseRoute = (role === 'admin' || role === 'master_admin') ? '/admin' : '/mahasiswa'
+      router.push(`${baseRoute}/tiket/${notif.ticket_id}`)
+    }
+  }
 
   if (isLoading) {
     return (
@@ -57,8 +70,8 @@ export default function NotificationsClient({ userId }: { userId: string }) {
         {notifications.map((notif) => (
           <div 
             key={notif.id}
-            onClick={() => !notif.is_read && markAsRead(notif.id)}
-            className={`p-5 rounded-xl border transition-all ${!notif.is_read ? 'cursor-pointer' : ''} flex gap-4 ${
+            onClick={() => handleNotificationClick(notif)}
+            className={`p-5 rounded-xl border transition-all cursor-pointer flex gap-4 ${
               notif.is_read 
                 ? 'bg-background border-border/50 opacity-60' 
                 : 'bg-muted/10 border-border shadow-sm hover:border-foreground/20 hover:bg-muted/30'
