@@ -6,6 +6,7 @@ import {
   IconSettings,
   IconPlus,
   IconHistory,
+  IconBell,
 } from "@tabler/icons-react";
 
 export type NavItem = {
@@ -22,6 +23,12 @@ export const navItems: NavItem[] = [
     href: "/mahasiswa",
     icon: IconDashboard,
     role: ["mahasiswa"],
+  },
+  {
+    title: "Notifikasi",
+    href: "/notifications",
+    icon: IconBell,
+    role: ["mahasiswa", "admin", "master_admin"],
   },
   {
     title: "Buat Tiket",
