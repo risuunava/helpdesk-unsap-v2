@@ -146,7 +146,7 @@ export default function SubmitTicketPage() {
   if (success) {
     return (
       <PageContainer>
-        <div className="max-w-2xl mx-auto py-8 md:py-20 px-4">
+        <div className="max-w-2xl mx-auto py-6 md:py-20 px-4">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -228,7 +228,7 @@ export default function SubmitTicketPage() {
 
               {/* Title Card */}
               <Card className="border-border/40 shadow-sm overflow-hidden bg-card">
-                <CardContent className="pt-6 space-y-4">
+                <CardContent className="pt-4 md:pt-6 space-y-4">
                   <div className="space-y-2">
                     <Label className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em]">Judul Laporan</Label>
                     <Input 
@@ -315,7 +315,7 @@ export default function SubmitTicketPage() {
 
               {/* Description Card */}
               <Card className="border-border/40 shadow-sm overflow-hidden bg-card">
-                <CardContent className="pt-6 space-y-4">
+                <CardContent className="pt-4 md:pt-6 space-y-4">
                   <div className="space-y-2">
                     <Label className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em]">Detail Deskripsi</Label>
                     <Textarea 
@@ -323,7 +323,7 @@ export default function SubmitTicketPage() {
                       onChange={(e) => setDescription(e.target.value)}
                       onBlur={() => setTouchedFields(prev => new Set(prev).add('description'))}
                       placeholder="Jelaskan secara rinci permasalahan, waktu kejadian, dan pihak terkait..."
-                      rows={6}
+                      rows={5}
                       className={cn(
                         "rounded-md font-medium leading-relaxed resize-none",
                         fieldErrors.description && touchedFields.has('description') && "border-destructive focus-visible:ring-destructive"
@@ -339,7 +339,7 @@ export default function SubmitTicketPage() {
                     <div 
                       onClick={() => fileInputRef.current?.click()}
                       className={cn(
-                        "group border border-dashed rounded-xl p-6 flex flex-col items-center justify-center gap-3 cursor-pointer transition-all bg-muted/20 hover:bg-muted/40",
+                        "group border border-dashed rounded-xl p-4 md:p-6 flex flex-col items-center justify-center gap-3 cursor-pointer transition-all bg-muted/20 hover:bg-muted/40",
                         file ? "border-emerald-500/30 bg-emerald-500/5" : "border-border hover:border-muted-foreground/30"
                       )}
                     >
@@ -386,7 +386,7 @@ export default function SubmitTicketPage() {
               <div 
                 onClick={() => setIsAnonymous(!isAnonymous)}
                 className={cn(
-                    "p-4 rounded-xl border transition-all cursor-pointer flex items-center justify-between group shadow-sm",
+                    "p-3 md:p-4 rounded-xl border transition-all cursor-pointer flex items-center justify-between group shadow-sm",
                     isAnonymous 
                       ? "bg-primary border-primary text-primary-foreground" 
                       : "bg-card border-border/40 hover:border-muted-foreground/30"

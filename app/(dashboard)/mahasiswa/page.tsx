@@ -67,7 +67,7 @@ export default function MahasiswaDashboard() {
       }
     >
       <div className="flex flex-1 flex-col gap-4">
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 md:gap-4">
           <Card className="@container/card *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card shadow-sm">
             <CardHeader className="pb-2">
               <CardDescription>Semua Laporan</CardDescription>
@@ -152,14 +152,14 @@ export default function MahasiswaDashboard() {
                   </Button>
                 </div>
               ) : viewMode === "grid" ? (
-                <div className="p-4 md:p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 bg-muted/5">
+                <div className="p-3 md:p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6 bg-muted/5">
                   {tickets.map((t) => (
                     <Card
                       key={t.id}
                       onClick={() => navigateToDetail(t.id)}
                       className="cursor-pointer hover:border-accent/40 transition-all border-border/60 bg-card group shadow-sm overflow-hidden"
                     >
-                      <CardHeader className="pb-3 border-b border-border/20 bg-muted/30">
+                      <CardHeader className="pb-2 pt-4 px-4 md:px-6 md:pb-3 border-b border-border/20 bg-muted/30">
                         <div className="flex items-center justify-between mb-1">
                           <CardDescription className="font-mono font-bold text-accent text-[11px]">
                             ID:{t.ticket_number}
@@ -168,11 +168,11 @@ export default function MahasiswaDashboard() {
                         </div>
                         <CardTitle className="text-sm font-bold line-clamp-2 mt-2 leading-tight group-hover:text-accent transition-colors h-[40px]">{t.title}</CardTitle>
                       </CardHeader>
-                      <CardContent className="pt-4">
+                      <CardContent className="p-4 pt-3 md:p-6 md:pt-4">
                         <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest leading-relaxed">
                           {t.category} • {t.created_at ? new Date(t.created_at).toLocaleDateString() : "-"}
                         </p>
-                        <div className="flex items-center justify-between mt-6 pt-4 border-t border-border/40">
+                        <div className="flex items-center justify-between mt-4 pt-3 border-t border-border/40">
                           <PriorityBadge priority={t.priority as any} />
                           {t.status !== "resolved" && t.status !== "closed" && (
                             <SlaIndicator deadline={t.sla_deadline} />

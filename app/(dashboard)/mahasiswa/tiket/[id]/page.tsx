@@ -110,13 +110,13 @@ export default function TicketDetailPage({ params }: { params: Promise<{ id: str
       isLoading={loading}
       infoContent={infoContent}
       pageHeaderAction={
-        <div className="flex bg-muted/50 p-1 rounded-xl border border-border/60">
+        <div className="flex w-full md:w-auto bg-muted/50 p-1 rounded-xl border border-border/60">
           <Button
             variant={activeTab === 'info' ? "secondary" : "ghost"}
             size="sm"
             onClick={() => setTab('info')}
             className={cn(
-              "rounded-lg font-bold text-xs flex items-center gap-2",
+              "rounded-lg font-bold text-xs flex flex-1 md:flex-none justify-center items-center gap-2",
               activeTab === 'info' && "bg-card shadow-sm border border-border/40"
             )}
           >
@@ -128,7 +128,7 @@ export default function TicketDetailPage({ params }: { params: Promise<{ id: str
             size="sm"
             onClick={() => setTab('chat')}
             className={cn(
-              "rounded-lg font-bold text-xs flex items-center gap-2",
+              "rounded-lg font-bold text-xs flex flex-1 md:flex-none justify-center items-center gap-2",
               activeTab === 'chat' && "bg-card shadow-sm border border-border/40"
             )}
           >
@@ -158,8 +158,8 @@ export default function TicketDetailPage({ params }: { params: Promise<{ id: str
                     <StatusBadge status={ticket?.status as any} />
                   </CardHeader>
                   
-                  <CardContent className="pt-8">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-6 gap-x-4 border-b border-border/50 pb-8 mb-8">
+                  <CardContent className="pt-4 md:pt-8">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-4 md:gap-y-6 gap-x-4 border-b border-border/50 pb-6 mb-6 md:pb-8 md:mb-8">
                       <div className="space-y-1.5">
                         <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Kategori</p>
                         <p className="text-sm font-bold text-foreground capitalize">{ticket?.category}</p>
@@ -184,7 +184,7 @@ export default function TicketDetailPage({ params }: { params: Promise<{ id: str
 
                     <div className="space-y-4">
                       <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Isi Laporan</p>
-                      <div className="text-sm text-muted-foreground leading-relaxed bg-muted/30 p-5 rounded-lg border border-border/40 whitespace-pre-wrap font-medium shadow-inner">
+                      <div className="text-sm text-muted-foreground leading-relaxed bg-muted/30 p-3 md:p-5 rounded-lg border border-border/40 whitespace-pre-wrap font-medium shadow-inner">
                         {ticket?.description}
                       </div>
                     </div>
@@ -245,7 +245,7 @@ export default function TicketDetailPage({ params }: { params: Promise<{ id: str
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.2 }}
-                className="bg-card border border-border/40 rounded-xl shadow-sm overflow-hidden flex flex-col h-[500px] md:h-[700px]"
+                className="bg-card border border-border/40 rounded-xl shadow-sm overflow-hidden flex flex-col h-[400px] md:h-[700px]"
               >
                 <div className="p-5 border-b border-border/60 bg-muted/40 backdrop-blur-md flex items-center justify-between">
                   <div className="flex items-center gap-3">
