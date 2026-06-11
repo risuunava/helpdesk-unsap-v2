@@ -13,6 +13,18 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 app = FastAPI(title="UNSAP ML Service", version="2.0")
 
+# Ensure NLTK resources are available
+import nltk
+def setup_nltk():
+    resources = ['stopwords', 'punkt']
+    for res in resources:
+        try:
+            nltk.download(res, quiet=True)
+        except Exception as e:
+            print(f"Warning: Failed to download NLTK resource {res}: {e}")
+
+setup_nltk()
+
 API_KEY = os.environ.get("ML_API_KEY", "dev-key-123")
 api_key_header = APIKeyHeader(name="X-API-Key", auto_error=True)
 
@@ -39,6 +51,10 @@ class FaqSuggestRequest(BaseModel):
 
 class SentimentRequest(BaseModel):
     text: str
+
+@app.get("/")
+def root():
+    return {"message": "UNSAP Helpdesk ML Service is running", "endpoints": ["/health", "/classify", "/faq-suggest", "/sentiment"]}
 
 @app.get("/health")
 def health():

@@ -12,8 +12,11 @@ export default function Header({ onMenuClick }: { onMenuClick?: () => void }) {
   return (
     <header className='bg-background/60 sticky top-0 z-20 flex h-16 shrink-0 items-center justify-between gap-2 backdrop-blur-md md:h-14'>
       <div className='flex items-center gap-2 px-4'>
-        <SidebarTrigger className='-ml-1' onClick={onMenuClick} />
-        <Separator orientation='vertical' className='mr-2 h-4' />
+        <div className="md:hidden mr-2">
+          <img src="/assets/UNSAP.png" alt="UNSAP Logo" className="w-8 h-8 object-contain" />
+        </div>
+        <SidebarTrigger className='-ml-1 hidden md:inline-flex' onClick={onMenuClick} />
+        <Separator orientation='vertical' className='mr-2 h-4 hidden md:block' />
         <Breadcrumbs />
       </div>
 
