@@ -93,7 +93,35 @@ def health():
 
 @app.post("/classify", response_model=ClassifyResponse)
 def predict_priority(req: ClassifyRequest, api_key: str = Depends(verify_api_key)):
-    # 1. Rule-based check ALWAYS runs first
+    model, vectorizer, model_version = get_model()
+    cleaned_text = clean(req.text)
+    
+    print(f"--- Inference ---")
+    print(f"Input: {req.text}")
+    print(f"Cleaned: {cleaned_text}")
+
+    # 1. ML Model is the PRIMARY logic
+    if model and vectorizer:
+        vec = vectorizer.transform([cleaned_text])
+        pred = model.predict(vec)[0]
+        
+        confidence = 1.0
+        if hasattr(model, "predict_proba"):
+            probs = model.predict_proba(vec)[0]
+            confidence = float(max(probs))
+            
+        print(f"Model prediction: {pred} (confidence: {confidence:.4f})")
+        print(f"Model version: {model_version}")
+        print(f"-----------------")
+            
+        return ClassifyResponse(
+            priority=pred,
+            confidence=confidence,
+            model_version=model_version
+        )
+
+    # 2. Rule-Based is the FALLBACK (Only runs if ML Model is not loaded/dead)
+    print("Fallback triggered: Model or Vectorizer not loaded. Using Rule-Based.")
     URGENT_KEYWORDS = [
         "krs", "ukt", "uang kuliah", "spp", "beasiswa",
         "kebakaran", "kecelakaan", "darurat",
@@ -110,47 +138,16 @@ def predict_priority(req: ClassifyRequest, api_key: str = Depends(verify_api_key
         return ClassifyResponse(
             priority="urgent",
             confidence=1.0,
-            model_version="rule_based",
+            model_version="rule_based_fallback",
             overridden_by_keyword=True,
             keyword_matched=matched_keyword
         )
-
-    # 2. ML Model check
-    model, vectorizer, model_version = get_model()
-    
-    if not model or not vectorizer:
-        print("Fallback triggered: Model or Vectorizer not loaded.")
-        return ClassifyResponse(
-            priority="normal",
-            confidence=1.0,
-            model_version="fallback"
-        )
         
-    cleaned_text = clean(req.text)
-    print(f"--- Inference ---")
-    print(f"Input: {req.text}")
-    print(f"Cleaned: {cleaned_text}")
-        
-    # Transform
-    vec = vectorizer.transform([cleaned_text])
-    
-    # Predict
-    pred = model.predict(vec)[0]
-    
-    # Confidence
-    confidence = 1.0
-    if hasattr(model, "predict_proba"):
-        probs = model.predict_proba(vec)[0]
-        confidence = float(max(probs))
-        
-    print(f"Model prediction: {pred} (confidence: {confidence:.4f})")
-    print(f"Model version: {model_version}")
-    print(f"-----------------")
-        
+    # 3. Ultimate Fallback
     return ClassifyResponse(
-        priority=pred,
-        confidence=confidence,
-        model_version=model_version
+        priority="normal",
+        confidence=1.0,
+        model_version="fallback"
     )
 
 # --- FAQ Engine ---
