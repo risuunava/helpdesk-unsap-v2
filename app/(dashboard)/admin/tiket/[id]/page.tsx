@@ -120,13 +120,13 @@ export default function AdminTicketDetail({ params }: { params: Promise<{ id: st
       isLoading={loading}
       infoContent={infoContent}
       pageHeaderAction={
-        <div className="flex bg-muted/50 p-1 rounded-xl border border-border/60">
+        <div className="flex w-full md:w-auto bg-muted/50 p-1 rounded-xl border border-border/60">
           <Button
             variant={activeTab === 'info' ? "secondary" : "ghost"}
             size="sm"
             onClick={() => setTab('info')}
             className={cn(
-              "rounded-lg font-bold text-xs flex items-center gap-2",
+              "rounded-lg font-bold text-xs flex flex-1 md:flex-none justify-center items-center gap-2",
               activeTab === 'info' && "bg-card shadow-sm border border-border/40"
             )}
           >
@@ -138,7 +138,7 @@ export default function AdminTicketDetail({ params }: { params: Promise<{ id: st
             size="sm"
             onClick={() => setTab('chat')}
             className={cn(
-              "rounded-lg font-bold text-xs flex items-center gap-2",
+              "rounded-lg font-bold text-xs flex flex-1 md:flex-none justify-center items-center gap-2",
               activeTab === 'chat' && "bg-card shadow-sm border border-border/40"
             )}
           >
@@ -174,7 +174,7 @@ export default function AdminTicketDetail({ params }: { params: Promise<{ id: st
                   <CardContent className="pt-8 space-y-8">
                     <h3 className="text-2xl font-bold text-foreground leading-tight">{ticket?.title}</h3>
                     
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                    <div className="grid grid-cols-2 gap-y-4 md:gap-y-6 gap-x-4 md:grid-cols-4 md:gap-6">
                       <div className="space-y-1.5">
                         <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Pelapor</p>
                         <p className="text-xs font-bold text-foreground">
@@ -197,7 +197,7 @@ export default function AdminTicketDetail({ params }: { params: Promise<{ id: st
 
                     <div className="space-y-3 pt-6 border-t border-border/50">
                       <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Deskripsi Masalah</p>
-                      <div className="text-sm text-muted-foreground leading-relaxed bg-muted/30 p-5 rounded-2xl border border-border/40 whitespace-pre-wrap font-medium shadow-inner">
+                      <div className="text-sm text-muted-foreground leading-relaxed bg-muted/30 p-3 md:p-5 rounded-2xl border border-border/40 whitespace-pre-wrap font-medium shadow-inner">
                         {ticket?.description}
                       </div>
                     </div>
@@ -227,7 +227,7 @@ export default function AdminTicketDetail({ params }: { params: Promise<{ id: st
                     <History size={16} className="text-primary" />
                     <CardTitle className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">Riwayat Aktivitas</CardTitle>
                   </CardHeader>
-                  <CardContent className="pt-8 px-10 pb-10">
+                  <CardContent className="pt-6 px-6 md:pt-8 md:px-10 pb-8 md:pb-10">
                     <div className="space-y-8 relative pl-6 border-l-2 border-border/60 ml-2">
                       <div className="relative">
                         <div className="absolute -left-[31px] top-1.5 w-3 h-3 bg-primary border-2 border-background rounded-full ring-2 ring-primary/20"></div>
@@ -262,7 +262,7 @@ export default function AdminTicketDetail({ params }: { params: Promise<{ id: st
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, x: 10 }}
-                className="bg-card border border-border/40 rounded-[2rem] shadow-glass overflow-hidden flex flex-col h-[700px]"
+                className="bg-card border border-border/40 rounded-[2rem] shadow-glass overflow-hidden flex flex-col h-[400px] md:h-[700px]"
               >
                 <div className="p-5 border-b border-border/60 bg-muted/40 backdrop-blur-md flex items-center justify-between">
                   <div className="flex items-center gap-3">

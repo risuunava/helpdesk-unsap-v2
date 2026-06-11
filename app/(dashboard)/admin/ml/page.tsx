@@ -168,7 +168,7 @@ export default function MlActiveLearningPage() {
     >
       <div className="flex flex-1 flex-col gap-4 pb-12">
         {/* KPI Grid - Matches Main Dashboard Style */}
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-2 md:gap-4">
           <Card className="@container/card *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card">
             <CardHeader>
               <CardDescription>Data Pelatihan</CardDescription>
@@ -362,7 +362,7 @@ export default function MlActiveLearningPage() {
         </div>
 
         {/* Footer Protocol Info */}
-        <div className="mt-8 pt-6 border-t border-border/60 grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="mt-8 pt-6 border-t border-border/60 grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
           <div className="space-y-2">
             <div className="flex items-center gap-2 text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em]">
               <Info size={14} className="text-primary" />

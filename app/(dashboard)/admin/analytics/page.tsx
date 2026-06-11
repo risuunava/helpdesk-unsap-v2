@@ -102,7 +102,7 @@ export default function AnalyticsPage() {
     >
       <div className="flex flex-1 flex-col gap-4 pb-8">
         {/* KPI Grid - Matches Main Dashboard Style */}
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 md:gap-4">
           <Card className="@container/card *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card">
             <CardHeader>
               <CardDescription>Total Tiket</CardDescription>

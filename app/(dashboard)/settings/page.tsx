@@ -114,10 +114,10 @@ export default function SettingsPage() {
 
   return (
     <PageContainer pageTitle="Settings" pageDescription="Manage your workspace preferences and security.">
-      <div className="flex flex-col md:flex-row gap-12 mt-4">
+      <div className="flex flex-col md:flex-row gap-6 md:gap-12 mt-4">
         {/* Navigation Sidebar */}
-        <aside className="w-full md:w-64 shrink-0">
-          <nav className="space-y-1">
+        <aside className="w-full md:w-64 shrink-0 -mx-4 px-4 md:mx-0 md:px-0">
+          <nav className="flex overflow-x-auto pb-2 md:pb-0 md:flex-col gap-2 md:gap-1 scrollbar-hide">
             {navItems.map((item) => {
               const Icon = item.icon
               const isActive = activeSection === item.id
@@ -126,7 +126,7 @@ export default function SettingsPage() {
                   key={item.id}
                   onClick={() => setActiveSection(item.id as SettingsSection)}
                   className={cn(
-                    "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all group",
+                    "whitespace-nowrap md:w-full flex items-center gap-2 md:gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all group",
                     isActive 
                       ? "bg-primary/5 text-primary shadow-[inset_0_0_0_1px_rgba(var(--primary),0.1)]" 
                       : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
@@ -134,7 +134,7 @@ export default function SettingsPage() {
                 >
                   <Icon size={18} className={cn(isActive ? "text-primary" : "text-muted-foreground group-hover:text-foreground")} />
                   {item.label}
-                  {isActive && <ChevronRight size={14} className="ml-auto opacity-50" />}
+                  {isActive && <ChevronRight size={14} className="hidden md:block ml-auto opacity-50" />}
                 </button>
               )
             })}

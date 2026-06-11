@@ -32,7 +32,7 @@ export default function NotificationsClient({ userId, role }: { userId: string; 
 
   if (notifications.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center p-16 border border-dashed border-border rounded-xl bg-muted/10 text-center">
+      <div className="flex flex-col items-center justify-center p-8 md:p-16 border border-dashed border-border rounded-xl bg-muted/10 text-center">
         <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mb-4">
           <Bell className="w-8 h-8 text-muted-foreground" />
         </div>
@@ -71,7 +71,7 @@ export default function NotificationsClient({ userId, role }: { userId: string; 
           <div 
             key={notif.id}
             onClick={() => handleNotificationClick(notif)}
-            className={`p-5 rounded-xl border transition-all cursor-pointer flex gap-4 ${
+            className={`p-4 md:p-5 rounded-xl border transition-all cursor-pointer flex gap-3 md:gap-4 ${
               notif.is_read 
                 ? 'bg-background border-border/50 opacity-60' 
                 : 'bg-muted/10 border-border shadow-sm hover:border-foreground/20 hover:bg-muted/30'
@@ -85,7 +85,7 @@ export default function NotificationsClient({ userId, role }: { userId: string; 
                <Info size={20} />}
             </div>
             <div className="flex-1">
-              <div className="flex justify-between items-start gap-4 mb-1">
+              <div className="flex flex-col sm:flex-row justify-between sm:items-start gap-1 sm:gap-4 mb-1">
                 <h4 className={`text-[15px] ${notif.is_read ? 'font-medium' : 'font-semibold'}`}>
                   {notif.title}
                 </h4>

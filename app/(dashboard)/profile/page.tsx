@@ -63,7 +63,7 @@ export default function ProfilePage() {
       <div className="max-w-3xl mx-auto w-full space-y-6 mt-4">
         <Card className="border-border/40 shadow-sm overflow-hidden bg-background">
           {/* Header Section */}
-          <div className="px-8 pt-8 pb-6">
+          <div className="px-4 md:px-8 pt-6 md:pt-8 pb-4 md:pb-6">
             <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
               <Avatar className="h-28 w-28 rounded-2xl border bg-muted shadow-sm">
                 <AvatarImage src={profile.avatar_url || ''} alt={profile.full_name} />
@@ -112,8 +112,8 @@ export default function ProfilePage() {
           <Separator className="bg-border/40" />
 
           {/* Details Section */}
-          <CardContent className="px-8 py-8">
-            <div className="grid gap-y-8 gap-x-12 sm:grid-cols-2">
+          <CardContent className="px-4 md:px-8 py-6 md:py-8">
+            <div className="grid gap-y-6 md:gap-y-8 gap-x-12 sm:grid-cols-2">
               <ProfileItem 
                 icon={<Mail size={16} />} 
                 label="Primary Email" 
@@ -137,7 +137,7 @@ export default function ProfilePage() {
             </div>
           </CardContent>
 
-          <div className="px-8 py-4 bg-muted/30 border-t border-border/40 flex items-center justify-between">
+          <div className="px-4 md:px-8 py-4 bg-muted/30 border-t border-border/40 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
             <p className="text-[11px] font-medium text-muted-foreground uppercase tracking-widest">
               System Integrated ID: {profile.id.slice(0, 8).toUpperCase()}
             </p>
