@@ -93,21 +93,7 @@ def health():
 
 @app.post("/classify", response_model=ClassifyResponse)
 def predict_priority(req: ClassifyRequest, api_key: str = Depends(verify_api_key)):
-    model, vectorizer, model_version = get_model()
-    
-    if not model or not vectorizer:
-        print("Fallback triggered: Model or Vectorizer not loaded.")
-        return ClassifyResponse(
-            priority="normal",
-            confidence=1.0,
-            model_version="fallback"
-        )
-        
-    cleaned_text = clean(req.text)
-    print(f"--- Inference ---")
-    print(f"Input: {req.text}")
-    print(f"Cleaned: {cleaned_text}")
-    
+    # 1. Rule-based check ALWAYS runs first
     URGENT_KEYWORDS = [
         "krs", "ukt", "uang kuliah", "spp", "beasiswa",
         "kebakaran", "kecelakaan", "darurat",
@@ -124,10 +110,26 @@ def predict_priority(req: ClassifyRequest, api_key: str = Depends(verify_api_key
         return ClassifyResponse(
             priority="urgent",
             confidence=1.0,
-            model_version=model_version or "rule_based",
+            model_version="rule_based",
             overridden_by_keyword=True,
             keyword_matched=matched_keyword
         )
+
+    # 2. ML Model check
+    model, vectorizer, model_version = get_model()
+    
+    if not model or not vectorizer:
+        print("Fallback triggered: Model or Vectorizer not loaded.")
+        return ClassifyResponse(
+            priority="normal",
+            confidence=1.0,
+            model_version="fallback"
+        )
+        
+    cleaned_text = clean(req.text)
+    print(f"--- Inference ---")
+    print(f"Input: {req.text}")
+    print(f"Cleaned: {cleaned_text}")
         
     # Transform
     vec = vectorizer.transform([cleaned_text])
