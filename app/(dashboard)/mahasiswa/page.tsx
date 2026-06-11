@@ -18,6 +18,7 @@ import {
   CardAction,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import PageContainer from "@/components/layout/page-container";
 import { Icons } from "@/components/icons";
 
@@ -25,6 +26,15 @@ export default function MahasiswaDashboard() {
   const { tickets, loading } = useTickets();
   const router = useRouter();
   const [viewMode, setViewMode] = React.useState<"table" | "grid">("grid");
+  const [searchQuery, setSearchQuery] = React.useState("");
+
+  const filteredTickets = React.useMemo(() => {
+    return tickets.filter((t) =>
+      t.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      t.ticket_number.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      t.category.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }, [tickets, searchQuery]);
 
   const stats = {
     total: tickets.length,
@@ -107,27 +117,39 @@ export default function MahasiswaDashboard() {
         </div>
 
         <div className="flex flex-col gap-4 mt-2">
-          <div className="flex items-center justify-between gap-2">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
             <div className="flex items-center gap-2">
                <h3 className="text-[10px] font-bold text-text-muted uppercase tracking-[0.2em] px-2 opacity-60">Daftar Aktivitas</h3>
             </div>
-            <div className="flex bg-muted/40 p-1 rounded-lg border border-border/40">
-              <Button
-                variant={viewMode === "table" ? "secondary" : "ghost"}
-                size="icon"
-                className="h-7 w-7 rounded-md"
-                onClick={() => setViewMode("table")}
-              >
-                <Icons.list className="h-3.5 w-3.5" />
-              </Button>
-              <Button
-                variant={viewMode === "grid" ? "secondary" : "ghost"}
-                size="icon"
-                className="h-7 w-7 rounded-md"
-                onClick={() => setViewMode("grid")}
-              >
-                <Icons.dashboard className="h-3.5 w-3.5" />
-              </Button>
+            <div className="flex items-center gap-2">
+              <div className="relative flex-1 md:w-64">
+                <Icons.search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                <Input
+                  type="text"
+                  placeholder="Cari tiket..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-9 h-9 rounded-lg text-sm bg-muted/40 border-border/40 focus-visible:ring-accent/30"
+                />
+              </div>
+              <div className="flex bg-muted/40 p-1 rounded-lg border border-border/40">
+                <Button
+                  variant={viewMode === "table" ? "secondary" : "ghost"}
+                  size="icon"
+                  className="h-7 w-7 rounded-md"
+                  onClick={() => setViewMode("table")}
+                >
+                  <Icons.list className="h-3.5 w-3.5" />
+                </Button>
+                <Button
+                  variant={viewMode === "grid" ? "secondary" : "ghost"}
+                  size="icon"
+                  className="h-7 w-7 rounded-md"
+                  onClick={() => setViewMode("grid")}
+                >
+                  <Icons.dashboard className="h-3.5 w-3.5" />
+                </Button>
+              </div>
             </div>
           </div>
 
@@ -137,6 +159,11 @@ export default function MahasiswaDashboard() {
                 <div className="flex flex-col items-center justify-center py-12 md:py-24 space-y-4">
                   <Icons.spinner className="h-8 w-8 animate-spin text-accent" />
                   <p className="text-xs font-bold text-muted-foreground uppercase tracking-[0.2em]">Memuat Laporan...</p>
+                </div>
+              ) : filteredTickets.length === 0 && tickets.length > 0 ? (
+                <div className="flex flex-col items-center justify-center py-12 text-center">
+                  <Icons.search className="h-8 w-8 text-muted-foreground/40 mb-3" />
+                  <p className="text-sm font-bold text-muted-foreground">Tidak ada laporan yang cocok dengan "{searchQuery}"</p>
                 </div>
               ) : tickets.length === 0 ? (
                 <div className="flex flex-col items-center justify-center py-10 md:py-20 text-center">
@@ -152,30 +179,36 @@ export default function MahasiswaDashboard() {
                   </Button>
                 </div>
               ) : viewMode === "grid" ? (
-                <div className="p-3 md:p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6 bg-muted/5">
-                  {tickets.map((t) => (
+                <div className="p-3 md:p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6 bg-muted/5">
+                  {filteredTickets.map((t) => (
                     <Card
                       key={t.id}
                       onClick={() => navigateToDetail(t.id)}
-                      className="cursor-pointer hover:border-accent/40 transition-all border-border/60 bg-card group shadow-sm overflow-hidden"
+                      className="cursor-pointer hover:border-accent/40 transition-all border-border/60 bg-card group shadow-sm overflow-hidden flex flex-col"
                     >
-                      <CardHeader className="pb-2 pt-4 px-4 md:px-6 md:pb-3 border-b border-border/20 bg-muted/30">
-                        <div className="flex items-center justify-between mb-1">
-                          <CardDescription className="font-mono font-bold text-accent text-[11px]">
-                            ID:{t.ticket_number}
-                          </CardDescription>
+                      <CardHeader className="p-3 md:p-4 border-b border-border/10 bg-muted/20">
+                        <div className="flex items-start justify-between gap-2">
+                          <div className="space-y-1">
+                            <CardDescription className="font-mono font-bold text-accent text-[10px]">
+                              #{t.ticket_number}
+                            </CardDescription>
+                            <CardTitle className="text-sm font-bold line-clamp-2 leading-tight group-hover:text-accent transition-colors">{t.title}</CardTitle>
+                          </div>
                           <StatusBadge status={t.status as any} />
                         </div>
-                        <CardTitle className="text-sm font-bold line-clamp-2 mt-2 leading-tight group-hover:text-accent transition-colors h-[40px]">{t.title}</CardTitle>
                       </CardHeader>
-                      <CardContent className="p-4 pt-3 md:p-6 md:pt-4">
-                        <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest leading-relaxed">
-                          {t.category} • {t.created_at ? new Date(t.created_at).toLocaleDateString() : "-"}
-                        </p>
-                        <div className="flex items-center justify-between mt-4 pt-3 border-t border-border/40">
+                      <CardContent className="p-3 md:p-4 flex-1 flex flex-col justify-between gap-3">
+                        <div className="flex items-center gap-2 text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
+                          <span>{t.category}</span>
+                          <span className="w-1 h-1 rounded-full bg-border" />
+                          <span>{t.created_at ? new Date(t.created_at).toLocaleDateString() : "-"}</span>
+                        </div>
+                        <div className="flex items-center justify-between pt-2">
                           <PriorityBadge priority={t.priority as any} />
                           {t.status !== "resolved" && t.status !== "closed" && (
-                            <SlaIndicator deadline={t.sla_deadline} />
+                            <div className="hidden sm:block">
+                              <SlaIndicator deadline={t.sla_deadline} />
+                            </div>
                           )}
                         </div>
                       </CardContent>
@@ -202,7 +235,7 @@ export default function MahasiswaDashboard() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-border/20">
-                      {tickets.map((t) => (
+                      {filteredTickets.map((t) => (
                         <tr
                           key={t.id}
                           onClick={() => navigateToDetail(t.id)}
