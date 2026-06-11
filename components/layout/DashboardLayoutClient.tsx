@@ -36,7 +36,7 @@ export function DashboardLayoutClient({ role, userName, children }: DashboardLay
             <Header onMenuClick={toggleSidebar} />
 
             {/* Main Content Area with internal scroll */}
-            <main className="flex-1 p-6 pb-24 md:pb-6 lg:p-8 bg-bg-base overflow-y-auto scroll-smooth">
+            <main className="flex-1 p-6 pb-28 md:pb-6 lg:p-8 bg-bg-base overflow-y-auto scroll-smooth">
               <div className="max-w-7xl mx-auto min-h-full">
                 <ErrorBoundary>
                   {children}
