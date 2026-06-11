@@ -80,8 +80,8 @@ export function NotificationBell() {
             {notifications.map((notification) => (
               <div
                 key={notification.id}
-                className={`flex flex-col gap-1 p-3 border-b last:border-b-0 cursor-pointer hover:bg-gray-50 ${
-                  !notification.is_read ? 'bg-blue-50' : ''
+                className={`flex flex-col gap-1 p-3 border-b last:border-b-0 cursor-pointer transition-colors hover:bg-muted/50 ${
+                  !notification.is_read ? 'bg-primary/5' : ''
                 }`}
                 onClick={() => handleNotificationClick(notification.id, notification.ticket_id)}
               >

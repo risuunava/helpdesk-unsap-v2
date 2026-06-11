@@ -6,6 +6,7 @@ import SearchInput from '../search-input';
 import { ThemeSelector } from '../themes/theme-selector';
 import { ThemeModeToggle } from '../themes/theme-mode-toggle';
 import { NotificationBell } from './NotificationBell';
+import { UserNav } from './user-nav';
 
 export default function Header({ onMenuClick }: { onMenuClick?: () => void }) {
   return (
@@ -24,7 +25,10 @@ export default function Header({ onMenuClick }: { onMenuClick?: () => void }) {
         <div className='hidden sm:block'>
           <ThemeSelector />
         </div>
-        <NotificationBell />
+        <div className="flex items-center gap-3 ml-2 border-l pl-3 border-border/50">
+          <NotificationBell />
+          <UserNav />
+        </div>
       </div>
     </header>
   );
