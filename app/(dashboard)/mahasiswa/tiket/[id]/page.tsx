@@ -71,7 +71,7 @@ export default function TicketDetailPage({ params }: { params: Promise<{ id: str
   if (error || (!loading && !ticket)) {
     return (
       <PageContainer pageTitle="Laporan Tidak Ditemukan">
-        <div className="flex flex-col items-center justify-center py-40 text-center border border-border/40 rounded-xl bg-card max-w-2xl mx-auto shadow-sm">
+        <div className="flex flex-col items-center justify-center py-20 md:py-40 text-center border border-border/40 rounded-xl bg-card max-w-2xl mx-auto shadow-sm">
           <div className="w-20 h-20 bg-muted rounded-xl flex items-center justify-center mb-6 border border-border/20 shadow-sm">
             <Info className="h-10 w-10 text-muted-foreground/40" />
           </div>
@@ -159,7 +159,7 @@ export default function TicketDetailPage({ params }: { params: Promise<{ id: str
                   </CardHeader>
                   
                   <CardContent className="pt-8">
-                    <div className="grid grid-cols-2 gap-y-6 gap-x-4 border-b border-border/50 pb-8 mb-8">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-6 gap-x-4 border-b border-border/50 pb-8 mb-8">
                       <div className="space-y-1.5">
                         <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Kategori</p>
                         <p className="text-sm font-bold text-foreground capitalize">{ticket?.category}</p>
@@ -213,7 +213,7 @@ export default function TicketDetailPage({ params }: { params: Promise<{ id: str
                     <History size={16} className="text-primary" />
                     <CardTitle className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">Timeline Penanganan</CardTitle>
                   </CardHeader>
-                  <CardContent className="pt-8 px-10 pb-10">
+                  <CardContent className="pt-8 px-5 pb-6 md:px-10 md:pb-10">
                     <div className="space-y-8 relative pl-6 border-l-2 border-border/60 ml-2">
                       <div className="relative">
                         <div className="absolute -left-[31px] top-1.5 w-3 h-3 bg-primary border-2 border-background rounded-full ring-2 ring-primary/20"></div>
@@ -245,7 +245,7 @@ export default function TicketDetailPage({ params }: { params: Promise<{ id: str
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.2 }}
-                className="bg-card border border-border/40 rounded-xl shadow-sm overflow-hidden flex flex-col h-[700px]"
+                className="bg-card border border-border/40 rounded-xl shadow-sm overflow-hidden flex flex-col h-[500px] md:h-[700px]"
               >
                 <div className="p-5 border-b border-border/60 bg-muted/40 backdrop-blur-md flex items-center justify-between">
                   <div className="flex items-center gap-3">

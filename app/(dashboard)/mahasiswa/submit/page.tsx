@@ -146,7 +146,7 @@ export default function SubmitTicketPage() {
   if (success) {
     return (
       <PageContainer>
-        <div className="max-w-2xl mx-auto py-20 px-4">
+        <div className="max-w-2xl mx-auto py-8 md:py-20 px-4">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -202,7 +202,7 @@ export default function SubmitTicketPage() {
       infoContent={infoContent}
     >
       <div className="flex flex-1 flex-col gap-8 pb-12">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8">
           {/* Form Section */}
           <div className="lg:col-span-8 flex flex-col gap-6">
             <form onSubmit={handleSubmit} className="flex flex-col gap-6">

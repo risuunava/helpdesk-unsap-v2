@@ -5,7 +5,8 @@ from datetime import datetime
 from pathlib import Path
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
-from sklearn.pipeline import Pipeline
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import classification_report, accuracy_score, confusion_matrix
 from supabase import create_client, Client
 
 import nltk
@@ -117,26 +118,80 @@ def train():
         return
 
     # Feature extraction & Model
-    print("Training model...")
-    print(f"Class distribution:\n{df['label'].value_counts()}")
-    
-    # Use n-grams (1, 2) to capture phrases like "kurang dari" or "tidak bisa"
+    print("\n" + "="*60)
+    print("  MODEL TRAINING REPORT")
+    print("="*60)
+    print(f"  Algoritma       : Logistic Regression")
+    print(f"  Vectorizer      : TF-IDF (max_features=5000, ngram=(1,2))")
+    print(f"  Total data      : {len(df)} sampel")
+    print(f"  Kelas target    : {sorted(df['label'].unique().tolist())}")
+    print("="*60)
+    print("\nDistribusi Kelas:")
+    for label, count in df['label'].value_counts().items():
+        pct = count / len(df) * 100
+        print(f"  {label:<10} : {count} sampel ({pct:.1f}%)")
+
+    # Split data: 80% training, 20% testing
+    X_all = df['cleaned_text']
+    y_all = df['label']
+    X_train_raw, X_test_raw, y_train, y_test = train_test_split(
+        X_all, y_all, test_size=0.2, random_state=42, stratify=y_all
+    )
+
+    print(f"\nPembagian Data:")
+    print(f"  Data Training   : {len(X_train_raw)} sampel (80%)")
+    print(f"  Data Testing    : {len(X_test_raw)} sampel (20%)")
+
+    # Train
+    print("\nMemulai training...")
     vectorizer = TfidfVectorizer(max_features=5000, ngram_range=(1, 2))
     model = LogisticRegression(max_iter=1000, class_weight='balanced')
-    
-    X = vectorizer.fit_transform(df['cleaned_text'])
-    y = df['label']
-    
-    model.fit(X, y)
-    
+
+    X_train = vectorizer.fit_transform(X_train_raw)
+    X_test  = vectorizer.transform(X_test_raw)
+
+    model.fit(X_train, y_train)
+
+    # Evaluate on test set
+    y_pred = model.predict(X_test)
+    acc = accuracy_score(y_test, y_pred)
+
+    print("\n" + "="*60)
+    print("  HASIL EVALUASI (Data Uji 20%)")
+    print("="*60)
+    print(f"  Akurasi Keseluruhan : {acc*100:.2f}%")
+    print("\nLaporan Klasifikasi per Label:")
+    report = classification_report(y_test, y_pred, digits=4)
+    # Indent tiap baris untuk keterbacaan
+    for line in report.splitlines():
+        print("  " + line)
+
+    # Confusion matrix
+    labels_order = sorted(df['label'].unique().tolist())
+    cm = confusion_matrix(y_test, y_pred, labels=labels_order)
+    print("\nConfusion Matrix (baris=aktual, kolom=prediksi):")
+    header = "  " + " " * 10 + "".join(f"{l:>10}" for l in labels_order)
+    print(header)
+    for i, row_label in enumerate(labels_order):
+        row_str = "  " + f"{row_label:<10}" + "".join(f"{v:>10}" for v in cm[i])
+        print(row_str)
+    print("="*60)
+
+    # Retrain on ALL data for final saved model
+    print("\nMelatih ulang model dengan SELURUH data untuk deployment...")
+    X_full = vectorizer.fit_transform(X_all)
+    model.fit(X_full, y_all)
+
     # Save model and vectorizer
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     model_filename = f"model_{timestamp}.pkl"
-    
+
     joblib.dump(model, MODEL_DIR / model_filename)
     joblib.dump(vectorizer, MODEL_DIR / "vectorizer.pkl")
-    
-    print(f"Training completed successfully. Model saved as {model_filename}")
+
+    print(f"\n[OK] Model tersimpan   : models/{model_filename}")
+    print(f"[OK] Vectorizer        : models/vectorizer.pkl")
+    print("="*60 + "\n")
 
 if __name__ == "__main__":
     train()

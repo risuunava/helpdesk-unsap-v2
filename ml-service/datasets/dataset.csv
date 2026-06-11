@@ -1,656 +1,1021 @@
 text,label
-KRS saya error tidak bisa pilih jadwal,urgent
-Aplikasi sering crash saat dibuka,urgent
-Tolong bantu saya lupa password,high
-Kapan jadwal perwalian dimulai?,normal
-Wifi di perpustakaan lambat sekali,low
-AC di ruang kelas panas,low
-Cara ganti foto profil bagaimana ya?,low
-Sistem error 500,urgent
-Tidak bisa cetak kartu ujian,high
-Sistem SIAKAD tidak bisa diakses,urgent
-Error saat login muncul pesan invalid token,urgent
-Nilai saya tidak muncul di transkrip,high
-Bagaimana cara mengajukan cuti akademik?,normal
-Toilet kampus lantai 2 bau,low
-Parkiran motor penuh setiap pagi,low
-Cara daftar ulang semester depan?,normal
-Server down saat UTS online,urgent
-Lupa NIM dan password,high
-Jadwal ujian bentrok dengan kegiatan lain,high
-Dosen tidak masuk tanpa pemberitahuan,low
-Fitur upload tugas error,urgent
-Email kampus tidak bisa terima file besar,high
-Kapan batas akhir pengisian KRS?,normal
-Ruang baca terlalu ramai,low
-Lampu kelas mati,low
-Cara melihat IPK sementara?,normal
-Sertifikat prestasi tidak bisa diunduh,high
-Form perubahan jadwal error,urgent
-Pengumuman wisuda belum keluar,normal
-Internet di asrama lemot,low
-Meja praktikum rusak,low
-Bagaimana cara konsultasi dengan dosen wali?,normal
-Bantuan dana mahasiswa bagaimana caranya?,high
-Transkrip nilai tidak bisa dicetak,urgent
-Aplikasi mobile kampus force close,urgent
-Lupa jadwal ujian,high
-Kapan pembagian kelas praktikum?,normal
-Kantin sepi pilihan makanan,low
-Proyektor di ruang 301 rusak,low
-Cara mengubah data pribadi di SIAKAD?,normal
-Submit tugas akhir error 404,urgent
-E-learning tidak bisa play video,high
-Info beasiswa terbaru dimana ya?,normal
-Tempat olahraga kampus kotor,low
-Pohon tumbang di area parkir,low
-Bagaimana prosedur mutasi ke prodi lain?,normal
-Kartu mahasiswa tidak bisa scan,high
-Sistem pengisian KRS overload,urgent
-Aplikasi perpustakaan digital error,urgent
-Nilai IPS saya kurang dari 2,0,high
-Kapan libur semester ganjil?,normal
-Air minum di kampus tidak tersedia,low
-Ruang kuliah tidak ada papan tulis,low
-Cara aktivasi akun SIAKAD?,normal
-Pembayaran UKT gagal di bank,urgent
-Link zoom dosen tidak berfungsi,high
-Jadwal perbaikan nilai kapan?,normal
-WiFi di fakultas teknik mati,low
-Kursi kelas banyak yang patah,low
-Bagaimana cara cetak ulang KTM?,normal
-Laporan PKL tidak bisa diupload,urgent
-Server SIAKAD down semalam,urgent
-Transkrip nilai ada kesalahan entri,high
-Kapan pendaftaran magang dibuka?,normal
-Lift kampus lantai 3 rusak,low
-Tempat sampah penuh di taman,low
-Cara cek sisa SKS?,normal
-Sistem presensi mahasiswa error,urgent
-Ujian susulan bagaimana mekanismenya?,high
-Jadwal bimbingan akademik kapan?,normal
-Parkir motor tidak teratur,low
-Kipas angin di kelas rusak,low
-Bagaimana cara ubah foto di portal?,normal
-Pendaftaran skripsi error di sistem,urgent
-Lupa password e-learning,high
-Batas toleransi keterlambatan tugas?,normal
-Ruang tunggu dosen pengap,low
-Jalan menuju gedung baru berlubang,low
-Cara minta surat keterangan aktif kuliah?,normal
-Cetak transkrip nilai tidak bisa,urgent
-Aplikasi SIAKAD lambat saat jam sibuk,high
-Kapan jadwal UKT dibuka?,normal
-Kantin kehabisan nasi bungkus,low
-Lemari di laboratorium rusak,low
-Bagaimana cara ganti dosen pembimbing?,normal
-Fitur chat di e-learning tidak jalan,urgent
-Pengumuman kelulusan tertunda,high
-Kapan ujian tengah semester dimulai?,normal
-AC di perpustakaan terlalu dingin,low
-Colokan listrik di kelas kurang,low
-Cara daftar mata kuliah ulang?,normal
-Pembayaran SPP tidak terdeteksi,urgent
-Sistem peminjaman ruangan error,high
-Batas waktu pengumpulan tugas akhir?,normal
-Toilet kampus kehabisan air,low
-Papan informasi di gedung A rusak,low
-Bagaimana prosedur pindah kelas?,normal
-Error 503 saat akses SIAKAD,urgent
-Sertifikat TOEFL tidak bisa diunduh,high
-Kapan hari libur nasional kampus?,normal
-Lampu taman kampus mati,low
-Tempat duduk auditorium banyak yang rusak,low
-Cara reset password portal mahasiswa?,normal
-Database nilai hilang karena error sistem,urgent
-Presensi dosen tidak tercatat,high
-Jadwal perkuliahan hari Sabtu?,normal
-Wifi di gedung olahraga lemot,low
-Meja dosen tidak ada di ruang,low
-Cara lihat histori nilai?,normal
-Pengajuan judul skripsi error,urgent
-E-learning tidak bisa submit kuis,high
-Kapan jadwal wisuda berikutnya?,normal
-Area merokok terlalu dekat gedung,low
-Kursi ruang seminar roboh,low
-Bagaimana cara ikut organisasi mahasiswa?,normal
-Sistem pengumuman nilai error,urgent
-Lupa password portal alumni,high
-Berapa batas maksimal SKS semester depan?,normal
-Sirkulasi udara di ruang kelas buruk,low
-Jalur difabel terhalang bangunan,low
-Cara mengunduh jurnal dari perpustakaan?,normal
-Submit proposal PKM error,urgent
-Informasi UKT belum keluar,high
-Kapan pendaftaran KKN dimulai?,normal
-Banyak nyamuk di ruang kuliah,low
-Kran air di depan kelas bocor,low
-Bagaimana cara konversi nilai?,normal
-Fitur reset password tidak mengirim email,urgent
-Data mahasiswa tidak valid di sistem,high
-Kapan batas akhir drop mata kuliah?,normal
-Tempat ibadah kampus terlalu kecil,low
-Pager pembatas parkir rusak,low
-Cara daftar sidang skripsi?,normal
-Sistem pembagian grup praktikum error,urgent
-Notifikasi SIAKAD tidak muncul,high
-Biaya SPP apakah naik tahun depan?,normal
-Ruang laktasi kurang bersih,low
-Papan penunjuk arah hilang,low
-Bagaimana cara akses e-journal?,normal
-Error 500 saat cetak KRS,urgent
-Paduan suara kampus jadwalnya kapan?,high
-Syarat beasiswa bidikmisi apa saja?,normal
-Banyak coretan di dinding kelas,low
-Kabel internet di lab putus,low
-Cara menghubungi BAAK?,normal
-Sistem pembayaran online error,urgent
-Link webinar kampus tidak bisa dibuka,high
-Kapan pengisian kuisioner dosen?,normal
-Tempat cuci tangan tidak ada sabun,low
-Kursi tunggu di depan kelas rusak,low
-Bagaimana cara ajukan cuti semester?,normal
-Jadwal tidak bisa diunduh dari portal,urgent
-Pengumuman hasil seleksi beasiswa telat,high
-Berapa UKT prodi teknik informatika?,normal
-Lemari penyimpanan alat lab rusak,low
-Pintu darurat gedung B terkunci,low
-Cara cetak ulang ijazah?,normal
-Error import data nilai dari excel,urgent
-Bimbingan online susah diakses,high
-Kapan jadwal pengambilan KTM baru?,normal
-Jalur pejalan kaki licin saat hujan,low
-Gedung parkir tidak ada penerangan,low
-Bagaimana cara komplain nilai?,normal
-Sistem pengambilan mata kuliah error,urgent
-Lupa jadwal bimbingan dosen,high
-Prosedur pindah prodi bagaimana?,normal
-Lift kampus hanya satu yang berfungsi,low
-Saluran air hujan tersumbat,low
-Cara melaporkan dosen yang tidak hadir?,normal
-Fitur upload lampiran di SIAKAD gagal,urgent
-Notifikasi email pendaftaran tidak masuk,high
-Kapan batas akhir pengajuan nilai perbaikan?,normal
-Toilet wanita banyak antre,low
-Tempat parkir sepeda tidak ada,low
-Bagaimana cara akses materi kuliah online?,normal
-Sistem presensi QR code tidak bisa scan,urgent
-Info seminar nasional terbaru?,high
-Apakah libur tanggal merah kampus ikut?,normal
-Ruang sekretariat prodi berantakan,low
-Papan nama gedung sulit dibaca,low
-Cara minta rekomendasi beasiswa?,normal
-Server prodi error saat PPL,urgent
-Email balasan dari dosen lambat,high
-Kapan pendaftaran lomba nasional?,normal
-Ruang terbuka hijau minim bangku,low
-Pagar kampus bagian timur roboh,low
-Bagaimana cara perubahan KRS online?,normal
-Error 401 unauthorized saat login,urgent
-Pengumuman kuliah pengganti belum ada,high
-Berapa minimal SKS agar tidak DO?,normal
-Tempat wudhu kurang air,low
-Jembatan penghubung gedung getar,low
-Cara lapor jika KTM hilang?,normal
-Sistem pengajuan cuti error,urgent
-Lupa password SIMAK,high
-Kapan jadwal penerimaan mahasiswa baru?,normal
-Kantin kampus harga mahal,low
-Proyektor di ruang 105 mati total,low
-Bagaimana cara baca transkrip nilai?,normal
-Form pendaftaran wisuda error,urgent
-Informasi dosen pembimbing belum keluar,high
-Kapan jadwal Her registrasi?,normal
-Ruang konseling mahasiswa sepi,low
-Tempat fotokopi dekat kampus tutup,low
-Cara akses cloud storage kampus?,normal
-Sistem verifikasi berkas error,urgent
-Presensi mahasiswa tidak sinkron,high
-Apakah ada kelas karyawan di sini?,normal
-Air conditioner rusak di ruang dosen,low
-Tempat buang sampah kurang,low
-Bagaimana cara ubah jadwal kuliah?,normal
-Sistem pengunduhan silabus error,urgent
-Pemberitahuan kelas online telat,high
-Kapan batas unggah tugas akhir?,normal
-Kursi dosen di kelas depan rusak,low
-Kipas angin perpustakaan tidak berfungsi,low
-Cara request transkrip nilai ke BAAK?,normal
-Error 404 halaman tidak ditemukan,urgent
-Link registrasi ulang tidak aktif,high
-Jadwal remedial kapan diumumkan?,normal
-Ruang mikroteaching tidak bersih,low
-Lemari buku di perpustakaan rusak,low
-Bagaimana cara ganti semester cuti?,normal
-Data SKS tidak sesuai dengan kurikulum,urgent
-Fitur forget password tidak bekerja,high
-Kapan pembagian kelas online?,normal
-Tempat sholat putra tidak ada karpet,low
-Toilet lantai 4 tidak ada air,low
-Cara minta surat rekomendasi magang?,normal
-Server SIAKAD error jam 12 malam,urgent
-Laporan kemajuan skripsi susah diupload,high
-Apakah ujian akan onsite semua?,normal
-Parkiran mahasiswa banjir,low
-Jalan menuju gedung C gelap,low
-Bagaimana cara cetak kartu ujian online?,normal
-Sistem penilaian dosen error,urgent
-Pengumuman nilai ujian susulan belum keluar,high
-Kapan libur kenaikan Isa Almasih?,normal
-AC ruang multimedia terlalu panas,low
-Tempat olahraga tidak ada alat,low
-Cara minta berkas beasiswa?,normal
-Aplikasi kampus tidak bisa update data,urgent
-Pendaftaran seminar proposal error,high
-Kapan jadwal pembayaran UKT tahap 2?,normal
-Tempat parkir motor becek saat hujan,low
-Proyektor tampilannya buram,low
-Bagaimana cara lihat kehadiran dosen?,normal
-Sistem penggantian jadwal error,urgent
-Lupa akun e-learning,high
-Berapa besaran UKT prodi saya?,normal
-Kursi belajar di ruang baca habis,low
-Pintu kelas rusak tidak bisa ditutup,low
-Cara minta pembebasan SPP?,normal
-Error 502 bad gateway,urgent
-Link absensi online tidak bisa diakses,high
-Kapan jadwal penyusunan skripsi?,normal
-Toilet kampus lantai 1 bau pesing,low
-Kabel LAN di lab komputer putus,low
-Bagaimana cara ikut program merdeka belajar?,normal
-Fitur edit data profil error,urgent
-Informasi wisuda belum update,high
-Apakah ada kuliah pengganti minggu depan?,normal
-Ruang tunggu UKM terlalu panas,low
-Meja kursi di kantin kotor,low
-Cara reset PIN SIAKAD?,normal
-Database transkrip nilai corrupt,urgent
-Pendaftaran praktikum offline error,high
-Kapan batas input nilai dosen?,normal
-Tempat ibadah tidak ada pendingin,low
-Pagar kampus bagian selatan terbuka,low
-Bagaimana cara daftar KP online?,normal
-Sistem absensi sidik jari error,urgent
-Email konfirmasi pembayaran tidak masuk,high
-Jadwal akademik kapan rilis?,normal
-Lampu darurat gedung rusak,low
-AC gedung rektorat bocor,low
-Cara verifikasi data kelulusan?,normal
-Sistem pengajuan judul otomatis error,urgent
-Info ujian perbaikan belum keluar,high
-Kapan dimulainya kelas semester pendek?,normal
-Parkiran sepeda motor terlalu sempit,low
-Toilet kampus kurang penerangan,low
-Bagaimana cara akses forum diskusi?,normal
-Error saat buka jadwal kuliah,urgent
-Notifikasi pembayaran UKT tidak muncul,high
-Apakah ada dispensasi keterlambatan bayar?,normal
-Ruang baca kurang stop kontak,low
-Kursi tunggu di lobi rusak,low
-Cara download e-certificate kegiatan?,normal
-Sistem pencarian jadwal ruangan error,urgent
-Pengumuman PKL belum ada jadwal,high
-Kapan libur semester genap selesai?,normal
-Lemari penyimpanan barang hilang,low
-Kabel colokan listrik pendek,low
-Bagaimana cara lapor ke satpam?,normal
-Website prodi tidak bisa diakses,urgent
-Fitur konsultasi online tidak responsif,high
-Berapa batas maksimum semester kuliah?,normal
-Lampu belajar di perpus redup,low
-Kursi roda untuk difabel tidak ada,low
-Cara buat surat keterangan lulus?,normal
-Server email mahasiswa down,urgent
-Info seleksi beasiswa telat diumumkan,high
-Kapan jadwal sosialisasi kurikulum baru?,normal
-Ruang sidang tidak ber-AC,low
-Pintu utama kampus macet saat pagi,low
-Bagaimana cara transkrip nilai luar negeri?,normal
-Error 500 saat upload berkas,urgent
-Lupa password portal beasiswa,high
-Apakah ujian bisa direschedule?,normal
-Suhu ruang kuliah terlalu dingin,low
-Jalur pejalan kaki tertutup proyek,low
-Cara aktivasi akun alumni?,normal
-Sistem penjadwalan ujian error,urgent
-Pengumuman daftar dosen wali belum keluar,high
-Kapan pendaftaran yudisium?,normal
-Toilet kampus lantai 2 terkunci,low
-Ruang kelas lantai 3 bocor,low
-Bagaimana cara daftar ulang cuti?,normal
-Cetak KRS tidak bisa karena error sistem,urgent
-Link video pembelajaran tidak bisa diputar,high
-Jadwal perkuliahan hari libur nasional?,normal
-Parkir kampus semrawut,low
-Papan informasi kegiatan mahasiswa kosong,low
-Cara minta data alumni ke BAAK?,normal
-Sistem validasi dosen error,urgent
-Info SPP semester depan belum rilis,high
-Kapan pengumuman beasiswa prestasi?,normal
-Meja di ruang diskusi kotor,low
-Kursi di ruang seminar kendor,low
-Bagaimana cara pinjam ruang rapat?,normal
-Aplikasi presensi mahasiswa login error,urgent
-Notifikasi pengajuan cuti tidak ada,high
-Berapa tarif UKT prodi hukum?,normal
-Ruang tunggu registrasi panas,low
-Tempat sampah tidak dipisah jenisnya,low
-Cara lapor kerusakan fasilitas?,normal
-Sistem input nilai sementara error,urgent
-Fitur download materi error,high
-Kapan jadwal pembagian raport?,normal
-Perpustakaan terlalu bising,low
-Lampu baca di ruang skripsi mati,low
-Bagaimana cara dapatkan KTM baru?,normal
-Error 408 request timeout,urgent
-Email aktivasi akun tidak sampai,high
-Apakah ada kuliah malam di prodi ini?,normal
-Ruang dosen wali terlalu sempit,low
-Kursi tunggu pasien UKS rusak,low
-Cara konfirmasi kelulusan?,normal
-Sistem pengunduhan formulir error,urgent
-Informasi hari efektif kuliah telat rilis,high
-Kapan batas bayar UKT semester ini?,normal
-Toilet di kampus tidak ada gantungan,low
-Tempat olahraga outdoor rusak,low
-Bagaimana cara ikut English club?,normal
-Server sidang skripsi online error,urgent
-Lupa jadwal presentasi proposal,high
-Kapan ujian susulan dilaksanakan?,normal
-Kantin kampus tidak bersih,low
-Ruang kelas tidak ada kipas angin,low
-Cara minta data KRS lama?,normal
-Sistem pembayaran QRIS error,urgent
-Link grup kelas tidak bisa dijoin,high
-Berapa minimal IPK untuk cumlaude?,normal
-Tempat parkir tidak ada atap,low
-Papan pengumuman resmi tidak terawat,low
-Bagaimana cara aktivasi SIMAK?,normal
-Error 400 bad request,urgent
-Pendaftaran mata kuliah ulang error,high
-Kapan jadwal wisuda pasca sarjana?,normal
-Ruang kelas lantai 4 pengap,low
-Proyektor warnanya pudar,low
-Cara lapor jika nilai tidak masuk?,normal
-Sistem pengubahan password error,urgent
-Info daftar ulang belum dikirim,high
-Apakah ada beasiswa untuk kurang mampu?,normal
-Lemari di ruang seni rusak,low
-Kran air cuci tangan rusak,low
-Bagaimana cara pindah jadwal kuliah?,normal
-Fitur submit review dosen error,urgent
-Lupa PIN e-learning,high
-Kapan pendaftaran UKM baru?,normal
-Toilet difabel tidak berfungsi,low
-Jalan menuju parkiran rusak parah,low
-Cara dapatkan transkrip sementara?,normal
-Aplikasi kampus crash saat buka jadwal,urgent
-Notifikasi ujian tidak muncul di HP,high
-Kapan libur panjang semester depan?,normal
-Ruang sidang meja kurang,low
-Kursi auditorium banyak copot,low
-Bagaimana cara daftar mata kuliah internasional?,normal
-Sistem pengunduhan kartu ujian error,urgent
-Email reminder bayar UKT tidak masuk,high
-Apakah ada program double degree?,normal
-Tempat ibadah tidak ada tempat wudhu,low
-Lampu ruang seni mati,low
-Cara minta beasiswa ke perusahaan?,normal
-Error 403 forbidden saat akses,urgent
-Informasi kenaikan UKT belum jelas,high
-Kapan dimulainya bimbingan skripsi?,normal
-Ruang microteaching kurang alat,low
-Papan nama prodi hilang,low
-Bagaimana cara cek status beasiswa?,normal
-Sistem pengajuan PKL error terus,urgent
-Link rekaman kuliah tidak bisa diputar,high
-Kapan pendaftaran capstone project?,normal
-Kursi ruang dosen tidak nyaman,low
-AC di ruang rapat berisik,low
-Cara request ijazah pengganti?,normal
-Server virtual lab error,urgent
-Lupa password sistem perpustakaan,high
-Berapa batas waktu mundur semester?,normal
-Toilet kampus tidak ada tissue,low
-Tempat parkir banjir saat hujan,low
-Bagaimana cara ajukan keringanan UKT?,normal
-Fitur edit KRS error saat save,urgent
-Pengumuman jadwal KKN telat rilis,high
-Kapan jadwal ujian komprehensif?,normal
-Ruang kelas lantai 2 gelap,low
-Kabel HDMI proyektor hilang,low
-Cara minta sertifikat kompetensi?,normal
-Error 409 conflict,urgent
-Link pendaftaran praktikum tidak aktif,high
-Apakah kuliah hari minggu ada?,normal
-Ruang tunggu klinik kotor,low
-Meja di lab komputer goyang,low
-Bagaimana cara bayar UKT online?,normal
-Sistem presensi face recognition error,urgent
-Info seminar skripsi belum dijadwalkan,high
-Kapan pembagian kelas internship?,normal
-Tempat cuci tangan tidak ada air,low
-Papan tulis rusak di ruang A101,low
-Cara verifikasi data untuk wisuda?,normal
-Aplikasi mobile error saat login,urgent
-Notifikasi nilai keluar tapi tidak bisa dilihat,high
-Kapan jadwal perpindahan kelas?,normal
-Kursi ruang rektorat mewah tapi rusak,low
-AC gedung B tidak dingin,low
-Bagaimana cara minta cuti akademik?,normal
-Sistem pengunduhan template error,urgent
-Lupa password portal dosen,high
-Berapa UKT untuk semester akhir?,normal
-Lampu lorong kampus mati semua,low
-Ruang baca tidak ada meja,low
-Cara aktivasi SIMAK online?,normal
-Error 500 internal server saat KRS,urgent
-Link ujian online tidak bisa dibuka,high
-Kapan batas pengumpulan revisian skripsi?,normal
-Toilet kampus lantai 3 tidak disiram,low
-Tempat sampah jarang diangkut,low
-Bagaimana cara ubah status cuti menjadi aktif?,normal
-Server prodi mati saat pendaftaran,urgent
-Informasi UKM belum ada pembaruan,high
-Apakah ada beasiswa untuk mahasiswa rantau?,normal
-Parkiran sepeda tidak ada CCTV,low
-Proyektor lampunya redup,low
-Cara minta surat aktif kuliah online?,normal
-Sistem validasi transkrip error,urgent
-Fitur cetak ulang slip pembayaran error,high
-Kapan jadwal pengambilan ijazah?,normal
-Ruang rapat tidak ada stop kontak,low
-Meja resepsionis kotor,low
-Bagaimana cara lihat progres skripsi?,normal
-Aplikasi kampus force close saat buka presensi,urgent
-Email pemberitahuan kelas offline tidak masuk,high
-Kapan libur kenaikan pangkat dosen?,normal
-Toilet kampus tidak ada sabun cuci tangan,low
-Kursi di perpustakaan banyak yang pecah,low
-Cara minta perubahan data kelulusan?,normal
-Error 413 payload too large,urgent
-Pendaftaran sidang meja hijau error,high
-Berapa minimal kehadiran untuk ikut ujian?,normal
-Tempat wudhu kotor,low
-Pintu geser gedung serba guna macet,low
-Bagaimana cara daftar mata kuliah lintas prodi?,normal
-Sistem generate jadwal otomatis error,urgent
-Info kelulusan wisuda belum ada,high
-Kapan pembukaan kelas mandiri?,normal
-Ruang praktikum kurang alat,low
-Kabel internet putus di gedung lama,low
-Cara reset password SIMAK online?,normal
-Sistem unggah nilai revisi error,urgent
-Lupa akun portal alumni,high
-Apakah ada program pertukaran mahasiswa?,normal
-Lampu emergency di tangga mati,low
-AC ruang server mati total,low
-Bagaimana cara transkrip nilai internasional?,normal
-Error 504 gateway timeout,urgent
-Notifikasi pembayaran berhasil tapi tidak masuk sistem,high
-Kapan jadwal pembekalan magang?,normal
-Parkir mobil terlalu panas tanpa pohon,low
-Kursi tunggu di hall kampus kotor,low
-Cara minta jadwal bimbingan dosen?,normal
-Sistem generate nomor ujian error,urgent
-Link form perubahan data tidak berfungsi,high
-Berapa SKS maksimal cuti semester?,normal
-Ruang kelas lantai 5 tidak ada lift,low
-Toilet kampus lumbung air habis,low
-Bagaimana cara isi KRS online dengan cepat?,normal
-Fitur chat dengan dosen error,urgent
-Email konfirmasi wisuda tidak ada,high
-Kapan pengumuman nomor peserta ujian?,normal
-Tempat diskusi mahasiswa berisik,low
-Papan jadwal kuliah ditempel sembarangan,low
-Cara lapor kehilangan barang di kampus?,normal
-Server pengambilan data nilai error,urgent
-Lupa password SIAKAD versi lama,high
-Apakah ada ujian susulan tanpa keterangan?,normal
-Ruang dosen pembimbing tidak jelas lokasinya,low
-AC di gedung kuliah umum bocor air,low
-Bagaimana cara konsultasi beasiswa ke BAAK?,normal
-Sistem input komentar evaluasi error,urgent
-Informasi libur semester belum update,high
-Kapan batas pengunduhan formulir wisuda?,normal
-Tempat foto copy kampus mahal,low
-Kursi untuk difabel di perpus tidak ada,low
-Cara minta pembatalan mata kuliah?,normal
-Aplikasi kampus crash saat cek nilai,urgent
-Link dokumentasi kegiatan tidak bisa diakses,high
-Kapan jadwal pendaftaran ulang cuti?,normal
-Toilet kampus kurang ventilasi,low
-Lampu baca ruang tugas akhir mati,low
-Bagaimana cara ikut student exchange?,normal
-Error 400 saat submit data diri,urgent
-Notifikasi perubahan jadwal tidak masuk,high
-Berapa batas akhir semester ganjil?,normal
-Ruang sekretariat BEM kotor,low
-Papan petunjuk arah ke ruang ujian tidak ada,low
-Cara minta beasiswa untuk lomba?,normal
-Sistem pengelolaan ruang meeting error,urgent
-Fitur download transkrip bahasa Inggris error,high
-Kapan libur natal bersama kampus?,normal
-Parkiran sepeda motor rawan pencurian,low
-Proyektor di ruang studio mati,low
-Bagaimana cara klaim sertifikat kegiatan?,normal
-Server pengiriman email notifikasi error,urgent
-Lupa password e-learning versi mobile,high
-Apakah ada tes TOEFL kampus gratis?,normal
-Ruang kerja dosen berantakan,low
-Kursi meja dosen tidak stabil,low
-Cara minta surat keterangan beasiswa?,normal
-Error 503 saat akses perpus digital,urgent
-Link presensi online tidak bisa digenerate,high
-Kapan pendaftaran program internship luar negeri?,normal
-Tempat olahraga tidak ada air minum,low
-Lampu taman tidak menyala malam,low
-Bagaimana cara ubah nama di ijazah?,normal
-Sistem verifikasi kelulusan error,urgent
-Informasi UKT progresif belum jelas,high
-Kapan jadwal yudisium periode ini?,normal
-Toilet gedung F tidak memiliki gembok,low
-AC ruang registrasi mati,low
-Cara minta pinjaman buku antar perpustakaan?,normal
-Aplikasi kampus error setelah update,urgent
-Notifikasi laporan KP tidak ada balasan,high
-Apakah ada ujian perbaikan nilai C?,normal
-Ruang sidang proposal pengap,low
-Kursi di koperasi mahasiswa rusak,low
-Bagaimana cara daftar menjadi asisten lab?,normal
-Sistem distribusi berkas wisuda error,urgent
-Email pengumuman beasiswa tidak dikirim,high
-Kapan libur Isra Miraj kampus?,normal
-Parkiran basement minim cahaya,low
-Papan pengumuman digital error,low
-Cara minta akses jurnal internasional?,normal
-Error 500 saat buka form isian,urgent
-Lupa password portal pengajuan judul,high
-Berapa biaya her registrasi per SKS?,normal
-Ruang kelas lantai 1 lembab,low
-Tempat sampah dalam ruangan tidak ada,low
-Bagaimana cara komplain nilai secara resmi?,normal
-Sistem pengambilan nomor antrean error,urgent
-Info wisuda belum ada petunjuk teknis,high
-Kapan jadwal tes kesehatan mahasiswa baru?,normal
-Ruang tunggu asrama kotor,low
-Jalur evakuasi gedung tidak jelas,low
-Cara minta ijin tidak masuk kuliah?,normal
-Server pendaftaran mata kuliah ulang error,urgent
-Link panduan akademik tidak bisa dibuka,high
-Apakah ada program beasiswa prestasi akademik?,normal
-Toilet kampus lantai 5 tidak berfungsi,low
-Kursi ruang serbaguna banyak yang aus,low
-Bagaimana cara transkrip ke prodi lain?,normal
-Error 409 duplicate entry,urgent
-Notifikasi pembuatan akun baru tidak masuk,high
-Kapan batas akhir pengunduhan raport?,normal
-Tempat wudhu putri kotor,low
-AC ruang dosen tidak stabil suhunya,low
-Cara minta rekomendasi untuk S2?,normal
-Aplikasi kampus sering not responding,urgent
-Pengumuman jadwal sidang skripsi belum keluar,high
-Kapan dimulainya perkuliahan setelah libur?,normal
-Parkiran motor tidak ada petugas,low
-Papan nama ruangan banyak yang lepas,low
-Bagaimana cara akses buku digital perpus?,normal
-Sistem pengajuan perubahan KRS error,urgent
-Lupa password SIMAK beasiswa,high
-Berapa minimal kehadiran praktikum?,normal
-Ruang tutor sebaya kurang luas,low
-Kabel listrik menjuntai di koridor,low
-Cara minta pembuatan email baru kampus?,normal
-Error 502 saat upload proposal,urgent
-Link rekaman webinar tidak bisa diputar,high
-Kapan jadwal pengumpulan berkas wisuda?,normal
-Ruang administrasi tidak nyaman,low
-Lemari arsip mahasiswa rusak,low
-Bagaimana cara verifikasi ijazah online?,normal
-Sistem pengisian borang akreditasi error,urgent
-Informasi program magang belum keluar,high
-Apakah ada kuliah di hari Sabtu?,normal
-Toilet kampus sering mampet,low
-Kursi di ruang OSIS banyak yang hilang,low
-Cara minta data nilai per semester?,normal
-Server informasi akademik down,urgent
-Fitur reset PIN via SMS tidak jalan,high
-Kapan pendaftaran lomba essay nasional?,normal
-Parkiran mobil tidak cukup lebar,low
-Proyektor di ruang 203 tidak fokus,low
-Bagaimana cara daftar kuliah sambil kerja?,normal
-Error 504 saat baca notifikasi,urgent
-Email verifikasi tidak sampai ke spam pun,high
-Kapan batas akhir drop out mahasiswa?,normal
-Ruang kelas lantai 2 berdebu,low
-Pintu utama gedung A susah dibuka,low
-Cara minta IELTS preparation di kampus?,normal
-Aplikasi kampus crash saat filter jadwal,urgent
-Pengumuman hasil ujian keluar tapi tidak sesuai,high
-Kapan libur panjang akhir tahun?,normal
-Tempat parkir motor tidak ada pembatas,low
-Lampu meja di ruang baca tidak menyala,low
-Bagaimana cara minta ijin penelitian?,normal
-Sistem pengajuan beasiswa error,urgent
-Lupa password portal asisten lab,high
-Berapa biaya kuliah per semester prodi psikologi?,normal
-Toilet kampus tidak ada gantungan baju,low
-Kursi tunggu di UKS tidak empuk,low
-Cara minta surat pengantar penelitian?,normal
-Error 500 saat load dashboard,urgent
-Link jurnal online tidak bisa diakses,high
-Kapan jadwal pembinaan UKM?,normal
-Ruang kelas lantai 4 panas sekali,low
-Papan nama gedung terhalang pohon,low
-Bagaimana cara cek penerima beasiswa?,normal
-Sistem input nilai dosen error terus,urgent
-Informasi kalender akademik belum rilis,high
-Apakah ada ujian komprehensif online?,normal
-Ruang sekretariat prodi sempit,low
-Tempat cuci sepatu di kampus tidak ada,low
-Cara minta beasiswa BPJS?,normal
-Aplikasi mobile error saat sync data,urgent
-Notifikasi pengajuan KP tidak masuk,high
-Kapan jadwal tes masuk prodi tertentu?,normal
-Parkiran rusak berat,low
-AC ruang kelas 207 mati,low
-Bagaimana cara ubah status menjadi mahasiswa aktif?,normal
+Tagihan UKT tidak bisa dibayar sistem terus menolak transaksi,urgent
+Toilet umum kampus tidak ada tempat sampah di dalamnya,low
+Rekap presensi tidak bisa diakses menampilkan error database,urgent
+Bagaimana prosedur mendaftarkan diri ke program pertukaran internasional?,normal
+Sistem presensi wajah tidak mengenali wajah mahasiswa yang terdaftar,urgent
+Kamar mandi di gedung B tidak ada penerangan yang cukup,low
+Dana beasiswa tidak cair padahal semua syarat sudah terpenuhi,high
+Lupa password SIMAK beasiswa tidak bisa cek status pengajuan,high
+Cara memeriksa sisa SKS yang masih harus ditempuh untuk lulus?,normal
+Lampu di parkiran belakang kampus tidak tersedia penerangan,low
+Bagaimana cara mengajukan permohonan pembebasan SPP bagi mahasiswa kurang mampu?,normal
+Bagaimana cara mengecek status pendaftaran yang sudah saya ajukan?,normal
+Apakah libur nasional otomatis menjadi libur perkuliahan?,normal
+Aplikasi SIAKAD sangat lambat tidak bisa melakukan apapun saat jam sibuk,high
+Parkiran tidak ada CCTV rawan pencurian kendaraan,low
+Error 404 not found muncul di semua menu di portal akademik,urgent
+Bagaimana prosedur mengurus transkrip nilai untuk dikirim ke luar negeri?,normal
+Kapan batas akhir pengumpulan revisi skripsi setelah sidang?,normal
+Portal akademik crash langsung setelah berhasil login,urgent
+Beasiswa prestasi tidak masuk rekening sampai sekarang sudah sebulan,high
+Papan tulis di kelas A101 sudah sangat buram tidak bisa dibaca,low
+Aplikasi mobile blank screen setelah splash screen tidak lanjut,urgent
+Pembayaran SPP sudah sukses di marketplace tapi sistem belum update,urgent
+Portal langsung error saat saya mencoba mengisi KRS hari ini,urgent
+Sistem akademik menampilkan maintenance padahal tidak ada pemberitahuan,urgent
+KRS terblokir tidak bisa diubah padahal batas waktu belum terlewati,urgent
+KRS tidak bisa disimpan muncul error setiap kali klik tombol simpan,urgent
+Remote proyektor ruang 301 tidak berfungsi tombolnya,low
+Portal akademik merespons lambat sekali butuh lebih dari 5 menit setiap halaman,high
+Jembatan penghubung antar gedung terasa bergetar saat dilewati,low
+Toilet kampus lantai 2 sangat bau dan kotor kurang terawat,low
+Bagaimana mekanisme pembayaran UKT secara cicilan untuk mahasiswa?,normal
+Berapa batas minimal kehadiran untuk tidak kena denda akademik?,normal
+Apakah tersedia beasiswa khusus untuk mahasiswa berprestasi?,normal
+Link rekaman kuliah yang dikirim dosen tidak bisa diputar sama sekali,high
+Apakah kuliah di hari Sabtu masih diadakan semester ini?,normal
+Absensi online tidak merekam kehadiran meski sudah submit,urgent
+Portal akademik menampilkan error 500 internal server error,urgent
+Kapan kalender akademik semester ini akan dirilis ke mahasiswa?,normal
+Jadwal praktikum bertabrakan dengan jadwal kelas teori yang wajib diikuti,high
+Status beasiswa saya berubah tanpa ada pemberitahuan apapun,high
+Kamar mandi kampus tidak tersedia sabun cuci tangan sama sekali,low
+Pengajuan beasiswa tidak ada update status sudah berminggu-minggu,high
+Bagaimana prosedur mendaftarkan diri sebagai peserta lomba yang difasilitasi kampus?,normal
+Tugas yang sudah dikumpulkan tidak tercatat di sistem e-learning,urgent
+Pengumuman kuota beasiswa semester ini belum diumumkan,high
+Kabel proyektor di ruang seminar pendek tidak bisa menjangkau meja,low
+Dosen pembimbing tidak merespons pesan terkait pengajuan judul selama sebulan,high
+Portal akademik down total tidak bisa dibuka dari browser manapun,urgent
+Portal akademik menampilkan error 500 internal sistem error,urgent
+Akun SIAKAD diblokir otomatis tanpa bisa dibuka kembali,urgent
+Error 403 forbidden muncul di setiap halaman portal mahasiswa,urgent
+Area parkir tidak teratur tidak ada garis pembatas kendaraan,low
+Dosen pembimbing tidak bisa ditemui meski sudah buat janji,high
+Data presensi mahasiswa mengalami error sinkronisasi dengan server,urgent
+Kamar mandi di dekat kantin tidak ada sabun dan tissue,low
+Pengumuman beasiswa bidikmisi tahap selanjutnya belum keluar,high
+Link grup kelas tidak bisa di-join sudah expired,high
+Kapan libur semester pendek berakhir dan kuliah reguler dimulai?,normal
+Bagaimana mekanisme pengajuan kredit transfer dari mata kuliah luar?,normal
+Berapa SKS minimal sebelum mahasiswa boleh mengajukan skripsi?,normal
+Upload berkas persyaratan wisuda gagal terus dengan pesan error server,urgent
+Kursi ruang tunggu di depan BAAK banyak yang sudah rusak,low
+Proyektor di studio mati total tidak bisa dinyalakan,low
+Server prodi crash tepat saat periode pengisian KRS berlangsung,urgent
+Ruangan kelas di lantai 3 panas sekali tidak ada AC maupun kipas,low
+AC di gedung rektorat bocor airnya menetes ke lantai,low
+Aplikasi kampus tidak bisa diinstall di HP setelah factory reset,urgent
+Pembatas parkiran rusak sehingga kendaraan tidak teratur,low
+Bagaimana cara mengurus surat pindah kuliah ke kampus lain?,normal
+Bagaimana mekanisme penilaian dan pembobotan nilai akhir mata kuliah?,normal
+Kursi di ruang serbaguna banyak yang sudah aus tidak nyaman,low
+Fitur download materi di e-learning tidak merespons meski diklik,high
+AC di ruang kuliah 306 tidak dingin sama sekali,low
+Link webinar kampus tidak bisa dibuka selalu error,high
+Sampah berserakan di area parkiran kampus tidak ada yang membersihkan,low
+Bagaimana prosedur aktivasi kembali setelah cuti akademik?,normal
+Berapa besaran UKT untuk program studi teknik informatika tahun ini?,normal
+KRS saya terhapus otomatis padahal sudah terkunci dan dikonfirmasi,urgent
+E-learning tidak bisa diakses sama sekali sejak kemarin malam,urgent
+Sistem KRS menampilkan kuota penuh di semua kelas padahal ada slot tersedia,urgent
+Apakah ada layanan cetak dokumen resmi selain di BAAK?,normal
+Meja di ruang baca sudah tidak layak pakai banyak yang rusak,low
+Bagaimana cara mengajukan dispensasi keterlambatan pengumpulan tugas?,normal
+Kapan pembukaan pendaftaran beasiswa bidikmisi dibuka?,normal
+Seluruh data akademik saya tidak bisa diakses database error,urgent
+Trotoar di sekitar kampus banyak yang retak dan tidak rata,low
+Kabel internet di gedung lama sudah rusak tidak diganti,low
+Sertifikat prestasi lomba tidak tersedia di portal akademik,high
+Kebersihan kantin kampus sangat buruk sering ada hewan menganggu,low
+Fitur absensi sidik jari tidak mengenali sidik jari yang terdaftar,urgent
+Berapa UKT untuk program studi manajemen angkatan baru?,normal
+Bagaimana cara verifikasi ijazah secara online untuk keperluan lamaran?,normal
+Informasi jadwal remedial belum diumumkan padahal batas waktu dekat,high
+Bagaimana prosedur untuk mendapatkan sertifikat TOEFL dari kampus?,normal
+Semua fitur di portal akademik menampilkan halaman error,urgent
+Link video pembelajaran dari e-learning tidak bisa diputar,high
+Akun saya diduplikasi dua kali dengan NIM yang sama,high
+Apakah tersedia layanan bimbingan konseling akademik untuk mahasiswa?,normal
+Papan nama dosen di pintu ruangan banyak yang sudah hilang,low
+Kartu mahasiswa tidak bisa digunakan untuk apapun di kampus,high
+Apa saja persyaratan untuk mendaftar beasiswa bidikmisi?,normal
+Semua nilai semester 3 saya tidak sesuai dengan yang tertera di kartu,high
+Transkrip tidak bisa dicetak sistem error setiap kali dicoba,urgent
+Kapan batas akhir pengunggahan berkas untuk pendaftaran wisuda?,normal
+Aplikasi kampus tidak bisa dibuka sama sekali setelah update terbaru,urgent
+Bagaimana cara mendaftar program semester pendek di kampus?,normal
+Bagaimana cara mendapatkan formulir pengajuan tugas akhir?,normal
+Apa langkah untuk mendapatkan akses perpustakaan digital kampus?,normal
+Warung fotokopi tidak ada yang dekat dengan area kampus,low
+Kapan jadwal ujian tengah semester diumumkan kepada mahasiswa?,normal
+Pengumuman jadwal ujian akhir semester belum keluar sampai sekarang,high
+Her-registrasi semester depan tidak bisa diproses dari sistem,high
+Tidak bisa memilih mata kuliah apapun di halaman KRS,urgent
+Saluran pembuangan di belakang gedung tersumbat dan bau,low
+Login ke SIAKAD gagal terus meski password sudah diganti,urgent
+Nilai konversi dari kampus lain tidak masuk ke transkrip saya,high
+Pengumuman jadwal sidang belum keluar padahal pendaftaran bulan lalu,high
+Sistem tidak bisa mengakses data nilai apapun menampilkan error,urgent
+Berapa lama mahasiswa boleh menunda pengambilan ijazah?,normal
+Jadwal sidang skripsi periode ini belum diinformasikan ke mahasiswa,high
+Area kantin sering kotor berserakan setelah jam makan siang,low
+Cara mendaftar sebagai asisten laboratorium semester ini?,normal
+Aplikasi SIAKAD mobile down langsung tutup saat dibuka,urgent
+KRS hilang semuanya setelah sistem kembali online tadi pagi,urgent
+Spidol untuk papan tulis sering tidak tersedia di kelas,low
+Mata kuliah pilihan yang sudah diambil tidak terhitung dalam total SKS,high
+Semua halaman SIAKAD menampilkan white screen kosong,urgent
+Berapa batas minimal IPK untuk mendaftar program pascasarjana?,normal
+Sekretariat UKM berantakan tidak ada yang membersihkan,low
+Pendaftaran program magang tidak bisa dilanjutkan karena sistem tidak responsif,high
+Dokumen akademik tidak bisa diunduh dalam format apapun,urgent
+Laporan presensi menampilkan kosong padahal sudah hadir semua,urgent
+Notifikasi dari sistem kampus tidak pernah sampai ke email,high
+Sertifikat kompetensi tidak muncul di portal meski sudah mengikuti tes,high
+Tagihan UKT muncul dobel di portal padahal baru bayar sekali,urgent
+SIAKAD menampilkan error 500 di semua halaman yang saya buka,urgent
+Password baru yang baru saja direset tidak bisa digunakan login,urgent
+Saldo sudah terpotong dua kali untuk pembayaran UKT yang sama,urgent
+Jalur sepeda di kampus tidak jelas tidak ada marka yang memadai,low
+Berapa biaya denda jika terlambat melakukan her-registrasi?,normal
+NIM saya terdaftar dua kali di sistem akademik berbeda akun,high
+Bagaimana cara mengunduh formulir akademik resmi dari portal?,normal
+Sistem gagal menghasilkan kartu ujian error database connection,urgent
+E-learning tidak bisa dibuka dari perangkat apapun hari ini,urgent
+Server crash saat ribuan mahasiswa sedang isi KRS bersamaan,urgent
+Kabel HDMI untuk proyektor ruang kuliah sering hilang,low
+Apakah kampus menyediakan beasiswa untuk mahasiswa rantau?,normal
+Kapan batas akhir her-registrasi semester genap ini?,normal
+Sertifikat TOEFL tidak bisa diunduh dari portal meski sudah terdaftar,high
+Jalur evakuasi gedung terhalang tumpukan barang,low
+Nilai ujian yang sudah ada tiba-tiba hilang dari portal,urgent
+Seluruh histori akademik saya tidak ada di portal,urgent
+Data mahasiswa di portal tidak sesuai dengan biodata asli,high
+Dosen pembimbing tidak ada respons sudah lebih dari sebulan,high
+Semua akun prodi kami tidak bisa diakses sejak tadi pagi,urgent
+Seluruh layanan akademik online tidak bisa diakses sejak semalam,urgent
+Link grup kelas resmi sudah expired tidak bisa bergabung,high
+Meja dosen di kelas A201 tidak kokoh saat diletakkan barang,low
+Status lunas tidak muncul meski sudah konfirmasi pembayaran ke bank,urgent
+Kipas angin di perpustakaan tidak berfungsi sudah lama,low
+Sistem akademik tidak merespons setelah tombol submit diklik,urgent
+Error 502 bad gateway terus muncul saat coba akses portal,urgent
+Slip gaji untuk beasiswa tidak bisa diperoleh dari portal akademik,high
+Berapa besar beasiswa bidikmisi yang diterima per bulan saat ini?,normal
+Nilai dari semester exchange tidak tercatat di portal akademik saya,high
+Apakah ada fasilitas beasiswa untuk mahasiswa yang sedang skripsi?,normal
+Info hasil ujian susulan belum ada kabar ke mahasiswa yang bersangkutan,high
+Tidak ada konfirmasi apapun dari dosen atas revisi yang saya kirim,high
+Tidak ingat password akun SIAKAD sama sekali sudah lama tidak masuk,high
+Status pembayaran UKT tertulis gagal padahal uang sudah terpotong dari rekening,urgent
+KRS saya menampilkan data mahasiswa lain bukan data saya sendiri,urgent
+Apakah ada program sertifikasi profesi yang difasilitasi kampus?,normal
+Bagaimana langkah mendaftar sebagai peserta seminar proposal?,normal
+Kartu mahasiswa tidak bisa discan di semua mesin di kampus,high
+Toilet wanita lantai 3 sering tidak ada air untuk menyiram,low
+Surat pengantar penelitian tidak bisa dicetak dari portal administrasi,high
+Saluran air hujan di depan kantin sering tersumbat,low
+Info hasil ujian susulan belum diumumkan ke mahasiswa yang bersangkutan,high
+Daftar pembimbing skripsi semester ini belum dirilis prodi,high
+Kapan batas akhir pengisian KRS semester genap ini?,normal
+Aplikasi tidak bisa sinkronisasi data dengan server pusat,urgent
+Apakah ujian komprehensif bisa dilakukan secara online?,normal
+Kapan jadwal sidang skripsi periode ini diumumkan?,normal
+Nomor telepon tidak bisa diubah di profil akun SIAKAD meski sudah diminta,high
+Portal menampilkan koneksi gagal padahal internet berjalan normal,urgent
+Berapa jumlah kredit yang bisa ditransfer dari program MBKM?,normal
+Tangga darurat gedung C tidak tersedia penerangan sama sekali,low
+Kapan jadwal wisuda periode pertama tahun akademik ini?,normal
+Halaman portal akademik freeze tidak bisa diklik apapun,urgent
+Link video materi dari e-learning selalu gagal diputar,high
+Parkiran mahasiswa tidak ada penerangan sama sekali di malam hari,low
+Sistem SIAKAD tidak responsif pada jam sibuk tidak bisa digunakan,high
+Tempat pembuangan sampah organik dan non-organik dicampur,low
+Kelas saya dijadwalkan di ruangan yang kapasitasnya tidak mencukupi,high
+Bagaimana cara mendaftar double degree di kampus ini?,normal
+Beasiswa saya dicabut tanpa ada surat pemberitahuan resmi apapun,high
+Berapa batas minimal kehadiran praktikum per semester?,normal
+Portal kampus mati total tidak bisa digunakan sejak tadi malam,urgent
+Stop kontak di kelas untuk pengisian daya sangat sedikit,low
+Kamar mandi di gedung baru sering tidak ada airnya,low
+Kipas angin di aula kampus sudah tidak berfungsi sejak lama,low
+Server SIAKAD tidak bisa diakses dari jaringan kampus maupun luar,urgent
+Tanggal lahir di portal tidak sesuai dengan KTP yang diserahkan,high
+Berapa batas waktu pengajuan permohonan cuti akademik?,normal
+Info wisuda periode ini tidak kunjung diumumkan ke calon wisudawan,high
+Kartu ujian tidak bisa dicetak sama sekali padahal ujian besok,urgent
+Tangga gedung tidak ada pegangan tangan berbahaya untuk manula,low
+Berapa jumlah SKS yang harus diselesaikan sebelum boleh KKN?,normal
+Password e-learning terlupa dan butuh bantuan untuk reset,high
+Koridor gedung berdebu dan jarang dibersihkan,low
+Seluruh data KRS angkatan 2022 menghilang dari database sistem,urgent
+Fitur pengumpulan tugas e-learning tidak bisa digunakan sama sekali,urgent
+Jadwal dua mata kuliah wajib saya bentrok di hari dan jam yang sama,high
+Remote proyektor ruang 301 tidak bekerja tombolnya,low
+Server kampus tidak merespons sudah lebih dari 3 jam,urgent
+Bagaimana prosedur penggantian nama di ijazah jika ada kesalahan?,normal
+Tidak ada papan pengumuman kegiatan yang teratur di kampus,low
+Soal ujian online tidak loading layar tetap kosong saat ujian,urgent
+Bagaimana prosedur mendapatkan sertifikat kegiatan UKM resmi?,normal
+Semua catatan kehadiran semester ini hilang dari sistem,urgent
+Sistem QRIS untuk pembayaran UKT tidak bisa menghasilkan kode bayar,urgent
+Tempat wudhu wanita tidak ada penyekat privasi yang cukup,low
+Link reset password sudah kadaluarsa sebelum sempat diklik,urgent
+Tidak ada satupun halaman SIAKAD yang bisa dimuat hari ini,urgent
+Surat keterangan aktif tidak bisa diperoleh dari bagian administrasi,high
+Meja resepsionis depan fakultas kondisinya kotor tidak terawat,low
+Kapan jadwal pertemuan pertama untuk bimbingan kelompok KKN?,normal
+Kamar mandi di dekat kantin tidak tersedia sabun dan tissue,low
+Cara mendapatkan surat keterangan pernah kuliah dari kampus?,normal
+Transkrip tidak bisa dicetak padahal butuh untuk melamar magang,high
+Jendela ruang kelas banyak yang tidak bisa dibuka karena macet,low
+Loker mahasiswa di perpustakaan banyak yang kuncinya rusak,low
+Petunjuk arah ke ruang ujian lantai 4 tidak jelas,low
+Halaman nilai di portal tidak bisa dimuat selalu timeout,high
+Beasiswa yang lolos seleksi tidak ada informasi pencairan sampai sekarang,high
+Dimana saya bisa mendapatkan formulir pengajuan surat resmi kampus?,normal
+Kuis online yang sedang berjalan tiba-tiba ditutup sistem,urgent
+Dinding ruang kuliah banyak yang penuh coretan tidak dibersihkan,low
+Pembayaran SPP gagal terus padahal saldo rekening mencukupi,urgent
+Kabel LAN di laboratorium lama banyak yang sudah putus,low
+Gateway pembayaran UKT error tidak bisa menghasilkan tagihan,urgent
+Form yudisium error tidak bisa diselesaikan proses submitnya,urgent
+Meja di ruang baca sudah tidak layak pakai banyak yang tidak layak pakai,low
+Pengajuan perubahan dosen pembimbing belum diproses padahal sudah lama,high
+Belum ada pengumuman resmi mengenai jadwal ujian akhir semester,high
+Kantin kampus pilihan menunya sangat sedikit tidak bervariasi,low
+Form pendaftaran wisuda error tidak bisa disubmit padahal deadline dekat,urgent
+Ruang ibadah putri tidak ada pendingin udara sangat panas,low
+Berapa batas SKS maksimal untuk mahasiswa yang IPK di bawah rata-rata?,normal
+Tidak bisa masuk ke akun setelah password baru dibuat,urgent
+Sirkulasi udara di ruang kuliah lantai 5 sangat buruk,low
+Ruang baca perpustakaan terlalu dingin tidak nyaman untuk belajar,low
+Tombol konfirmasi pendaftaran tidak responsif padahal sudah diklik berkali-kali,high
+Tombol submit di halaman KRS tidak bisa diklik sama sekali,urgent
+Lampu ruang kelas 107 separuhnya mati tidak segera diganti,low
+Bagaimana prosedur mendapatkan surat keterangan untuk keperluan beasiswa luar?,normal
+Prodi yang tercatat di sistem bukan prodi yang saya daftar,high
+Pembayaran UKT terpotong dua kali dari rekening tanpa penjelasan,urgent
+Semua pilihan mata kuliah di KRS hilang tidak ada yang muncul,urgent
+Tidak ada respons dari dosen mengenai perbaikan draft proposal saya,high
+Bagaimana cara mengajukan cuti akademik semester ini?,normal
+Kapan libur kenaikan Isa Almasih untuk kampus?,normal
+OTP tidak dikirim ke nomor HP yang terdaftar sama sekali,urgent
+Pendaftaran ujian susulan tidak bisa dilakukan dari portal,high
+Jam buka kantin terlalu singkat tidak cukup untuk semua mahasiswa,low
+Nilai perbaikan tidak diperbarui di sistem setelah mengikuti ujian ulang,high
+Portal mahasiswa menampilkan infinite loading tidak pernah selesai,urgent
+Server ujian online crash saat saya sedang mengerjakan soal,urgent
+Fitur submit kuis di e-learning error saat klik tombol kirim,urgent
+Parkiran mobil terlalu sempit susah untuk manuver kendaraan,low
+Bagaimana prosedur untuk mengajukan ujian susulan resmi?,normal
+Cara melihat riwayat nilai dari semua semester sebelumnya?,normal
+Jadwal seminar proposal belum diumumkan kepada peserta yang terdaftar,high
+Reset password berhasil tapi akun tetap tidak bisa diakses,urgent
+Kapan libur kenaikan pangkat akademik masuk kalender kampus?,normal
+Bagaimana cara mendaftar sebagai penerima beasiswa perusahaan?,normal
+Sistem tidak menerima format file apapun saat upload berkas,urgent
+Atap gedung parkir bocor kendaraan mahasiswa menjadi basah,low
+Toilet kampus sering antri panjang tidak ada toilet yang cukup,low
+Server perpustakaan digital down tidak bisa akses jurnal apapun,urgent
+Bagaimana cara mengakses layanan e-learning kampus dari luar jaringan?,normal
+Kapan batas akhir pengajuan judul tesis untuk semester ini?,normal
+Mushola putra kampus tidak ada pendingin udara sangat panas,low
+Kapan libur semester genap dimulai tahun akademik ini?,normal
+Apa prosedur resmi untuk pembatalan mata kuliah yang sudah diambil?,normal
+Bagaimana prosedur mengajukan permohonan penggantian dosen pembimbing?,normal
+AC di ruang dosen gedung A berisik keras saat dinyalakan,low
+Fitur pencarian jadwal di portal tidak merespons saat digunakan,high
+Lampu di parkiran belakang kampus tidak ada penerangan,low
+Sistem portal menolak semua upaya login menampilkan akun tidak valid,urgent
+Toilet kampus gedung A lantai 1 sangat kotor dan berbau,low
+Fasilitas olahraga outdoor tidak terawat kondisinya buruk,low
+Ruang kuliah sangat pengap saat diisi penuh mahasiswa,low
+Kapan batas waktu pengajuan judul skripsi semester ini?,normal
+Semua nilai di portal saya menghilang tanpa pemberitahuan apapun,urgent
+Pagar kampus bagian timur ada yang roboh belum diperbaiki,low
+Kursi di kelas lantai 4 banyak yang goyah tidak stabil,low
+Seluruh layanan portal mahasiswa tidak bisa digunakan sejak pagi,urgent
+Sistem pembayaran terus menolak transaksi padahal rekening mencukupi,urgent
+QR presensi yang digenerate dosen tidak bisa discan mahasiswa,urgent
+Data kehadiran saya terhapus dari sistem meski sudah tercatat,urgent
+Nama saya ejaan salah di semua dokumen sistem akademik,high
+Apa mekanisme penilaian untuk mata kuliah praktikum lapangan?,normal
+Surat keterangan aktif mahasiswa tidak bisa dikeluarkan dari sistem,high
+Kipas angin di perpustakaan tidak bekerja sudah lama,low
+Form pendaftaran PKL tidak merespons saat diisi data lengkap,high
+Lift kampus sering rusak mahasiswa harus naik tangga terus,low
+KRS saya kembali ke kondisi sebelumnya setiap kali saya logout,urgent
+Formulir perubahan data diri tidak bisa disimpan selalu gagal,high
+Fitur lupa password tidak mengirimkan email reset ke inbox manapun,urgent
+Tidak ada petugas parkir di area parkiran belakang kampus,low
+Sertifikat TOEFL tidak bisa diakses dari portal meski sudah terdaftar,high
+Riwayat presensi saya terhapus dari sistem padahal sudah lengkap,urgent
+Presensi dosen tidak bisa diinput ke sistem error terus,urgent
+Kartu mahasiswa tidak bisa discan di perpustakaan maupun di absensi,high
+Apakah ada program kuliah malam untuk kelas karyawan di kampus ini?,normal
+Kipas angin ruang baca mati sudah berminggu-minggu,low
+Kapan pengumuman jadwal wisuda periode ini akan keluar?,normal
+Dosen wali saya tidak pernah ada di ruangan saat jadwal konsultasi,high
+Apakah ada kuliah pengganti jika dosen berhalangan hadir?,normal
+Aplikasi SIAKAD mobile crash langsung tutup saat dibuka,urgent
+Sistem penilaian crash saat dosen mencoba menyimpan nilai ujian,urgent
+Pintu ruang kuliah sering macet susah dibuka dari dalam,low
+Lupa password portal dosen tidak bisa input nilai mahasiswa,high
+Ruang aula besar sering kotor setelah acara tidak langsung dibersihkan,low
+Berapa lama proses verifikasi berkas untuk pendaftaran wisuda?,normal
+Kapan jadwal pekan orientasi mahasiswa baru semester ini?,normal
+Cara mengakses buku digital di perpustakaan online kampus?,normal
+Berapa batas waktu mahasiswa boleh mengambil cuti akademik?,normal
+Tidak bisa submit KRS sama sekali terus error setiap percobaan,urgent
+Apakah ada kebijakan dispensasi untuk keterlambatan pembayaran UKT?,normal
+Pendaftaran mata kuliah pilihan tidak bisa dilakukan dari portal,high
+Sistem input nilai dosen menampilkan error tidak bisa disimpan,urgent
+Apa prosedur resmi untuk pindah program studi di kampus ini?,normal
+Sistem menampilkan akun tidak ditemukan padahal NIM yang dimasukkan benar,urgent
+Apakah tersedia program magang yang difasilitasi pihak kampus?,normal
+SIAKAD tidak bisa diakses sama sekali sejak pagi ini,urgent
+Kursi di ruang kuliah 203 banyak yang kaki-kakinya goyah,low
+Lampu lorong menuju gedung lama tidak menyala,low
+Apa saja syarat dokumen untuk pengambilan ijazah asli?,normal
+Kursi di ruang tunggu rektorat banyak yang sudah aus dan kotor,low
+Pendaftaran student exchange tidak bisa diproses karena sistem tidak merespons,high
+Penerangan di area parkir kampus sangat minim berbahaya malam hari,low
+Jadwal sidang skripsi belum dirilis padahal pendaftaran sudah lama dilakukan,high
+Server e-mail kampus down tidak bisa kirim dan terima email sama sekali,urgent
+Jadwal perkuliahan tidak bisa diakses dari portal sejak awal semester,high
+Papan jadwal kuliah di lantai 2 informasinya sudah tidak update,low
+Sistem menampilkan error database saat coba login ke portal,urgent
+Pembayaran UKT berhasil tapi akun masih terblokir di portal,urgent
+Area taman kampus tidak ada bangku untuk beristirahat mahasiswa,low
+Apa persyaratan untuk mengikuti program pertukaran mahasiswa?,normal
+Jadwal dua mata kuliah wajib bentrok tidak bisa mengikuti keduanya,high
+Notifikasi email dari sistem akademik tidak masuk ke inbox sejak lama,high
+Kapan batas akhir pengajuan konversi nilai dari kampus lain?,normal
+Sistem gagal memproses pembayaran UKT melalui aplikasi mobile banking,urgent
+SIAKAD tidak merespons sudah lebih dari 12 jam tidak bisa akses,urgent
+Pembayaran SPP selalu gagal padahal saldo rekening mencukupi,urgent
+Apa langkah-langkah-langkah untuk mendaftar sidang skripsi?,normal
+Form wisuda tidak bisa dibuka sistem menampilkan error database,urgent
+Apa saja yang perlu disiapkan sebelum sidang skripsi?,normal
+Kantin kampus sering kehabisan nasi saat jam makan siang,low
+Database nilai crash semua record tidak bisa diakses,urgent
+Bagaimana cara komplain nilai secara resmi dan ke bagian mana?,normal
+Apa saja dokumen yang harus dilengkapi untuk pendaftaran sidang?,normal
+Fitur chat dengan dosen pembimbing di portal tidak responsif,high
+Kebersihan kantin kampus kurang terjaga sering ada lalat,low
+Aplikasi kampus force close terus saat membuka menu jadwal,urgent
+Ruang laboratorium terlalu dingin AC terlalu kencang tidak tersedia pengatur,low
+Tanggal lahir saya salah di portal tidak sesuai dokumen resmi,high
+Materi kuliah yang diupload dosen menghilang dari e-learning,urgent
+Surat keterangan tidak bisa digenerate dari portal akademik,urgent
+Lupa akun e-learning dan dosen sudah mengupload semua materi,high
+Apa saja syarat untuk mendaftar beasiswa bidikmisi?,normal
+Cara mengecek status pengajuan beasiswa yang sudah dikirim?,normal
+Berapa batas maksimal pengambilan SKS untuk mahasiswa semester 7?,normal
+Sistem peminjaman ruangan tidak merespons saat diisi formulir,high
+Video pembelajaran wajib tidak bisa diputar di e-learning,urgent
+Tempat cuci tangan di depan kelas airnya sering mati,low
+Toilet difabel tidak terawat kondisinya memprihatinkan,low
+Dosen penguji yang ditetapkan tidak bisa dihubungi untuk konfirmasi jadwal,high
+Jadwal ujian komprehensif belum diinformasikan padahal sudah daftar,high
+KRS saya terkunci tidak bisa diubah padahal periode masih terbuka,urgent
+Kapan pendaftaran mata kuliah lintas prodi dibuka?,normal
+Ruang kelas sering berbau tidak sedap karena ventilasi buruk,low
+Aplikasi force close saat mengisi formulir pendaftaran,urgent
+Pengisian KRS gagal dengan pesan database connection failed,urgent
+Apa mekanisme yang benar untuk melakukan perubahan KRS setelah dikunci?,normal
+Tidak ingat PIN yang digunakan untuk akses portal mahasiswa,high
+Bagaimana mekanisme pengecekan sisa SKS yang masih harus ditempuh?,normal
+Kapan jadwal ujian perbaikan nilai semester yang lalu?,normal
+Rekam jejak akademik saya hilang dari portal tidak bisa dilihat,urgent
+Apakah mahasiswa bisa mengambil mata kuliah dari fakultas berbeda?,normal
+Link kelas online dari dosen tidak bisa dibuka selalu error,high
+Dana beasiswa tidak masuk ke rekening yang sudah didaftarkan,high
+Nilai praktikum akhir semester tidak ada di transkrip saya,high
+Marka parkir sudah pudar tidak terlihat dengan jelas,low
+Toilet pria di gedung D tidak ada pengharum ruangan,low
+Surat keterangan belajar tidak bisa dicetak dari portal kampus,high
+Aplikasi kampus crash setiap kali membuka menu akademik,urgent
+Beasiswa dicabut tanpa ada penjelasan resmi dari pihak kampus,high
+Foto profil saya di portal adalah foto mahasiswa lain,high
+Lampu di ruang praktikum beberapa titik sudah mati,low
+Berapa batas toleransi keterlambatan pembayaran UKT?,normal
+Toilet dekat lab komputer tidak pernah tersedia sabun cuci tangan,low
+Bangku taman di belakang gedung utama banyak yang patah,low
+Kantin tidak ada pilihan minuman selain air mineral dan teh manis,low
+Taman kampus tidak terawat rumputnya sudah sangat panjang,low
+Registrasi untuk seminar wajib tidak bisa diselesaikan,high
+Lantai kelas sering kotor tidak disapu sebelum kuliah dimulai,low
+Kapan libur semester ganjil dimulai?,normal
+Nama saya tidak ada di daftar penerima beasiswa padahal sudah dinyatakan lolos,high
+Tempat cuci tangan di kantin tidak ada sabun sama sekali,low
+Informasi wisuda periode ini belum disampaikan ke mahasiswa calon wisudawan,high
+Halaman transkrip lambat sekali tidak bisa dicetak karena timeout,high
+Data KRS saya hilang semua dari sistem tanpa pemberitahuan,urgent
+Bagaimana cara menggunakan layanan konseling akademik kampus?,normal
+Tidak ada cara untuk membuka akun yang terblokir di portal,urgent
+Notifikasi sistem akademik tidak pernah sampai ke email saya,high
+Kapan jadwal wisuda untuk angkatan saya?,normal
+Apakah ada fasilitas konsultasi karir di kampus untuk mahasiswa?,normal
+Link video pembelajaran dari dosen selalu gagal dimuat,high
+Status semester saya mundur satu di sistem akademik,high
+OTP untuk login tidak dikirim ke nomor telepon yang terdaftar,urgent
+Stop kontak di ruang kuliah lantai 2 tidak berfungsi,low
+Apakah semester cuti tetap dihitung dalam masa studi?,normal
+Nama saya tidak ada di daftar penerima padahal dinyatakan lolos seleksi,high
+Jadwal kuliah pengganti diberikan bertabrakan dengan kelas lain,high
+Tempat wudhu di masjid kampus airnya tidak mencukupi,low
+Toilet kampus lantai 2 sangat bau dan kotor tidak terawat,low
+Pintu toilet di gedung F kuncinya sudah rusak tidak bisa dikunci,low
+Pengumuman kelulusan yudisium belum ada padahal sidang sudah selesai,high
+Jadwal ujian susulan belum ditetapkan dan diinformasikan,high
+Bagaimana prosedur mendaftar program MBKM di kampus ini?,normal
+Jadwal perkuliahan tidak bisa diunduh dari portal sejak awal semester,high
+Bagaimana cara meminta surat rekomendasi beasiswa dari dosen?,normal
+Tombol simpan KRS tidak ada respons sama sekali setelah diklik berkali-kali,urgent
+Lupa semua data login akun SIAKAD tidak ingat username maupun password,high
+KTM baru belum bisa diambil padahal jadwal pengambilan sudah lewat,high
+Informasi UKT progresif untuk penerima beasiswa belum ada kejelasan,high
+Apa saja persyaratan untuk bisa mengikuti KKN reguler?,normal
+Pengumuman her-registrasi belum ada pemberitahuan ke mahasiswa,high
+Apa saja hak mahasiswa yang bisa digunakan saat mengajukan keberatan nilai?,normal
+Portal pembayaran UKT tidak merespons sudah lebih dari 6 jam,urgent
+Papan nama ruangan banyak yang sudah lepas dari tempatnya,low
+Sertifikat kegiatan wajib tidak bisa diunduh untuk persyaratan wisuda,high
+Sekretariat UKM berantakan tidak tersedia yang membersihkan,low
+Konversi nilai dari program exchange tidak masuk ke sistem,high
+Berapa biaya her-registrasi per SKS semester genap?,normal
+QR code presensi tidak bisa discan di semua kelas hari ini,urgent
+Aplikasi mobile kampus crash terus tidak bisa digunakan sama sekali,urgent
+Bagaimana cara melaporkan kerusakan fasilitas kampus ke bagian mana?,normal
+Data profil mahasiswa saya corrupt menampilkan karakter aneh,urgent
+Apa yang dimaksud dengan status akademik tidak aktif di sistem?,normal
+Notifikasi penting dari portal tidak masuk ke aplikasi mobile,urgent
+Soal ujian online tidak muncul layar blank saat ujian dimulai,urgent
+Akun SIAKAD terkunci dan tidak ada cara untuk membukanya,urgent
+Pintu darurat gedung B selalu terkunci dari dalam,low
+Parkiran tidak ada atap kendaraan kepanasan di bawah matahari,low
+Peralatan gym kampus banyak yang sudah tidak layak pakai,low
+Seluruh data nilai semester lalu hilang dari transkrip tiba-tiba,urgent
+Ruang laboratorium terlalu dingin AC terlalu kencang tidak ada pengatur,low
+Fitur upload berkas tidak bisa digunakan sama sekali error terus,urgent
+Nilai ujian tengah semester saya tidak muncul di portal mahasiswa,high
+Area wudhu tidak ada keset sehingga lantai basah berbahaya,low
+Kapan dimulainya perkuliahan setelah libur semester ganjil?,normal
+Apakah ada layanan antar jemput kampus untuk mahasiswa?,normal
+Kapan batas pengajuan judul skripsi untuk semester ini?,normal
+Kantin sering habis lebih awal tidak ada cadangan makanan,low
+Status pembayaran tidak update meski sudah konfirmasi ke bank,high
+AC di ruang seminar terlalu dingin tidak bisa diatur suhunya,low
+Nama saya salah penulisan di sistem akademik dan tidak bisa diperbaiki sendiri,high
+Fitur bimbingan online tidak bisa diakses tidak ada respons,high
+Belum ada keterangan resmi tentang jadwal ujian akhir semester,high
+Cara mendaftarkan diri ke program merdeka belajar kampus?,normal
+Jadwal kuliah pengganti tidak dikonfirmasi ke mahasiswa sebelumnya,high
+Sistem menampilkan database error setiap kali saya login,urgent
+Lupa akun perpustakaan digital tidak bisa akses referensi skripsi,high
+Halaman SIAKAD terus loading dan tidak pernah berhasil dimuat,urgent
+Toilet di gedung kuliah tidak ada tissue sudah lama,low
+Selokan di kampus tersumbat menyebabkan bau tidak sedap,low
+Video materi kuliah wajib tidak bisa diputar error media source,urgent
+Kapan pembagian kelas untuk semester depan akan diumumkan?,normal
+Verifikasi identitas gagal terus tidak bisa reset password,urgent
+Uang sudah ditransfer tapi portal masih blokir akses karena belum bayar,urgent
+Jawaban kuis hilang setelah sistem timeout saat masih mengerjakan,urgent
+AC di ruang dosen tetes airnya ke lantai sudah lama tidak diperbaiki,low
+Apa prosedur untuk mengajukan keringanan pembayaran UKT?,normal
+Parkiran motor mahasiswa sempit sekali dan tidak tertata,low
+Portal menampilkan error 403 forbidden padahal akun sudah aktif,urgent
+Pengumuman penerimaan beasiswa prestasi belum keluar juga,high
+Mata kuliah yang sudah saya selesaikan tidak terhitung di transkrip,high
+Tidak ingat username yang didaftarkan di portal beasiswa kampus,high
+Area merokok tidak diatur mahasiswa merokok di sembarang tempat,low
+Bagaimana cara mengajukan permohonan penggantian dosen pembimbing?,normal
+Email di profil akun tidak bisa diganti meski sudah melalui prosedur verifikasi,high
+SIAKAD tidak bisa dibuka sama sekali sejak pagi ini,urgent
+Kipas angin di kelas lantai 2 gedung B tidak berputar,low
+Dimana saya bisa mendapatkan informasi beasiswa dari kampus?,normal
+Cara menghubungi BAAK jika ada masalah administrasi akademik?,normal
+Kapan pengumuman seleksi program magang kampus akan keluar?,normal
+Info jadwal sidang meja hijau belum ada padahal mendaftar sudah lama,high
+Kapan pengumuman penerimaan mahasiswa baru tahun ini?,normal
+Slip pembayaran UKT tidak bisa dicetak dari portal akademik,high
+Nilai satu mata kuliah tidak masuk transkrip meski sudah mengikuti ujian,high
+Tempat sampah di taman kampus sudah penuh lama tidak diangkut,low
+QR presensi yang digenerate tidak bisa discan oleh HP apapun,urgent
+Bagaimana cara mengajukan permohonan beasiswa dari perusahaan mitra?,normal
+Kapan pendaftaran program double degree dibuka?,normal
+Kapan jadwal pembekalan KKN untuk angkatan ini?,normal
+Ruang microteaching tidak dilengkapi peralatan memadai,low
+Bagaimana cara mendapatkan transkrip nilai dalam bahasa Inggris?,normal
+Presensi online ditutup sebelum waktunya habis tidak bisa diisi,urgent
+Surat rekomendasi tidak kunjung terbit padahal sudah meminta lama,high
+Error validasi muncul terus saat simpan KRS tanpa pesan yang jelas,urgent
+Kapan batas waktu pengumpulan tugas akhir semester ini?,normal
+Kapan jadwal yudisium periode semester ini?,normal
+Registrasi ujian susulan tidak bisa dilakukan dari portal mahasiswa,high
+Transkrip menampilkan nilai berbeda dari yang tertera di bukti ujian,high
+Error 401 unauthorized muncul setiap kali submit formulir,urgent
+Sudah lupa semua data login SIMAK sejak lama tidak digunakan,high
+Apakah tersedia ujian perbaikan untuk nilai C yang sudah diperoleh?,normal
+Ruang baca tidak ada colokan untuk laptop mahasiswa,low
+Bagaimana cara konfirmasi kehadiran untuk acara wisuda resmi?,normal
+Link zoom untuk kelas online dari dosen tidak bisa dibuka,high
+Portal sangat lambat tidak bisa digunakan sama sekali saat jam kuliah,high
+Info wisuda periode ini belum ada sama sekali dari kampus,high
+Kantin tutup terlalu awal jam 2 siang padahal mahasiswa masih banyak,low
+Berapa lama proses penerbitan surat keterangan aktif dari BAAK?,normal
+Kipas angin di kantin kampus sudah tidak berfungsi,low
+Meja ruang rapat prodi tidak tersedia colokan listrik,low
+Database nilai mahasiswa mengalami kerusakan tidak bisa diakses,urgent
+Cara mencetak ulang slip pembayaran UKT dari portal?,normal
+Ruang UKM sangat berantakan tidak ada yang bertanggung jawab,low
+Berkas wisuda tidak bisa disubmit server selalu menolak upload,urgent
+Jadwal seminar proposal belum ada kabar kepada peserta yang terdaftar,high
+Apakah ada program double degree yang tersedia di kampus?,normal
+Nama tercatat salah di semua dokumen resmi kampus,high
+Jalan masuk kampus berdebu mengganggu saat musim kering,low
+Kapan deadline drop out akademik mahasiswa ditetapkan?,normal
+KRS sudah diisi lengkap tapi setelah logout semua data hilang kembali kosong,urgent
+Sistem presensi tidak merekam data meski sudah berhasil scan,urgent
+Bagaimana prosedur penyerahan berkas skripsi ke perpustakaan?,normal
+Tangga darurat gedung C tidak ada penerangan sama sekali,low
+Portal down bersamaan dengan jadwal pengisian KRS yang sedang berlangsung,urgent
+Toilet difabel kuncinya rusak tidak bisa digunakan dengan aman,low
+Parkiran motor becek dan berlumpur saat hujan turun,low
+Kapan libur Isra Miraj masuk kalender akademik semester ini?,normal
+Akun saya terduplikasi dua kali dengan NIM yang sama di sistem,high
+Karpet di mushola kampus tidak pernah dibersihkan,low
+Lupa PIN portal akademik mahasiswa,high
+Meja ruang diskusi mahasiswa penuh coretan dan grafiti,low
+Pendaftaran mata kuliah pilihan tidak bisa dilakukan dari sistem,high
+Kapan batas pengumpulan berkas untuk pendaftaran KKN tematik?,normal
+Nilai praktikum tidak dimasukkan dosen padahal sudah selesai semua,high
+Batas waktu persetujuan pembimbing hampir habis tidak ada respons,high
+Timer ujian terus berjalan meski koneksi ke sistem terputus,urgent
+Mata kuliah yang sudah lulus muncul lagi di daftar KRS semester ini,high
+Meja ruang rapat prodi tidak ada colokan listrik,low
+Formulir beasiswa tidak bisa disubmit selalu gagal di langkah akhir,urgent
+Lampu di toilet kampus sering mati tidak segera diganti,low
+Presensi online tidak bisa disubmit sebelum waktu kelas berakhir,urgent
+Atap koridor gedung lama bocor saat hujan,low
+Cara mengajukan konversi nilai dari mata kuliah yang diambil di luar?,normal
+Aplikasi tidak bisa digunakan setelah update versi terbaru,urgent
+Ruang tunggu dekat rektorat tidak ada kursi yang memadai,low
+Lampu baca di ruang skripsi sudah mati lama tidak diganti,low
+Form permohonan dispensasi tidak bisa disubmit ke sistem akademik,high
+Surat rekomendasi beasiswa tidak kunjung diterbitkan padahal sudah meminta,high
+Data nilai semester 4 dan 5 hilang semua dari transkrip,urgent
+Dispenser air minum di koridor gedung sering kosong tidak diisi,low
+Lampu ruang baca lantai 2 redup tidak nyaman untuk membaca,low
+Error 408 request timeout muncul saat membuka jadwal kuliah,urgent
+Apakah ada program remedial untuk mahasiswa dengan nilai rendah?,normal
+Lampu darurat di tangga darurat gedung B tidak berfungsi,low
+Nilai di transkrip berubah sendiri tidak sesuai yang sebenarnya,urgent
+Dosen tidak merespons pengajuan konsultasi sudah tiga minggu,high
+Apakah ada kelas malam untuk mahasiswa yang bekerja sambil kuliah?,normal
+Bagaimana cara menyampaikan masukan tentang sistem akademik kampus?,normal
+Pohon di area kampus tidak dipangkas ranting menghalangi jalan,low
+Lampu taman kampus tidak menyala di malam hari,low
+Nilai ujian susulan tidak masuk meski sudah mengikutinya,high
+AC di ruang laboratorium tidak layak pakai udara pengap,low
+Slip pembayaran tidak bisa dicetak meski status lunas,high
+Berapa batas maksimal SKS yang bisa diambil semester depan?,normal
+Lupa akun portal alumni tidak bisa verifikasi data kelulusan,high
+Akun portal beasiswa tidak bisa diakses lupa passwordnya,high
+Data keluarga di portal beasiswa tidak tersimpan dengan benar,high
+Parkiran mobil kapasitasnya tidak cukup untuk kebutuhan,low
+Tidak bisa upload foto KTM untuk keperluan verifikasi wisuda,urgent
+Kantin kampus tidak menyediakan makanan sehat pilihan sehat tidak ada,low
+Konfirmasi pengajuan beasiswa tidak pernah masuk ke email saya,high
+Ventilasi udara di ruang kelas sangat buruk tidak ada jendela,low
+Berapa batas waktu pengerjaan skripsi dari awal pendaftaran?,normal
+Proyektor ruang 401 tampilannya sangat buram tidak jelas,low
+Bagaimana cara mengubah topik skripsi yang sudah disetujui pembimbing?,normal
+Error 504 timeout muncul saat saya mencoba login ke SIAKAD,urgent
+Cara meminjam ruangan kampus untuk kegiatan mahasiswa?,normal
+Apa persyaratan lengkap untuk mendaftar program beasiswa kampus?,normal
+Kapan batas pengajuan cuti akademik semester ini?,normal
+Kapan kalender akademik semester ganjil tahun depan dirilis?,normal
+Harga di kantin kampus tidak terjangkau bagi mahasiswa rantau,low
+Sistem akademik berjalan sangat lambat tidak bisa dilakukan apapun,high
+Kapan pengumuman hasil ujian komprehensif akan diumumkan?,normal
+Lampu taman kampus mati semua tidak ada penerangan di malam hari,low
+Lupa akun dan tidak ada opsi reset yang berhasil,high
+Beasiswa yang diajukan tidak ada keterangan diterima atau ditolak,high
+Halaman portal akademik sangat lambat butuh waktu lama untuk memuat,high
+Pintu utama gedung A susah dibuka karena engselnya rusak,low
+Registrasi untuk seminar wajib tidak bisa diproses dari portal,high
+Kemana mahasiswa mengajukan permohonan keringanan biaya kuliah?,normal
+Lupa password perpustakaan digital tidak bisa akses referensi tugas,high
+Kursi kuliah di ruang 105 banyak yang penyandarnya patah,low
+Apakah ada ujian perbaikan untuk nilai C yang sudah diperoleh?,normal
+Kapan jadwal perkuliahan semester genap ini dimulai?,normal
+Submit form pendaftaran ujian komprehensif gagal terus,urgent
+Aplikasi mobile menampilkan error koneksi terus menerus,urgent
+Tempat wudhu tidak ada keset lantai basah dan licin berbahaya,low
+Transfer UKT sudah terkonfirmasi oleh bank tapi sistem tidak memperbarui status,urgent
+Koperasi mahasiswa sering tutup tidak ada jadwal operasional jelas,low
+Kapan batas akhir pengajuan permohonan beasiswa prestasi?,normal
+Jadwal ujian dua mata kuliah bertabrakan tidak bisa mengikuti keduanya,high
+Dosen pembimbing tidak responsif pesan terkait pengajuan judul selama sebulan,high
+Bagaimana cara mendapatkan buku panduan akademik terbaru?,normal
+Aula kampus atapnya bocor saat hujan deras mengganggu kegiatan,low
+Prodi yang tercatat di sistem berbeda dari yang sebenarnya didaftar,high
+Siapa yang harus dihubungi untuk urusan transkrip nilai resmi?,normal
+Bagaimana cara mengajukan keberatan atas keputusan akademik kampus?,normal
+Lemari di laboratorium fisika banyak yang pintunya sudah rusak,low
+Reset password berhasil tapi password baru tidak diterima sistem,urgent
+Sertifikat kegiatan wajib tidak bisa diakses untuk persyaratan wisuda,high
+UKT sudah dibayar dua kali karena sistem tidak update statusnya,urgent
+Her-registrasi tidak bisa diproses portal tidak merespons,high
+Info her-registrasi semester depan belum dikirim ke mahasiswa,high
+Toilet kampus jarang dibersihkan terutama di jam siang,low
+Fitur chat dengan dosen pembimbing di portal tidak merespons,high
+Parkiran sepeda motor sangat penuh tidak ada perluasan,low
+Apakah kampus menyediakan beasiswa bagi mahasiswa difabel?,normal
+Password perpustakaan digital terlupa butuh bantuan untuk reset,high
+Setelah reset password akun langsung terkunci kembali,urgent
+Berapa biaya pembuatan KTM pengganti jika hilang?,normal
+Wastafel di gedung fakultas banyak yang krannya bocor,low
+Sertifikat kompetensi tidak tersedia di portal untuk lamaran kerja,high
+Bagaimana cara mendaftar program MBKM di kampus ini?,normal
+Error 503 service unavailable ketika buka menu KRS,urgent
+Username dan password e-learning sudah tidak saya ingat,high
+Meja di laboratorium komputer banyak yang permukaannya rusak,low
+Parkiran motor sering banjir saat musim hujan,low
+Bangku di taman kampus banyak yang catnya sudah mengelupas,low
+Link rekaman kelas tidak bisa diakses dari perangkat apapun,high
+IPS saya kurang dari 2.0 dan butuh bantuan prosedur akademik lanjutan,high
+Pengumuman jadwal wisuda periode ini belum keluar,high
+Nilai yang tercatat berbeda dari yang diberitahu dosen,high
+Apa prosedur untuk mendapatkan sertifikat kegiatan dari UKM resmi kampus?,normal
+Token verifikasi email selalu expired sebelum bisa digunakan,urgent
+Tugas yang sudah dikumpulkan hilang dari e-learning setelah deadline,urgent
+Apakah ada fasilitas kelas internasional di kampus ini?,normal
+Submit tugas akhir gagal dengan kode error 404,urgent
+Nama prodi di papan gedung C sudah tidak bisa dibaca,low
+Kapan jadwal rapat senat mahasiswa periode ini?,normal
+Cara meminta surat pengantar penelitian dari pihak kampus?,normal
+Bagaimana cara mendapatkan surat keterangan aktif dari kampus?,normal
+Jawaban ujian tidak tersimpan meski sudah klik simpan berkali-kali,urgent
+Sertifikat TOEFL tidak bisa diunduh padahal sudah ikut tes resmi kampus,high
+Nilai yang sudah diinput dosen menghilang dari sistem,urgent
+Autentikasi dua faktor terus gagal meski kode OTP sudah benar,urgent
+Bagaimana cara mengajukan permohonan pindah kelas semester ini?,normal
+Pengumuman penerimaan beasiswa prestasi belum ada pemberitahuan juga,high
+Apakah tersedia ujian susulan bagi mahasiswa yang sakit saat ujian?,normal
+Taman kampus kurang terawat rumputnya sudah sangat panjang,low
+Cara mengajukan izin tidak masuk kuliah secara resmi?,normal
+Apa langkah-langkah mendaftar sebagai peserta seminar proposal?,normal
+Kapan pengumuman kelulusan seleksi program MBKM diumumkan?,normal
+Tidak bisa login ke portal setelah update aplikasi kampus terbaru,urgent
+Rekaman kuliah dosen tidak bisa diputar dari portal mahasiswa,urgent
+Apakah ada program akselerasi kuliah untuk mahasiswa berprestasi?,normal
+Bagaimana cara mengajukan permohonan tutup buku semester?,normal
+Semua menu di aplikasi mobile menampilkan data kosong,urgent
+Kapan sosialisasi program MBKM untuk mahasiswa semester 5?,normal
+Dana beasiswa bulan ini belum cair tanpa ada penjelasan dari kampus,high
+Berapa lama proses penerbitan surat keterangan lulus?,normal
+Tempat ibadah kampus terlalu kecil tidak muat untuk semua mahasiswa,low
+Bagaimana langkah-langkah untuk mendaftar sidang skripsi?,normal
+Jadwal praktikum yang diberikan bertabrakan dengan kelas teori wajib,high
+Akun SIAKAD tidak bisa diakses karena lupa semua credential,high
+Kartu ujian tidak bisa digenerate sama sekali ujian besok pagi,urgent
+Berkas yang sudah diupload menghilang dari portal keesokan harinya,urgent
+Program studi yang tercatat di sistem tidak sesuai prodi yang sebenarnya,high
+Rak buku di perpustakaan banyak yang sudah miring tidak stabil,low
+Tidak ingat email yang didaftarkan saat registrasi SIAKAD,high
+Nama saya salah di sistem akademik butuh perbaikan segera,high
+Kapan deadline drop mata kuliah tanpa mendapat nilai W?,normal
+Bagaimana cara mengajukan permohonan ruang kelas tambahan?,normal
+Nilai seluruh mahasiswa angkatan saya menghilang dari database,urgent
+Berapa batas maksimal semester bagi mahasiswa program D4?,normal
+Nilai satu mata kuliah tidak masuk transkrip padahal sudah ujian final,high
+Jadwal perwalian semester ini belum diinformasikan ke mahasiswa,high
+Form her-registrasi tidak bisa disubmit setelah diisi dengan lengkap,high
+E-learning otomatis keluar saat sedang mengerjakan kuis ujian,urgent
+Sistem absensi QR tidak mengakui scan meski kode jelas terbaca,urgent
+Cara mengikuti program pertukaran mahasiswa antar universitas?,normal
+Apakah mahasiswa transfer bisa langsung mengambil KRS penuh?,normal
+Sesi login otomatis keluar sendiri setiap beberapa menit,urgent
+Formulir pendaftaran magang tidak merespons saat diisi data,high
+Aplikasi kampus langsung menutup diri setelah splash screen,urgent
+Kemana saya harus melapor jika mengalami masalah akademik serius?,normal
+Kapan jadwal her-registrasi semester genap ini dimulai?,normal
+Berkas verifikasi kelulusan tidak bisa dilengkapi lewat portal,high
+Server database akademik crash tidak bisa akses data apapun,urgent
+Beasiswa bidikmisi tidak ada informasi pencairan untuk bulan ini,high
+Surat keterangan aktif tidak bisa digenerate dari sistem error server,urgent
+Surat keterangan aktif tidak bisa didapatkan dari bagian administrasi,high
+Ruang kuliah lantai 3 sangat panas tidak ada AC maupun kipas,low
+Lupa NIM yang terdaftar di sistem tidak bisa mulai reset password,high
+Forum diskusi e-learning tidak bisa diakses menampilkan error,urgent
+Server portal error semua layanan akademik lumpuh total,urgent
+Lampu lorong gedung B lantai 3 gelap tidak menyala,low
+Berapa jumlah minimal absensi yang bisa diabaikan per semester?,normal
+Dimana kantor BAAK berada dan jam pelayanannya kapan?,normal
+Papan digital di lobby selalu menampilkan layar biru tidak berfungsi,low
+Apakah ada program magang yang difasilitasi pihak kampus?,normal
+Info kuota beasiswa untuk semester depan belum ada kejelasan,high
+Jadwal ujian susulan belum ditetapkan oleh pihak akademik,high
+Bagaimana prosedur pembuatan surat keterangan lulus?,normal
+Bagaimana prosedur untuk mengaktifkan kembali akun setelah cuti?,normal
+Bagaimana prosedur peminjaman alat laboratorium untuk penelitian skripsi?,normal
+Surat keterangan aktif tidak bisa digenerate dari sistem error sistem,urgent
+Jadwal her-registrasi belum ada pemberitahuan ke mahasiswa aktif,high
+Nilai praktikum tidak diinput padahal semua pertemuan sudah selesai,high
+Setiap perubahan KRS langsung kembali ke kondisi sebelumnya,urgent
+Nilai praktikum tidak ada di portal meski sudah selesai semua sesi,high
+Semester aktif saya tercatat salah satu semester di belakang,high
+Parkiran motor mahasiswa sangat sempit dan tidak tertata,low
+Dosen wali tidak ada di tempat saat jadwal konsultasi yang ditetapkan,high
+Koneksi ujian online terputus dan tidak bisa masuk kembali ke sesi ujian,urgent
+Nama tidak ada di pengumuman penerima padahal lolos wawancara,high
+Transkrip nilai tidak bisa dicetak padahal semua syarat sudah terpenuhi,high
+Dispenser di kantin tidak berfungsi air minum tidak tersedia,low
+Toilet lantai 4 tidak ada gantungan untuk tas dan pakaian,low
+Berkas PKL tidak bisa dikirim ke portal error ukuran file,urgent
+Sertifikat akreditasi prodi tidak tersedia untuk keperluan lamaran kerja,high
+Tugas yang berhasil diupload tiba-tiba hilang dari sistem e-learning,urgent
+Penerangan di lorong gedung lama sangat minim berbahaya,low
+Apakah ada batas usia untuk mendaftar program pascasarjana di sini?,normal
+Lampu emergency di tangga tidak berfungsi berbahaya saat mati listrik,low
+Kartu ujian tidak bisa digenerate sistem menolak request,urgent
+Tempat sampah di dalam kelas tidak ada pemisahan jenis sampah,low
+Parkiran tidak tersedia atap kendaraan kepanasan di bawah matahari,low
+Kipas angin di perpustakaan tidak berfungsi sudah cukup lama,low
+Kapan pendaftaran KKN angkatan ini akan dibuka?,normal
+Link absensi yang dikirim dosen sudah tidak aktif,high
+SKS saya terhitung lebih sedikit dari yang seharusnya sudah ditempuh,high
+Input nilai dari dosen tidak berhasil disimpan error setiap kali,urgent
+Kursi ruang seminar banyak yang baut pengikatnya kendor,low
+Waktu ujian online habis lebih cepat dari waktu yang seharusnya,urgent
+Berapa minimal IPK yang dibutuhkan untuk mendapatkan beasiswa prestasi?,normal
+Papan pengumuman di gedung A sudah usang tidak bisa dibaca,low
+Kursi auditorium lantai 2 banyak yang lapisan dudukannya sobek,low
+Meja kantin jarang dibersihkan setelah pengunjung selesai makan,low
+Mata kuliah yang sudah saya pilih menghilang dari KRS sendiri,urgent
+Pembayaran berhasil di marketplace tapi tidak terkonfirmasi di sistem kampus,urgent
+Bagaimana cara bergabung dengan UKM yang diminati?,normal
+Ruang ibadah terlalu kecil tidak menampung kapasitas mahasiswa,low
+Kursi tunggu di aula kampus kondisinya sangat memprihatinkan,low
+Fitur forgot password menampilkan error saat digunakan,urgent
+Pengajuan cuti akademik error saat langkah terakhir submit formulir,urgent
+Apakah ada program pertukaran mahasiswa internasional?,normal
+IPK saya berubah tiba-tiba menjadi lebih rendah tanpa perubahan nilai,high
+Tidak bisa menambahkan mata kuliah ke KRS sama sekali error,urgent
+Website kampus menampilkan blank page tidak ada konten apapun,urgent
+Apa saja ketentuan untuk mengambil mata kuliah di semester pendek?,normal
+Link pendaftaran praktikum semester ini tidak aktif saat diklik,high
+Apa saja persyaratan dokumen untuk pengambilan ijazah asli?,normal
+Rekam akademik saya corrupt tidak bisa dibaca sistem,urgent
+Link grup mata kuliah sudah kadaluarsa tidak bisa di-join,high
+Pengumuman jadwal ujian akhir semester belum ada pemberitahuan sampai sekarang,high
+Pendaftaran KKN tidak bisa dilanjutkan sistem tidak merespons,high
+Satu mata kuliah tidak ada nilainya di transkrip padahal lulus,high
+Tidak ingat password akun kampus yang dipakai semester lalu,high
+Papan nama jalan di dalam kampus banyak yang hilang,low
+Fitur pencarian jadwal di portal tidak responsif saat digunakan,high
+Kartu tanda mahasiswa baru belum bisa diambil padahal jadwal sudah lewat,high
+Pengumuman hasil seleksi beasiswa sudah melewati batas waktu yang dijanjikan,high
+Nilai ujian satu mata kuliah tidak pernah masuk ke portal saya,high
+Email verifikasi akun baru tidak pernah sampai meski sudah 24 jam,urgent
+Lupa password SIMAK mahasiswa tidak bisa cek nilai,high
+Akun terblokir permanen tidak bisa dibuka kembali,urgent
+Tidak ada tempat parkir yang aman untuk sepeda di kampus,low
+Meja belajar di perpustakaan banyak yang permukaannya terkelupas,low
+Apa mekanisme pemberian dispensasi untuk mahasiswa yang sakit?,normal
+Kipas angin di ruang sekretariat prodi sudah mati dari minggu lalu,low
+Password lupa dan email untuk reset tidak bisa diakses,high
+Apa kebijakan kampus mengenai ketidakhadiran dosen?,normal
+Tidak bisa mengakses apapun di SIAKAD sejak semalam error terus,urgent
+Bagaimana prosedur yang benar untuk melakukan her-registrasi semester depan?,normal
+Jalur pejalan kaki tertutup material proyek pembangunan,low
+Upload sertifikat kegiatan gagal terus ukuran sudah sesuai,urgent
+Sistem menampilkan gagal bayar padahal bukti transaksi berhasil,urgent
+Tagihan UKT muncul dua kali di sistem padahal sudah membayar sekali,urgent
+Form pendaftaran sidang tidak bisa disimpan error terus,urgent
+Sertifikat prestasi tidak bisa diunduh dari portal akademik,high
+Kode bayar UKT tidak bisa digenerate sistem error terus,urgent
+Data kehadiran mahasiswa terhapus dari sistem tanpa sebab apapun,urgent
+Area parkir sepeda tidak tersedia di seluruh area kampus,low
+Apakah ada beasiswa khusus untuk mahasiswa berprestasi?,normal
+Apa saja yang harus disiapkan untuk pendaftaran KKN?,normal
+Status beasiswa berubah dari diterima menjadi tidak diketahui,high
+Toilet kampus lantai 5 airnya habis dan tidak diisi kembali,low
+Error upload berkas PKL sudah seminggu tidak bisa teratasi,urgent
+Colokan listrik di ruang baca perpustakaan sangat kurang,low
+Ruang kelas tidak ada layar proyektor permanen harus pakai dinding,low
+Bagaimana prosedur verifikasi ijazah secara online untuk keperluan lamaran?,normal
+Cara membuat email kampus baru jika yang lama bermasalah?,normal
+Parkiran basement penerangannya sangat minim berbahaya,low
+Tidak bisa masuk ke SIAKAD karena tidak ingat password yang digunakan,high
+Tidak bisa simpan perubahan KRS apapun yang saya lakukan,urgent
+Muncul pesan error 500 saat membuka halaman beranda SIAKAD,urgent
+Lampu jalan menuju gedung olahraga tidak ada penerangan,low
+Cara mengunduh materi kuliah yang diunggah dosen di e-learning?,normal
+Kode OTP yang dikirim sistem selalu expired sebelum diinput,urgent
+Portal menampilkan error 502 bad gateway tidak bisa diakses,urgent
+Gazebo kampus dalam kondisi rusak tidak aman untuk digunakan,low
+Bagaimana prosedur untuk mengajukan surat dispensasi tidak masuk kuliah?,normal
+Lupa credential untuk login ke portal akademik semester ini,high
+Kapan jadwal pengambilan toga untuk wisudawan?,normal
+Batas waktu revisi skripsi hampir habis tapi dosen belum memberikan persetujuan,high
+Kapan batas akhir pembayaran UKT semester ganjil tahun ini?,normal
+Kapan jadwal sosialisasi kurikulum baru untuk mahasiswa?,normal
+Data tanggal lahir di portal tidak sesuai dengan akta lahir asli,high
+Semester aktif saya dicatat mundur satu semester dari seharusnya,high
+IPK saya berubah turun tiba-tiba tanpa ada perubahan nilai apapun,high
+Penguji sidang tidak bisa dihubungi untuk konfirmasi jadwal,high
+Jalur pejalan kaki licin saat hujan tidak ada peringatan,low
+Bagaimana cara mengurus perubahan jadwal kuliah yang bentrok?,normal
+Harga makanan di kantin kampus terlalu mahal tidak terjangkau,low
+Data kehadiran seluruh angkatan hilang dari sistem presensi,urgent
+Link meeting zoom dari dosen selalu error meeting not found,high
+Ijazah digital tidak bisa diakses dari portal untuk keperluan verifikasi,high
+Transkrip menampilkan nilai kosong untuk semua mata kuliah,urgent
+Ruang loker mahasiswa berbau karena tidak tersedia ventilasi,low
+Kapan jadwal pengambilan ijazah bagi wisudawan periode lalu?,normal
+Akun e-learning tiba-tiba tidak aktif tidak bisa login sama sekali,urgent
+Sertifikat akreditasi tidak ada di portal untuk keperluan kerja,high
+Tangga menuju lantai 4 kondisinya sangat tidak aman,low
+Apakah ada layanan antar jemput untuk mahasiswa berkebutuhan khusus?,normal
+Apa langkah untuk mengajukan keberatan terhadap hasil kelulusan?,normal
+Kabel colokan listrik di kelas beberapa terlalu pendek,low
+Meja di laboratorium komputer banyak yang permukaannya tidak layak pakai,low
+Bagaimana prosedur permohonan dispensasi kehadiran untuk keperluan lomba?,normal
+Ijazah digital tidak bisa diverifikasi sistem menampilkan error,urgent
+Error 409 conflict muncul saat menyimpan data KRS,urgent
+Cara mengetahui siapa dosen wali saya dan jadwal konsultasinya?,normal
+IPK tiba-tiba turun tanpa ada perubahan nilai yang saya ketahui,high
+Portal akademik merespons sangat lambat butuh lebih dari 5 menit setiap halaman,high
+Jalan menuju gedung C berlubang banyak genangan saat hujan,low
+Surat aktif mahasiswa tidak bisa dicetak dari portal administrasi,high
+Proyektor di ruang 203 lampunya sudah sangat redup,low
+Berapa biaya cetak ulang ijazah jika ijazah asli rusak?,normal
+Informasi daftar dosen pembimbing skripsi belum diumumkan ke mahasiswa,high
+Kapan periode perwalian semester genap ini dimulai?,normal
+Mading kampus sudah lusuh tidak diperbarui dengan informasi baru,low
+Apakah bisa mengambil lebih dari 24 SKS jika IPK di atas 3.5?,normal
+Dosen tidak memberikan umpan balik atas proposal yang sudah dikumpulkan,high
+Berapa biaya sewa toga untuk keperluan wisuda?,normal
+Laporan PKL tidak bisa diupload meski ukuran file sudah sesuai batas,urgent
+Nilai yang sudah diinput dosen menghilang dari database,urgent
+Mata kuliah yang sudah diambil tidak terhitung dalam rekap SKS,high
+Apa langkah yang harus diambil jika KTM hilang atau rusak?,normal
+Tombol konfirmasi pendaftaran tidak merespons padahal sudah diklik berkali-kali,high
+Sistem penilaian down saat dosen mencoba menyimpan nilai ujian,urgent
+Jadwal ujian semester ini belum ada pemberitahuan resmi sama sekali,high
+Link zoom dari dosen tidak bisa dibuka selalu menampilkan meeting not found,high
+Lupa email yang digunakan saat registrasi akun kampus,high
+Submit proposal PKM error tidak bisa dikirim ke sistem,urgent
+Cara mendaftar untuk mengikuti lomba essay tingkat nasional?,normal
+Lampu di halaman kampus banyak yang tidak menyala malam hari,low
+Her-registrasi tidak bisa dilakukan dari portal meski syarat terpenuhi,high
+Sertifikat TOEFL kampus tidak bisa diunduh dari portal meskipun sudah ikut tes,high
+Apakah nilai incomplete bisa diperbaiki di semester berikutnya?,normal
+Kapan batas akhir drop mata kuliah tanpa mendapat nilai W?,normal
+Dua kali terpotong biaya UKT dari rekening tapi hanya terhitung satu,urgent
+Tidak bisa memulai ujian meski sudah klik tombol mulai berkali-kali,urgent
+Toilet di gedung C bau pesing tidak tersedia yang membersihkan,low
+Toilet di gedung C bau pesing tidak ada yang membersihkan,low
+Apa mekanisme permohonan surat keterangan aktif kuliah?,normal
+Error 413 saat upload berkas persyaratan sidang skripsi,urgent
+Apakah kampus menyediakan tempat tinggal untuk mahasiswa baru?,normal
+Info pembagian kelompok PKL belum ada sampai sekarang,high
+AC di ruang laboratorium rusak udara pengap,low
+Error transaksi muncul saat konfirmasi pembayaran UKT online,urgent
+Rekap absensi menampilkan error tidak bisa diakses mahasiswa,urgent
+Info pembagian kelas praktikum belum ada padahal sudah mau mulai,high
+Nilai remedial yang sudah diikuti tidak diperbarui di sistem,high
+Papan petunjuk jalur evakuasi sudah pudar tidak terbaca,low
+Tempat parkir motor sangat sempit tidak memuat kendaraan mahasiswa,low
+Kapan batas akhir pengisian kuesioner evaluasi dosen?,normal
+Apa saja dokumen yang dibutuhkan untuk mendaftar yudisium?,normal
+Karpet mushola kampus tidak pernah dicuci sudah lama kotor,low
+Apakah ada sanksi akademik bagi mahasiswa yang terlambat her-registrasi?,normal
+Konfirmasi pembayaran UKT tidak masuk ke sistem setelah 3 hari,urgent
+Apakah nilai dari semester pendek tetap masuk ke transkrip resmi?,normal
+Mesin fotokopi di kampus sering rusak saat dibutuhkan mahasiswa,low
+Sistem otomatis menghapus pilihan KRS saya sebelum dikonfirmasi,urgent
+Password terlupa dan nomor HP terdaftar sudah tidak aktif,high
+Fitur pencarian di portal lambat sekali tidak bisa digunakan,high
+Kapan batas pembayaran UKT tahap dua semester ini?,normal
+Beasiswa yang seharusnya diterima bulan ini belum ada konfirmasi,high
+Transkrip nilai tidak bisa dicetak meski status pembayaran sudah lunas,urgent
+Ruang loker mahasiswa berbau karena tidak ada ventilasi,low
+Sistem absensi sidik jari error tidak merekam kehadiran mahasiswa,urgent
+Bagaimana cara mengakses buku digital di perpustakaan online kampus?,normal
+Fitur unduh transkrip tidak merespons sudah lama tidak berfungsi,high
+Info jadwal KKN angkatan ini belum ada pemberitahuan apapun,high
+Jadwal pembagian kelas internship belum ada pemberitahuan resmi,high
+Bagaimana prosedur melaporkan jika ada nilai yang tidak sesuai?,normal
+Dokumen verifikasi kelulusan tidak bisa dilengkapi lewat portal,high
+Website portal mahasiswa menampilkan error 503 service unavailable,urgent
+Lampu meja di perpustakaan banyak yang tidak menyala,low
+Pengajuan beasiswa ditolak tanpa ada notifikasi atau penjelasan alasan,high
+Dua mata kuliah wajib saya dijadwalkan di jam yang sama hari yang sama,high
+WC di kampus tidak ada cermin sama sekali,low
+Kapan jadwal sosialisasi mahasiswa baru semester ini?,normal
+Browser langsung crash setiap kali membuka halaman SIAKAD,urgent
+Kantin tidak menyediakan menu vegetarian sama sekali,low
+Sertifikat akreditasi prodi tidak ada di portal untuk keperluan beasiswa,high
+Berapa jumlah SKS minimal untuk bisa mendaftar yudisium?,normal
+Nilai ujian akhir semester satu mata kuliah tidak ada di transkrip,high
+Apa prosedur untuk mengikuti program magang bersertifikat?,normal
+Berkas yang berhasil diupload kemarin hilang dari sistem hari ini,urgent
+Apakah ada layanan bimbingan konseling akademik untuk mahasiswa?,normal
+Bagaimana cara mendaftarkan diri sebagai peserta lomba yang difasilitasi kampus?,normal
+Timer ujian terus berjalan meski koneksi ke server terputus,urgent
+Kapan jadwal remedial nilai diumumkan kepada mahasiswa?,normal
+Error import nilai dari file Excel ke sistem akademik,urgent
+Ruang seminar tidak dilengkapi pendingin udara yang cukup,low
+Sertifikat kelulusan tidak tersedia di portal untuk proses lamaran kerja,high
+Ruang tunggu di depan ruang dosen sangat panas tidak nyaman,low
+Ruang baca tidak memiliki meja yang cukup untuk semua mahasiswa,low
+Sistem presensi mahasiswa gagal total tidak bisa digunakan,urgent
+Submit formulir selalu gagal dengan pesan koneksi terputus,urgent
+Portal menampilkan error 504 gateway timeout terus menerus,urgent
+Apakah ada layanan bimbingan psikologis untuk mahasiswa?,normal
+Lupa password SIAKAD tidak bisa masuk untuk mengisi KRS,high
+Apa cara yang benar untuk mengajukan surat pengantar PKL?,normal
+Tombol simpan KRS tidak merespons sama sekali setelah diklik berkali-kali,urgent
+Pengumuman nilai ujian tengah semester belum diumumkan dosen,high
+Ruang perpustakaan terlalu berisik tidak kondusif untuk belajar,low
+Proyektor di ruang kuliah 105 gambarnya tidak fokus sama sekali,low
+Pengumuman nilai ujian tengah semester belum ada kabar dosen,high
+Email aktivasi tidak pernah diterima meski sudah daftar ulang,urgent
+Sistem ujian online mengeluarkan saya paksa saat masih mengerjakan,urgent
+Tidak ingat kredensial login SIAKAD sama sekali butuh bantuan,high
+Upload berkas persyaratan wisuda gagal terus dengan pesan error sistem,urgent
+Bagaimana mekanisme pengajuan judul skripsi yang benar ke prodi?,normal
+Bagaimana prosedur pengunduran diri dari program studi?,normal
+Semua halaman di SIAKAD menampilkan error 404 not found,urgent
+Lampiran tidak bisa dilampirkan ke pengajuan formulir apapun,urgent
+Bagaimana cara melaporkan jika ada nilai yang tidak sesuai?,normal
+Pengumuman penerimaan beasiswa program kampus belum keluar,high
+Bagaimana prosedur mengajukan permohonan tutup buku semester?,normal
+Sampah tidak diangkut setiap hari menumpuk di depan gedung,low
+Sistem e-learning keluar sendiri setiap 5 menit saat belajar,urgent
+Nilai konversi dari program exchange tidak masuk ke sistem akademik,high
+Nilai perbaikan masih menampilkan nilai lama tidak diperbarui,high
+Data nilai seluruh mahasiswa tidak bisa diakses sistem error,urgent
+Papan penunjuk arah ke gedung baru tidak ada sama sekali,low
+Info UKT semester depan belum ada pemberitahuan resmi dari kampus,high
+Seluruh mata kuliah di KRS saya hilang setelah sistem maintenance,urgent
+Kantin tidak menyediakan tempat duduk yang cukup saat jam makan,low
+Mesin print di perpustakaan sering rusak tidak tersedia cadangan,low
+Apakah ada tes TOEFL gratis yang diselenggarakan kampus?,normal
+Bagaimana prosedur mengajukan cuti akademik semester ini?,normal
+Pengumuman daftar dosen penguji belum keluar sampai sekarang,high
+Pembayaran UKT sudah berhasil di bank tapi status portal masih belum lunas,urgent
+Menu nilai di aplikasi mobile menampilkan error setiap dibuka,urgent
+Sertifikat TOEFL dari kampus tidak bisa diunduh meski sudah registrasi,high
+Kapan batas akhir drop out akademik mahasiswa ditetapkan?,normal
+Konfirmasi bayar UKT via transfer tidak diakui sistem akademik,urgent
+Virtual account UKT tidak bisa digunakan sama sekali untuk pembayaran,urgent
+Formulir pendaftaran beasiswa prestasi tidak bisa diakses dari portal,high
+Ruang kelas beberapa tidak ada papan tulis putih untuk mengajar,low
+Kotak saran dan pengaduan kampus tidak ada atau tidak terurus,low
+Berapa minimal kehadiran yang dibutuhkan untuk bisa mengikuti ujian?,normal
+Kapan libur hari raya Idul Fitri untuk kalender akademik kampus?,normal
+Status pengajuan beasiswa saya tidak pernah diperbarui di portal,high
+Area selasar kampus tidak ada tempat duduk untuk mahasiswa menunggu,low
+Cara mendapatkan akses jurnal internasional melalui kampus?,normal
+Her-registrasi tidak bisa dilakukan portal tidak merespons,high
+Jalan menuju gedung baru berlubang cukup besar berbahaya,low
+Berapa maksimal semester aktif sebelum mahasiswa dinyatakan DO?,normal
+Cara mengakses rekaman kuliah dari portal mahasiswa?,normal
+Beasiswa yang seharusnya cair bulan ini belum ada informasi pencairan,high
+Akun mahasiswa terblokir tiba-tiba tanpa ada pemberitahuan alasan,urgent
+Ujian dua mata kuliah dijadwalkan bersamaan tidak bisa mengikuti keduanya,high
+Lupa password dan email reset tidak bisa diakses juga,high
+Apakah ada ujian susulan bagi mahasiswa yang sakit saat ujian?,normal
+Link absensi online yang dikirim dosen tidak bisa dibuka sama sekali,high
+Ruang laboratorium sangat pengap tidak ada sirkulasi udara,low
+Bagaimana cara mendapatkan akses ke database jurnal nasional?,normal
+Penghapus papan tulis tidak ada di ruang kuliah lantai 3,low
+Meja di laboratorium bahasa tidak stabil saat digunakan,low
+Apakah nilai yang diambil di semester pendek masuk transkrip?,normal
+Apa saja syarat untuk bisa mengambil mata kuliah di prodi lain?,normal
+Transkrip nilai tidak bisa digenerate sistem menampilkan error koneksi,urgent
+Lupa password portal beasiswa padahal deadline pengajuan dekat,high
+Tidak bisa generate kode bayar UKT sama sekali dari portal,urgent
+Lupa password akun e-learning semester ini,high
+Berkas KKN tidak bisa diupload ke portal error 413 payload too large,urgent
+E-learning down total saat ujian online sedang berlangsung,urgent
+Bagaimana cara mendapatkan akses ke cloud storage yang disediakan kampus?,normal
+Dinding kelas banyak yang retak dan mengelupas,low
+Bagaimana cara mengajukan permohonan perbaikan nilai?,normal
+Tidak bisa akses SIAKAD sama sekali padahal ujian KRS hari ini,urgent
+Export nilai ke PDF gagal terus dengan pesan database error,urgent
+Tidak bisa login akun apapun di portal semua menampilkan error,urgent
+Kapan jadwal ujian komprehensif untuk semester ini?,normal
+Lupa PIN e-learning tidak ada opsi reset melalui nomor telepon,high
+Apakah tersedia program double degree yang tersedia di kampus?,normal
+Portal SIAKAD sangat lambat tidak responsif saat digunakan,high
+Tombol cetak surat keterangan tidak merespons meski diklik,high

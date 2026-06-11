@@ -134,12 +134,12 @@ export default function MahasiswaDashboard() {
           <div className="rounded-xl border bg-card/50 overflow-hidden shadow-sm border-border/40">
             <AnimatePresence mode="wait">
               {loading ? (
-                <div className="flex flex-col items-center justify-center py-24 space-y-4">
+                <div className="flex flex-col items-center justify-center py-12 md:py-24 space-y-4">
                   <Icons.spinner className="h-8 w-8 animate-spin text-accent" />
                   <p className="text-xs font-bold text-muted-foreground uppercase tracking-[0.2em]">Memuat Laporan...</p>
                 </div>
               ) : tickets.length === 0 ? (
-                <div className="flex flex-col items-center justify-center py-20 text-center">
+                <div className="flex flex-col items-center justify-center py-10 md:py-20 text-center">
                   <div className="p-4 bg-muted/30 rounded-full mb-4">
                     <Icons.help className="h-10 w-10 text-muted-foreground/40" />
                   </div>
@@ -152,7 +152,7 @@ export default function MahasiswaDashboard() {
                   </Button>
                 </div>
               ) : viewMode === "grid" ? (
-                <div className="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 bg-muted/5">
+                <div className="p-4 md:p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 bg-muted/5">
                   {tickets.map((t) => (
                     <Card
                       key={t.id}
