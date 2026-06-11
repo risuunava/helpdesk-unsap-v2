@@ -20,6 +20,8 @@ import {
 import { createClient } from '@/lib/supabase/client'
 import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
+import { ThemeSelector } from '@/components/themes/theme-selector'
+import { ThemeModeToggle } from '@/components/themes/theme-mode-toggle'
 
 type SettingsSection = 'profile' | 'security' | 'notifications' | 'appearance'
 
@@ -289,10 +291,30 @@ export default function SettingsPage() {
           )}
 
           {activeSection === 'appearance' && (
-            <div className="flex flex-col items-center justify-center py-20 text-center border border-dashed rounded-2xl opacity-60">
-               <Palette size={32} className="text-muted-foreground mb-4" />
-               <h3 className="text-sm font-bold">Coming Soon</h3>
-               <p className="text-xs text-muted-foreground mt-1">Theme customization is coming soon.</p>
+            <div className="space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-300">
+              <section>
+                <div className="mb-6">
+                  <h3 className="text-lg font-semibold tracking-tight">Appearance</h3>
+                  <p className="text-sm text-muted-foreground">Customize how the workspace looks on your device.</p>
+                </div>
+                <div className="grid gap-6">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 rounded-xl border border-border/40 bg-card shadow-sm">
+                    <div className="space-y-1">
+                      <Label className="text-sm font-bold">Color Theme</Label>
+                      <p className="text-[11px] text-muted-foreground">Select the primary color accent for your workspace.</p>
+                    </div>
+                    <ThemeSelector />
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 rounded-xl border border-border/40 bg-card shadow-sm">
+                    <div className="space-y-1">
+                      <Label className="text-sm font-bold">Light / Dark Mode</Label>
+                      <p className="text-[11px] text-muted-foreground">Toggle between light and dark mode.</p>
+                    </div>
+                    <ThemeModeToggle />
+                  </div>
+                </div>
+              </section>
             </div>
           )}
         </main>
