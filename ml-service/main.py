@@ -13,6 +13,37 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 app = FastAPI(title="UNSAP ML Service", version="2.0")
 
+@app.on_event("startup")
+def startup_event():
+    import threading
+    def init_ml_service():
+        import subprocess
+        import sys
+        print("[STARTUP] Background init started...")
+        try:
+            # Sync FAQs
+            subprocess.run([sys.executable, "sync_faqs.py"], check=False)
+            
+            # Train model if not exists
+            model_dir = Path(__file__).parent / "models"
+            model_dir.mkdir(exist_ok=True)
+            if not list(model_dir.glob("model_*.pkl")):
+                print("[STARTUP] No model found, running training...")
+                subprocess.run([sys.executable, "train.py"], check=False)
+                reload_model()
+            
+            # Preload FAQs
+            global _faqs
+            _faqs = None
+            get_faq_index()
+            print("[STARTUP] Background init completed.")
+        except Exception as e:
+            print(f"[STARTUP] Background init error: {e}")
+            
+    thread = threading.Thread(target=init_ml_service)
+    thread.daemon = True
+    thread.start()
+
 # Ensure NLTK resources are available
 import nltk
 def setup_nltk():
