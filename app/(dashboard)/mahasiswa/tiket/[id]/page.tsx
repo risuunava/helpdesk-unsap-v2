@@ -71,8 +71,8 @@ export default function TicketDetailPage({ params }: { params: Promise<{ id: str
   if (error || (!loading && !ticket)) {
     return (
       <PageContainer pageTitle="Laporan Tidak Ditemukan">
-        <div className="flex flex-col items-center justify-center py-40 text-center border border-border/40 rounded-[2rem] bg-card/50 backdrop-blur-sm max-w-2xl mx-auto shadow-glass">
-          <div className="w-20 h-20 bg-muted rounded-3xl flex items-center justify-center mb-6 border border-border/20 shadow-sm">
+        <div className="flex flex-col items-center justify-center py-40 text-center border border-border/40 rounded-xl bg-card max-w-2xl mx-auto shadow-sm">
+          <div className="w-20 h-20 bg-muted rounded-xl flex items-center justify-center mb-6 border border-border/20 shadow-sm">
             <Info className="h-10 w-10 text-muted-foreground/40" />
           </div>
           <h2 className="text-2xl font-bold uppercase tracking-tight">Laporan Tidak Ditemukan</h2>
@@ -152,7 +152,7 @@ export default function TicketDetailPage({ params }: { params: Promise<{ id: str
                 transition={{ duration: 0.2 }}
                 className="space-y-6"
               >
-                <Card className="border-border/40 shadow-glass overflow-hidden bg-card/50 backdrop-blur-sm">
+                <Card className="border-border/40 shadow-sm overflow-hidden bg-card">
                   <CardHeader className="flex flex-row items-center justify-between border-b border-border/50 bg-muted/20">
                     <CardTitle className="text-base font-bold">{ticket?.title}</CardTitle>
                     <StatusBadge status={ticket?.status as any} />
@@ -184,7 +184,7 @@ export default function TicketDetailPage({ params }: { params: Promise<{ id: str
 
                     <div className="space-y-4">
                       <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Isi Laporan</p>
-                      <div className="text-sm text-muted-foreground leading-relaxed bg-muted/30 p-5 rounded-2xl border border-border/40 whitespace-pre-wrap font-medium shadow-inner">
+                      <div className="text-sm text-muted-foreground leading-relaxed bg-muted/30 p-5 rounded-lg border border-border/40 whitespace-pre-wrap font-medium shadow-inner">
                         {ticket?.description}
                       </div>
                     </div>
@@ -195,7 +195,7 @@ export default function TicketDetailPage({ params }: { params: Promise<{ id: str
                         <Button 
                           asChild
                           variant="outline"
-                          className="rounded-xl h-12 px-6 font-bold flex items-center gap-2 shadow-sm"
+                          className="rounded-md h-10 px-4 font-bold flex items-center gap-2 shadow-sm"
                         >
                           <a href={ticket?.attachment_url} target="_blank" rel="noopener noreferrer">
                             <Paperclip size={16} className="text-muted-foreground" />
@@ -208,7 +208,7 @@ export default function TicketDetailPage({ params }: { params: Promise<{ id: str
                   </CardContent>
                 </Card>
 
-                <Card className="border-border/40 shadow-glass overflow-hidden bg-card/50 backdrop-blur-sm">
+                <Card className="border-border/40 shadow-sm overflow-hidden bg-card">
                   <CardHeader className="flex flex-row items-center gap-3 border-b border-border/50 bg-muted/20">
                     <History size={16} className="text-primary" />
                     <CardTitle className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">Timeline Penanganan</CardTitle>
@@ -245,7 +245,7 @@ export default function TicketDetailPage({ params }: { params: Promise<{ id: str
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.2 }}
-                className="bg-card border border-border/40 rounded-[2rem] shadow-glass overflow-hidden flex flex-col h-[700px]"
+                className="bg-card border border-border/40 rounded-xl shadow-sm overflow-hidden flex flex-col h-[700px]"
               >
                 <div className="p-5 border-b border-border/60 bg-muted/40 backdrop-blur-md flex items-center justify-between">
                   <div className="flex items-center gap-3">
@@ -269,19 +269,19 @@ export default function TicketDetailPage({ params }: { params: Promise<{ id: str
 
         {/* Sidebar Info */}
         <div className="lg:col-span-1 space-y-6">
-          <Card className="border-border/40 shadow-glass overflow-hidden bg-primary">
-            <CardContent className="pt-6 space-y-4 text-primary-foreground">
-              <div className="flex items-center gap-2 opacity-70">
+          <Card className="border-border/40 shadow-sm overflow-hidden bg-muted/50 border-primary/20">
+            <CardContent className="pt-6 space-y-4 text-foreground">
+              <div className="flex items-center gap-2 text-primary">
                 <ShieldCheck size={14} />
-                <span className="text-[10px] font-bold uppercase tracking-widest">Informasi Support</span>
+                <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Informasi Support</span>
               </div>
-              <p className="text-sm font-bold leading-relaxed">
+              <p className="text-sm font-medium leading-relaxed text-muted-foreground">
                 Gunakan fitur diskusi untuk bertanya langsung kepada petugas. Tim kami akan merespon sesuai urutan antrean.
               </p>
             </CardContent>
           </Card>
           
-          <Card className="border-border/40 shadow-glass overflow-hidden bg-card/50 backdrop-blur-sm">
+          <Card className="border-border/40 shadow-sm overflow-hidden bg-card">
             <CardHeader className="py-4 border-b border-border/50">
               <div className="flex items-center gap-2">
                 <Calendar size={14} className="text-primary" />

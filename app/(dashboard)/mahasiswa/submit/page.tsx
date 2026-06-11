@@ -151,9 +151,9 @@ export default function SubmitTicketPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            <Card className="border-border/40 shadow-glass overflow-hidden bg-card/50 backdrop-blur-sm p-4 text-center">
+            <Card className="border-border/40 shadow-sm overflow-hidden bg-card p-6 text-center">
               <CardHeader>
-                <div className="w-16 h-16 bg-emerald-500/10 rounded-2xl flex items-center justify-center mx-auto mb-6 border border-emerald-500/20 shadow-inner">
+                <div className="w-16 h-16 bg-emerald-500/10 rounded-xl flex items-center justify-center mx-auto mb-6 border border-emerald-500/20 shadow-inner">
                   <CheckCircle2 className="w-8 h-8 text-emerald-500" />
                 </div>
                 <CardTitle className="text-2xl font-bold">Laporan Terkirim!</CardTitle>
@@ -162,7 +162,7 @@ export default function SubmitTicketPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="bg-muted/30 rounded-2xl p-6 text-left border border-border/50 max-w-md mx-auto">
+                <div className="bg-muted/30 rounded-xl p-6 text-left border border-border/50 max-w-md mx-auto">
                   <p className="text-sm text-muted-foreground leading-relaxed font-medium">
                     Terima kasih telah melapor. Tim operasional akan meninjau laporan Anda dalam waktu maksimal 3x24 jam kerja. Anda dapat memantau perkembangan tiket secara real-time melalui dashboard.
                   </p>
@@ -171,7 +171,7 @@ export default function SubmitTicketPage() {
               <CardFooter className="flex flex-col sm:flex-row gap-3 justify-center pt-6">
                 <Button 
                   asChild
-                  className="rounded-xl px-8 h-12 font-bold flex items-center gap-2 shadow-lg"
+                  className="rounded-md px-6 h-10 font-bold flex items-center gap-2 shadow-sm"
                 >
                   <Link href={`/mahasiswa/tiket/${ticketId}`}>
                     Lihat Detail Laporan
@@ -181,7 +181,7 @@ export default function SubmitTicketPage() {
                 <Button 
                   variant="outline"
                   asChild
-                  className="rounded-xl px-8 h-12 font-bold"
+                  className="rounded-md px-6 h-10 font-bold"
                 >
                   <Link href="/mahasiswa">
                     Kembali ke Dashboard
@@ -227,7 +227,7 @@ export default function SubmitTicketPage() {
               )}
 
               {/* Title Card */}
-              <Card className="border-border/40 shadow-glass overflow-hidden bg-card/50 backdrop-blur-sm">
+              <Card className="border-border/40 shadow-sm overflow-hidden bg-card">
                 <CardContent className="pt-6 space-y-4">
                   <div className="space-y-2">
                     <Label className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em]">Judul Laporan</Label>
@@ -237,7 +237,7 @@ export default function SubmitTicketPage() {
                       onBlur={() => setTouchedFields(prev => new Set(prev).add('title'))}
                       placeholder="Gunakan judul yang singkat dan deskriptif..."
                       className={cn(
-                        "rounded-xl h-12 font-semibold",
+                        "rounded-md h-10 font-medium",
                         fieldErrors.title && touchedFields.has('title') && "border-destructive focus-visible:ring-destructive"
                       )}
                     />
@@ -259,14 +259,14 @@ export default function SubmitTicketPage() {
                           }}
                         >
                           <SelectTrigger className={cn(
-                            "rounded-xl h-12 font-bold",
+                            "rounded-md h-10 font-medium",
                             fieldErrors.category && touchedFields.has('category') && "border-destructive focus-visible:ring-destructive"
                           )}>
                             <SelectValue placeholder="Pilih Kategori" />
                           </SelectTrigger>
-                          <SelectContent className="rounded-xl">
+                          <SelectContent className="rounded-lg">
                             {CATEGORIES.map((cat) => (
-                              <SelectItem key={cat.id} value={cat.id} className="rounded-lg font-bold">
+                              <SelectItem key={cat.id} value={cat.id} className="rounded-md font-medium">
                                 <div className="flex items-center gap-2">
                                   <cat.icon size={14} className="text-primary" />
                                   <span>{cat.label}</span>
@@ -292,14 +292,14 @@ export default function SubmitTicketPage() {
                         }}
                       >
                         <SelectTrigger className={cn(
-                          "rounded-xl h-12 font-bold",
+                          "rounded-md h-10 font-medium",
                           fieldErrors.department && touchedFields.has('department') && "border-destructive focus-visible:ring-destructive"
                         )}>
                           <SelectValue placeholder="Pilih Tujuan" />
                         </SelectTrigger>
-                        <SelectContent className="rounded-xl max-h-[300px]">
+                        <SelectContent className="rounded-lg max-h-[300px]">
                           {DEPARTMENTS.map((d) => (
-                            <SelectItem key={d} value={d} className="rounded-lg font-bold">
+                            <SelectItem key={d} value={d} className="rounded-md font-medium">
                               {d}
                             </SelectItem>
                           ))}
@@ -314,7 +314,7 @@ export default function SubmitTicketPage() {
               </Card>
 
               {/* Description Card */}
-              <Card className="border-border/40 shadow-glass overflow-hidden bg-card/50 backdrop-blur-sm">
+              <Card className="border-border/40 shadow-sm overflow-hidden bg-card">
                 <CardContent className="pt-6 space-y-4">
                   <div className="space-y-2">
                     <Label className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em]">Detail Deskripsi</Label>
@@ -325,7 +325,7 @@ export default function SubmitTicketPage() {
                       placeholder="Jelaskan secara rinci permasalahan, waktu kejadian, dan pihak terkait..."
                       rows={6}
                       className={cn(
-                        "rounded-2xl font-medium leading-relaxed resize-none",
+                        "rounded-md font-medium leading-relaxed resize-none",
                         fieldErrors.description && touchedFields.has('description') && "border-destructive focus-visible:ring-destructive"
                       )}
                     />
@@ -339,7 +339,7 @@ export default function SubmitTicketPage() {
                     <div 
                       onClick={() => fileInputRef.current?.click()}
                       className={cn(
-                        "group border-2 border-dashed rounded-2xl p-6 flex flex-col items-center justify-center gap-3 cursor-pointer transition-all bg-muted/20 hover:bg-muted/40",
+                        "group border border-dashed rounded-xl p-6 flex flex-col items-center justify-center gap-3 cursor-pointer transition-all bg-muted/20 hover:bg-muted/40",
                         file ? "border-emerald-500/30 bg-emerald-500/5" : "border-border hover:border-muted-foreground/30"
                       )}
                     >
@@ -386,15 +386,15 @@ export default function SubmitTicketPage() {
               <div 
                 onClick={() => setIsAnonymous(!isAnonymous)}
                 className={cn(
-                    "p-5 rounded-2xl border transition-all cursor-pointer flex items-center justify-between group shadow-sm",
+                    "p-4 rounded-xl border transition-all cursor-pointer flex items-center justify-between group shadow-sm",
                     isAnonymous 
                       ? "bg-primary border-primary text-primary-foreground" 
-                      : "bg-card/50 backdrop-blur-sm border-border/40 hover:border-muted-foreground/30"
+                      : "bg-card border-border/40 hover:border-muted-foreground/30"
                 )}
               >
                 <div className="flex items-center gap-4">
                   <div className={cn(
-                    "w-10 h-10 rounded-xl flex items-center justify-center border transition-colors", 
+                    "w-10 h-10 rounded-lg flex items-center justify-center border transition-colors", 
                     isAnonymous ? "bg-primary-foreground/10 border-primary-foreground/20" : "bg-muted border-border"
                   )}>
                     <EyeOff size={18} className={isAnonymous ? "text-primary-foreground" : "text-muted-foreground"} />
@@ -418,7 +418,7 @@ export default function SubmitTicketPage() {
               <Button
                 type="submit"
                 disabled={loading}
-                className="h-14 rounded-2xl font-bold text-base shadow-lg shadow-primary/20 flex items-center justify-center gap-3 active:scale-[0.98]"
+                className="h-11 rounded-md font-bold text-sm shadow-sm flex items-center justify-center gap-3 active:scale-[0.98]"
               >
                 {loading ? (
                   <>
@@ -439,7 +439,7 @@ export default function SubmitTicketPage() {
           <aside className="lg:col-span-4 flex flex-col gap-6">
             <FaqSuggestion query={title} />
 
-            <Card className="border-border/40 shadow-glass overflow-hidden bg-card/50 backdrop-blur-sm">
+            <Card className="border-border/40 shadow-sm overflow-hidden bg-card">
               <CardHeader className="bg-muted/30 border-b border-border/50 py-4">
                 <div className="flex items-center gap-2">
                   <Info size={14} className="text-primary" />
