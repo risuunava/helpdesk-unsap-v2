@@ -25,12 +25,6 @@ export const navItems: NavItem[] = [
     role: ["mahasiswa"],
   },
   {
-    title: "Notifikasi",
-    href: "/notifications",
-    icon: IconBell,
-    role: ["mahasiswa", "admin", "master_admin"],
-  },
-  {
     title: "Buat Tiket",
     href: "/mahasiswa/submit",
     icon: IconPlus,
@@ -51,6 +45,12 @@ export const navItems: NavItem[] = [
     role: ["admin", "master_admin"],
   },
   {
+    title: "Semua Laporan",
+    href: "/admin/tiket",
+    icon: IconTicket,
+    role: ["admin", "master_admin"],
+  },
+  {
     title: "Analytics",
     href: "/admin/analytics",
     icon: IconChartPie,
@@ -61,5 +61,13 @@ export const navItems: NavItem[] = [
     href: "/admin/ml",
     icon: IconRobot,
     role: ["admin", "master_admin"],
+  },
+
+  // Global / Shared Nav (Moved to bottom)
+  {
+    title: "Notifikasi",
+    href: "/notifications",
+    icon: IconBell,
+    role: ["mahasiswa", "admin", "master_admin"],
   },
 ];
