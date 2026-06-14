@@ -89,7 +89,8 @@ import {
   IconUsers,
   IconVideo,
   IconCrown,
-  IconX
+  IconX,
+  IconHistory
 } from '@tabler/icons-react';
 
 export type Icon = React.ComponentType<IconProps>;
@@ -173,6 +174,7 @@ export const Icons = {
   login: IconLogin,
   logout: IconLogout,
   gripVertical: IconGripVertical,
+  history: IconHistory,
 
   // Shapes / Indicators
   circle: IconCircle,
