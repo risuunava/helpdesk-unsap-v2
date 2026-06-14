@@ -4,7 +4,6 @@ import React from 'react'
 import { useAuth } from '@/hooks/useAuth'
 import { useProfile } from '@/hooks/useProfile'
 import PageContainer from '@/components/layout/PageContainer'
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { 
@@ -15,7 +14,7 @@ import {
   Calendar, 
   Settings as SettingsIcon,
   ShieldCheck,
-  MapPin
+  CheckCircle2
 } from 'lucide-react'
 import { format } from 'date-fns'
 import { id } from 'date-fns/locale'
@@ -33,7 +32,7 @@ export default function ProfilePage() {
     return (
       <PageContainer>
         <div className="flex items-center justify-center h-[50vh]">
-          <Loader2 className="animate-spin text-muted-foreground w-6 h-6" />
+          <Loader2 className="animate-spin text-muted-foreground w-5 h-5" />
         </div>
       </PageContainer>
     )
@@ -42,7 +41,7 @@ export default function ProfilePage() {
   if (!user || !profile) {
     return (
       <PageContainer>
-        <div className="flex flex-col items-center justify-center h-[40vh] border border-dashed rounded-xl">
+        <div className="flex flex-col items-center justify-center h-[40vh] border rounded-lg bg-muted/30">
           <p className="text-sm text-muted-foreground">User profile not found.</p>
         </div>
       </PageContainer>
@@ -59,94 +58,95 @@ export default function ProfilePage() {
     : 'U'
 
   return (
-    <PageContainer pageTitle="Profile" pageDescription="Overview of your personal and institutional information.">
-      <div className="max-w-3xl mx-auto w-full space-y-6 mt-4">
-        <Card className="border-border/40 shadow-sm overflow-hidden bg-background">
-          {/* Header Section */}
-          <div className="px-4 md:px-8 pt-6 md:pt-8 pb-4 md:pb-6">
-            <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
-              <Avatar className="h-28 w-28 rounded-2xl border bg-muted shadow-sm">
-                <AvatarImage src={profile.avatar_url || ''} alt={profile.full_name} />
-                <AvatarFallback className="text-3xl font-semibold">
-                  {initials}
-                </AvatarFallback>
-              </Avatar>
-              
-              <div className="flex-1 text-center md:text-left space-y-1">
-                <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4">
-                  <h2 className="text-2xl font-bold tracking-tight">{profile.full_name}</h2>
-                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-primary/10 text-primary text-[11px] font-bold uppercase tracking-wider w-fit mx-auto md:mx-0 border border-primary/20">
-                    {profile.role.replace('_', ' ')}
-                  </span>
-                </div>
-                
-                <p className="text-sm text-muted-foreground font-medium flex items-center justify-center md:justify-start gap-2">
-                  <Building2 size={14} className="opacity-70" />
-                  {profile.department || 'No department assigned'}
+    <PageContainer pageTitle="Profile" pageDescription="Manage your academic identity and account settings.">
+      <div className="max-w-3xl mx-auto w-full mt-8">
+        
+        <div className="border border-border/80 rounded-xl bg-card overflow-hidden shadow-sm">
+          {/* Header Area */}
+          <div className="p-6 sm:p-8 flex flex-col sm:flex-row items-center sm:items-start gap-6">
+            <Avatar className="h-24 w-24 sm:h-28 sm:w-28 rounded-full border border-border shadow-sm">
+              <AvatarImage src={profile.avatar_url || ''} alt={profile.full_name} className="object-cover" />
+              <AvatarFallback className="text-2xl font-medium bg-muted text-foreground">
+                {initials}
+              </AvatarFallback>
+            </Avatar>
+            
+            <div className="flex-1 text-center sm:text-left space-y-3 mt-1">
+              <div>
+                <h2 className="text-2xl font-semibold tracking-tight text-foreground">
+                  {profile.full_name}
+                </h2>
+                <p className="text-sm text-muted-foreground mt-1">
+                  {profile.role === 'mahasiswa' ? 'Mahasiswa' : profile.role.replace('_', ' ')}
                 </p>
-                
-                <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 pt-2 text-[13px] text-muted-foreground">
-                  <span className="flex items-center gap-1.5 font-medium">
-                    <Calendar size={14} className="opacity-70" />
-                    Joined {profile.created_at ? format(new Date(profile.created_at), 'MMMM yyyy', { locale: id }) : '-'}
-                  </span>
-                  <span className="flex items-center gap-1.5 font-medium text-green-600 dark:text-green-500">
-                    <ShieldCheck size={14} />
-                    Verified Account
-                  </span>
-                </div>
               </div>
-
-              <Button 
-                variant="outline" 
-                size="sm"
-                className="rounded-lg font-semibold h-9 px-4 border-border/60 hover:bg-muted transition-colors gap-2"
-                onClick={() => router.push('/settings')}
-              >
-                <SettingsIcon size={14} />
-                Manage Account
-              </Button>
+              
+              <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3 pt-1">
+                <span className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground bg-muted px-2.5 py-1 rounded-md">
+                  <Building2 size={13} />
+                  {profile.department || 'Fakultas / Prodi belum diatur'}
+                </span>
+                <span className="flex items-center gap-1.5 text-xs font-medium text-emerald-600 bg-emerald-500/10 px-2.5 py-1 rounded-md">
+                  <ShieldCheck size={13} />
+                  Terverifikasi
+                </span>
+              </div>
             </div>
+
+            <Button 
+              variant="outline" 
+              size="sm"
+              onClick={() => router.push('/settings')}
+              className="mt-2 sm:mt-0 shadow-sm"
+            >
+              <SettingsIcon size={14} className="mr-2" />
+              Pengaturan
+            </Button>
           </div>
 
-          <Separator className="bg-border/40" />
+          <Separator />
 
-          {/* Details Section */}
-          <CardContent className="px-4 md:px-8 py-6 md:py-8">
-            <div className="grid gap-y-6 md:gap-y-8 gap-x-12 sm:grid-cols-2">
+          {/* Details Area */}
+          <div className="p-6 sm:p-8 bg-muted/20">
+            <h3 className="text-sm font-medium text-muted-foreground mb-6 uppercase tracking-wider">Informasi Akademik</h3>
+            <div className="grid sm:grid-cols-2 gap-x-12 gap-y-8">
               <ProfileItem 
                 icon={<Mail size={16} />} 
-                label="Primary Email" 
+                label="Email" 
                 value={user.email || '-'} 
               />
               <ProfileItem 
                 icon={<IdCard size={16} />} 
-                label="Student ID (NIM)" 
-                value={profile.nim || 'Not set'} 
+                label="NIM (Nomor Induk Mahasiswa)" 
+                value={profile.nim || '-'} 
               />
               <ProfileItem 
                 icon={<Building2 size={16} />} 
-                label="Faculty / Unit" 
-                value={profile.department || 'Not set'} 
+                label="Fakultas / Program Studi" 
+                value={profile.department || '-'} 
               />
               <ProfileItem 
                 icon={<Calendar size={16} />} 
-                label="Last Updated" 
-                value={profile.updated_at ? format(new Date(profile.updated_at), 'dd MMM yyyy') : 'N/A'} 
+                label="Terdaftar Sejak" 
+                value={profile.created_at ? format(new Date(profile.created_at), 'dd MMMM yyyy', { locale: id }) : '-'} 
               />
             </div>
-          </CardContent>
+          </div>
 
-          <div className="px-4 md:px-8 py-4 bg-muted/30 border-t border-border/40 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
-            <p className="text-[11px] font-medium text-muted-foreground uppercase tracking-widest">
-              System Integrated ID: {profile.id.slice(0, 8).toUpperCase()}
-            </p>
-            <div className="flex items-center gap-1.5">
-               <div className="w-1.5 h-1.5 rounded-full bg-green-500" />
-               <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">Synchronized</span>
+          <Separator />
+
+          {/* Footer Area */}
+          <div className="px-6 py-4 bg-muted/40 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="text-xs text-muted-foreground font-mono">
+              ID: {profile.id}
+            </div>
+            <div className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
+               <CheckCircle2 size={14} className="text-emerald-500" />
+               Sistem tersinkronisasi
             </div>
           </div>
-        </Card>
+        </div>
+
       </div>
     </PageContainer>
   )
@@ -154,14 +154,15 @@ export default function ProfilePage() {
 
 function ProfileItem({ icon, label, value }: { icon: React.ReactNode, label: string, value: string }) {
   return (
-    <div className="space-y-1.5 group">
-      <div className="flex items-center gap-2 text-muted-foreground transition-colors group-hover:text-primary/70">
-        <span className="opacity-70">{icon}</span>
-        <span className="text-[11px] font-bold uppercase tracking-[0.1em]">{label}</span>
+    <div className="space-y-1.5">
+      <div className="flex items-center gap-2 text-muted-foreground">
+        {icon}
+        <span className="text-xs font-medium">{label}</span>
       </div>
-      <p className="text-sm font-semibold text-foreground truncate pl-6">
+      <p className="text-sm font-medium text-foreground">
         {value}
       </p>
     </div>
   )
 }
+

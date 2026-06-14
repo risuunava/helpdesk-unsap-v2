@@ -36,9 +36,10 @@ import { createClient } from "@/lib/supabase/client";
 interface AppSidebarProps {
   role?: "mahasiswa" | "admin" | "master_admin";
   userName?: string;
+  avatarUrl?: string | null;
 }
 
-export default function AppSidebar({ role = 'mahasiswa', userName = 'Guest' }: AppSidebarProps) {
+export default function AppSidebar({ role = 'mahasiswa', userName = 'Guest', avatarUrl }: AppSidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
   const filteredNavItems = navItems.filter((item) =>
@@ -101,7 +102,7 @@ export default function AppSidebar({ role = 'mahasiswa', userName = 'Guest' }: A
                   className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
                 >
                   <Avatar className="h-8 w-8 rounded-lg">
-                    <AvatarImage src="" alt={userName} />
+                    <AvatarImage src={avatarUrl || ''} alt={userName} />
                     <AvatarFallback className="rounded-lg">
                       {userName.substring(0, 2).toUpperCase()}
                     </AvatarFallback>
@@ -122,6 +123,7 @@ export default function AppSidebar({ role = 'mahasiswa', userName = 'Guest' }: A
                 <DropdownMenuLabel className="p-0 font-normal">
                   <div className="flex items-center gap-2 px-2 py-1.5 text-left text-sm">
                     <Avatar className="h-8 w-8 rounded-lg">
+                      <AvatarImage src={avatarUrl || ''} alt={userName} />
                       <AvatarFallback className="rounded-lg">
                         {userName.substring(0, 2).toUpperCase()}
                       </AvatarFallback>

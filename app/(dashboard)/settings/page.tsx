@@ -15,13 +15,18 @@ import {
   ChevronRight,
   Shield,
   Bell,
-  Palette
+  Palette,
+  Camera,
+  Upload
 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
 import { ThemeSelector } from '@/components/themes/theme-selector'
 import { ThemeModeToggle } from '@/components/themes/theme-mode-toggle'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { useRef } from 'react'
+import { ImageCropperModal } from '@/components/modal/image-cropper-modal'
 
 type SettingsSection = 'profile' | 'security' | 'notifications' | 'appearance'
 
@@ -33,6 +38,10 @@ export default function SettingsPage() {
   const [activeSection, setActiveSection] = useState<SettingsSection>('profile')
   const [isSaving, setIsSaving] = useState(false)
   
+  const [isCropperOpen, setIsCropperOpen] = useState(false)
+  const [avatarFile, setAvatarFile] = useState<File | null>(null)
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(null)
+
   const [formData, setFormData] = useState({
     full_name: '',
     department: '',
@@ -51,26 +60,67 @@ export default function SettingsPage() {
         department: profile.department || '',
         nim: profile.nim || ''
       })
+      if (profile.avatar_url) {
+        setAvatarPreview(profile.avatar_url)
+      }
     }
   }, [profile])
+
+  const handleCropComplete = (croppedBlob: Blob) => {
+    const file = new File([croppedBlob], 'avatar.jpg', { type: 'image/jpeg' })
+    setAvatarFile(file)
+    setAvatarPreview(URL.createObjectURL(croppedBlob))
+  }
+
+  const uploadAvatar = async (userId: string): Promise<string | null> => {
+    if (!avatarFile) return profile?.avatar_url || null
+    
+    try {
+      const fileName = `${userId}-${Date.now()}.jpg`
+      const filePath = `${fileName}`
+
+      const { error: uploadError } = await supabase.storage
+        .from('avatars')
+        .upload(filePath, avatarFile, {
+          cacheControl: '3600',
+          upsert: true
+        })
+
+      if (uploadError) throw uploadError
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('avatars')
+        .getPublicUrl(filePath)
+      
+      return publicUrl
+    } catch (error: any) {
+      console.error('Error uploading avatar:', error)
+      toast.error('Gagal mengunggah foto profil.')
+      return profile?.avatar_url || null
+    }
+  }
 
   const handleProfileUpdate = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!user) return
     setIsSaving(true)
     try {
+      const avatar_url = await uploadAvatar(user.id)
+
       const { error } = await supabase
         .from('profiles')
         .update({
           full_name: formData.full_name,
           department: formData.department,
           nim: profile?.role === 'mahasiswa' ? formData.nim : undefined,
+          avatar_url,
           updated_at: new Date().toISOString()
         })
         .eq('id', user.id)
 
       if (error) throw error
       toast.success('Settings updated successfully')
+      setAvatarFile(null)
     } catch (error: any) {
       toast.error(error.message || 'Failed to update settings')
     } finally {
@@ -152,6 +202,50 @@ export default function SettingsPage() {
                   <h3 className="text-lg font-semibold tracking-tight">Personal Information</h3>
                   <p className="text-sm text-muted-foreground">Update your details and how you appear in the system.</p>
                 </div>
+
+                <div className="flex flex-col sm:flex-row items-center gap-6 mb-8 p-4 rounded-xl border border-border/40 bg-card/30">
+                  <div className="relative group cursor-pointer" onClick={() => setIsCropperOpen(true)}>
+                    <Avatar className="w-24 h-24 border-2 border-background shadow-xl transition-transform group-hover:scale-[1.02]">
+                      <AvatarImage src={avatarPreview || ''} className="object-cover" />
+                      <AvatarFallback className="text-2xl font-bold bg-primary/10 text-primary">
+                        {formData.full_name?.slice(0, 2).toUpperCase() || 'U'}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <Camera className="text-white w-6 h-6" />
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-1.5 text-center sm:text-left">
+                    <h4 className="text-sm font-bold">Profile Picture</h4>
+                    <p className="text-[11px] text-muted-foreground max-w-[200px]">
+                      Recommended: Square JPG or PNG, max 2MB.
+                    </p>
+                    <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 mt-2">
+                      <Button 
+                        type="button" 
+                        variant="outline" 
+                        size="sm" 
+                        className="h-8 text-xs font-semibold px-3"
+                        onClick={() => setIsCropperOpen(true)}
+                      >
+                        <Camera size={12} className="mr-1.5" />
+                        Ganti Foto
+                      </Button>
+                      {avatarFile && (
+                        <span className="text-[10px] text-primary font-medium bg-primary/10 px-2 py-1 rounded-md animate-in fade-in zoom-in-95">
+                          New file selected
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                <ImageCropperModal 
+                  isOpen={isCropperOpen}
+                  onClose={() => setIsCropperOpen(false)}
+                  onCropComplete={handleCropComplete}
+                />
                 
                 <form onSubmit={handleProfileUpdate} className="space-y-6">
                   <div className="grid gap-5">

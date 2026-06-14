@@ -22,7 +22,7 @@ export default async function DashboardLayout({
   return (
     <InfobarProvider defaultOpen={false}>
       <SidebarProvider defaultOpen={defaultOpen}>
-        <AppSidebar role={role} userName={name} />
+        <AppSidebar role={role} userName={name} avatarUrl={profile?.avatar_url} />
         <SidebarInset className="relative">
           <Header />
           <div className="flex flex-1 overflow-hidden relative">
