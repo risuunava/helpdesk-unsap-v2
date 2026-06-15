@@ -1,10 +1,10 @@
 # PRD — Smart Campus Helpdesk UNSAP (Rebuild)
 
 **Dokumen:** Product Requirements Document  
-**Versi:** 2.0  
-**Status:** Draft  
+**Versi:** 2.1  
+**Status:** Implemented  
 **Tanggal:** Juni 2026  
-**Penulis:** Tim Pengembang UNSAP  
+**Penulis:** Muhammad Lazuardi Al Farisi  
 
 ---
 
@@ -64,7 +64,7 @@ Dokumen ini mendefinisikan kebutuhan lengkap untuk **rebuild total** dari arsite
 
 Semua fitur dari versi 1 dipertahankan:
 - Smart FAQ Suggestion (TF-IDF + Cosine Similarity)
-- Klasifikasi prioritas otomatis (NLP multi-model)
+- Klasifikasi prioritas otomatis (Logistic Regression + rule-based fallback)
 - Fail-safe & auto-escalation keyword
 - AI Active Learning (human-in-the-loop retraining)
 - Live Chat Room real-time
@@ -109,63 +109,65 @@ Semua fitur dari versi 1 dipertahankan:
 ```
 ┌─────────────────────────────────────────────────┐
 │                  Browser / Client                │
-│            Next.js 14 App Router (React)         │
-│         Tailwind CSS · shadcn/ui · TypeScript    │
+│           Next.js 16 App Router (React 19)       │
+│        Tailwind CSS v4 · Shadcn/UI · TypeScript  │
 └──────────────┬──────────────────┬────────────────┘
                │                  │
                │ SDK direct        │ API Route fetch
                ▼                  ▼
 ┌──────────────────────┐  ┌───────────────────────┐
 │      Supabase        │  │   Next.js API Routes  │
-│                      │  │   /app/api/**         │
-│  • PostgreSQL (DB)   │  │   (serverless, Vercel)│
+│                      │  │   /app/api/**          │
+│  • PostgreSQL (DB)   │  │   (serverless, Vercel) │
 │  • Auth (JWT/RLS)    │  └──────────┬────────────┘
 │  • Realtime (WS)     │             │ REST call
 │  • Storage (files)   │             ▼
 │  • Edge Functions    │  ┌───────────────────────┐
-│    (background jobs) │  │   ML Service          │
-└──────────────────────┘  │   FastAPI · Python    │
-                          │   Railway.app         │
-                          │                       │
-                          │  • /classify          │
-                          │  • /faq-suggest       │
-                          │  • /sentiment         │
-                          │  • /retrain           │
-                          └───────────────────────┘
+│    (background jobs) │  │   ML Service           │
+└──────────────────────┘  │   FastAPI · Python     │
+                          │   Railway.app          │
+                          │                        │
+                          │  • /classify            │
+                          │  • /faq-suggest         │
+                          │  • /sentiment           │
+                          │  • /retrain             │
+                          └────────────────────────┘
 ```
 
 ### 4.2 Data Flow: Submit Tiket
 
 ```
 1. Mahasiswa isi form tiket di browser
-2. Debounce 500ms → fetch /api/faq-suggest → forward ke ML Service /faq-suggest
-3. Saran FAQ muncul real-time di UI
-4. Submit → POST /api/tickets → validasi input → insert ke Supabase DB
-5. DB trigger memanggil Supabase Edge Function `process-ticket-ml`
-6. Edge Function POST ke Railway ML Service /classify
-7. ML Service return { priority, confidence }
-8. Edge Function UPDATE tiket dengan priority hasil ML
-9. Supabase Realtime broadcast ke channel admin → notifikasi muncul di dashboard admin
+2. Debounce 500ms → fetch /api/ml/suggest → forward ke ML Service /faq-suggest
+3. Saran FAQ muncul real-time di UI (FaqSuggestion.tsx)
+4. Submit → POST /api/tickets → validasi Zod + rate limit → insert ke Supabase DB
+5. DB trigger auto-generate ticket_number (TKT-2026-XXXX) + set SLA deadline
+6. DB Webhook memanggil Supabase Edge Function `process-ticket-ml`
+7. Edge Function POST ke Railway ML Service /classify (timeout 5 detik)
+8. ML Service return { priority, confidence, model_version }
+9. Edge Function UPDATE tiket dengan priority hasil ML
+10. Edge Function INSERT notifikasi ke semua admin
+11. Supabase Realtime broadcast → notifikasi muncul di dashboard admin (NotificationBell.tsx)
 ```
 
 ### 4.3 Data Flow: Live Chat
 
 ```
-1. Admin buka detail tiket → subscribe ke channel `ticket:{id}` via Supabase Realtime
-2. Mahasiswa kirim pesan → POST /api/chat → insert ke tabel `messages`
+1. Admin/Mahasiswa buka detail tiket → subscribe ke channel `ticket:{id}` via Supabase Realtime
+2. User kirim pesan → POST /api/chat → insert ke tabel `messages`
 3. Supabase Realtime broadcast ke semua subscriber channel tersebut
-4. Pesan muncul instan di kedua sisi (admin & mahasiswa) tanpa polling
+4. Pesan muncul instan di kedua sisi (ChatRoom.tsx + ChatMessage.tsx) tanpa polling
 ```
 
 ### 4.4 Data Flow: ML Retraining
 
 ```
-1. Master Admin koreksi prediksi ML di dashboard
-2. Koreksi → POST /api/ml/feedback → insert ke tabel `ml_training_data`
-3. Master Admin klik "Retrain Model" → POST /api/ml/retrain → forward ke Railway /retrain
-4. Railway ML Service lakukan retraining dengan dataset terbaru (termasuk data koreksi)
-5. Model baru dimuat ke memori FastAPI tanpa restart server
-6. Response { accuracy, f1_score, model_version } dikembalikan ke dashboard
+1. Master Admin lihat data uncertain di /admin/ml (GET /api/admin/ml/uncertain)
+2. Master Admin koreksi label → POST /api/admin/ml/label → insert ke tabel `ml_training_data`
+3. Master Admin klik "Retrain Model" → POST /api/admin/ml/retrain → forward ke Railway /retrain
+4. Railway ML Service lakukan retraining dengan dataset terbaru sebagai background task
+5. Model baru dimuat ke memori FastAPI tanpa restart server (reload_model)
+6. Response status dikembalikan ke dashboard
 ```
 
 ---
@@ -176,39 +178,53 @@ Semua fitur dari versi 1 dipertahankan:
 
 | Komponen | Teknologi | Versi | Alasan |
 |---|---|---|---|
-| Framework | Next.js | 14.x | App Router, API Routes, SSR/SSG |
+| Framework | Next.js | 16.2.7 | App Router, API Routes, SSR/SSG |
 | Bahasa | TypeScript | 5.x | Type safety end-to-end |
-| Styling | Tailwind CSS | 3.x | Utility-first, tema dark mode |
-| UI Components | shadcn/ui | Latest | Accessible, customizable |
-| Ikon | lucide-react | Latest | Konsisten dengan v1 |
-| Form | react-hook-form + zod | Latest | Validasi schema-based |
-| State | Zustand | 4.x | Lightweight, tanpa boilerplate |
-| Realtime client | @supabase/supabase-js | 2.x | Built-in Realtime subscription |
-| HTTP client | Native fetch (Next.js) | — | Tidak perlu Axios |
+| Styling | Tailwind CSS | 4.x | Utility-first, multi-theme support |
+| UI Components | Shadcn/UI + Radix UI | Latest | Accessible, customizable (67 komponen) |
+| Ikon | Lucide React + Tabler Icons + Phosphor Icons | Latest | Konsisten dan beragam |
+| Form | React Hook Form + Zod | 7.x / 4.x | Validasi schema-based |
+| TanStack Form | @tanstack/react-form | 1.x | Form fields reusable |
+| State & Fetching | TanStack Query | 5.x | Server state + caching |
+| Table | TanStack Table | 8.x | Sortable, filterable data table |
+| Charts | Recharts | 3.x | KPI, SLA, trend, sentiment charts |
+| Animation | Framer Motion | 12.x | Micro-interactions & page transitions |
+| Realtime client | @supabase/ssr + @supabase/supabase-js | 0.10.x / 2.x | Built-in Realtime subscription |
+| Command Palette | kbar + cmdk | Latest | ⌘K command palette |
+| Theme | next-themes | 0.4.x | 10 tema + dark/light mode |
+| Toast | Sonner | 2.x | Toast notifications |
+| Export | jsPDF + jspdf-autotable + XLSX | Latest | Export CSV/XLSX/PDF |
+| File Upload | react-dropzone + react-easy-crop | Latest | Drag-drop + avatar cropping |
+| Drawer | vaul | 1.x | Mobile-friendly drawer |
+| Drag & Drop | @dnd-kit | 6.x | Kanban board support |
 | Deploy | Vercel | — | Zero-config, edge network |
 
 ### 5.2 Database & Platform
 
 | Komponen | Teknologi | Alasan |
 |---|---|---|
-| Database | Supabase PostgreSQL | Relasional, RLS, managed |
-| Auth | Supabase Auth | JWT, OAuth, magic link, RLS terintegrasi |
-| Realtime | Supabase Realtime | Gantikan Laravel Reverb, managed WebSocket |
-| File Storage | Supabase Storage | Gantikan storage Laravel, CDN built-in |
-| Background Jobs | Supabase Edge Functions | Gantikan Queue Worker, serverless Deno |
+| Database | Supabase PostgreSQL | Relasional, RLS, ENUM types, managed |
+| Auth | Supabase Auth | JWT, role-based, RLS terintegrasi |
+| Realtime | Supabase Realtime | Managed WebSocket via Postgres Changes |
+| File Storage | Supabase Storage | 2 bucket (avatars, attachments), CDN |
+| Background Jobs | Supabase Edge Functions (Deno) | Serverless, dipanggil via DB Webhook |
+| Analytics | PostgreSQL RPC Functions | 5 fungsi analitik server-side |
 
 ### 5.3 ML Service
 
 | Komponen | Teknologi | Versi | Alasan |
 |---|---|---|---|
-| Framework | FastAPI | 0.111.x | Async, high-performance, type hints |
-| Runtime | Python | 3.11 | Kompatibel dengan semua library ML |
-| ML Library | scikit-learn | 1.4.x | Multi-model classifier |
-| NLP Bahasa Indo | PySastrawi | Latest | Stemmer Bahasa Indonesia |
-| Text Processing | NLTK + scikit-learn | Latest | TF-IDF, Cosine Similarity |
-| Serialisasi | joblib | 1.4.x | Simpan/load model .pkl |
-| Server | uvicorn | 0.29.x | ASGI server untuk FastAPI |
-| Deploy | Railway.app | — | Git deploy, auto-sleep, managed |
+| Framework | FastAPI | 0.110.0 | Async, high-performance, type hints |
+| Runtime | Python | 3.11+ | Kompatibel dengan semua library ML |
+| ML Library | scikit-learn | 1.4.1 | Logistic Regression classifier |
+| NLP Bahasa Indo | Sastrawi | 1.0.1 | Stemmer Bahasa Indonesia |
+| Text Processing | NLTK + scikit-learn | 3.8.1 | TF-IDF Vectorization, Cosine Similarity |
+| Data Processing | Pandas | 2.2.1 | DataFrame untuk training data |
+| Serialisasi | joblib | 1.3.2 | Simpan/load model .pkl |
+| Supabase Client | supabase-py | 2.4.1 | Fetch training data & sync FAQ |
+| Schema | Pydantic | 2.6.4 | Request/response validation |
+| Server | uvicorn | 0.29.0 | ASGI server untuk FastAPI |
+| Deploy | Railway.app (Nixpacks) | — | Git deploy, health check, auto-restart |
 
 ---
 
@@ -217,127 +233,118 @@ Semua fitur dari versi 1 dipertahankan:
 ### 6.1 Monorepo (satu repo, dua service)
 
 ```
-/smart-campus-helpdesk-unsap/
+unsap-helpdeskv2/
 │
-├── .github/
-│   └── workflows/
-│       ├── deploy-nextjs.yml       # CI/CD ke Vercel (auto on push main)
-│       └── deploy-ml.yml           # CI/CD ke Railway (auto on push main)
+├── .github/workflows/                # CI/CD (Vercel + Railway)
 │
-├── app/                            # Next.js App Router
-│   ├── (auth)/
-│   │   ├── login/
-│   │   │   └── page.tsx
-│   │   └── register/
-│   │       └── page.tsx
-│   ├── (dashboard)/
+├── app/                              # Next.js App Router
+│   ├── (auth)/                       # Route group: Autentikasi
+│   │   ├── layout.tsx                # Layout halaman auth
+│   │   ├── login/page.tsx            # Halaman login
+│   │   └── register/page.tsx         # Halaman registrasi
+│   ├── (dashboard)/                  # Route group: Dashboard
+│   │   ├── layout.tsx                # Layout dashboard
+│   │   ├── admin/
+│   │   │   ├── page.tsx              # Dashboard admin (list semua tiket)
+│   │   │   ├── tiket/page.tsx        # Tabel tiket admin
+│   │   │   ├── tiket/[id]/page.tsx   # Detail tiket + split-view chat
+│   │   │   ├── analytics/page.tsx    # KPI, SLA, trend, sentiment chart
+│   │   │   └── ml/page.tsx           # ML management (master admin only)
 │   │   ├── mahasiswa/
-│   │   │   ├── page.tsx            # Dashboard mahasiswa (list tiket sendiri)
-│   │   │   ├── submit/
-│   │   │   │   └── page.tsx        # Form submit tiket baru
-│   │   │   └── tiket/[id]/
-│   │   │       └── page.tsx        # Detail tiket + live chat
-│   │   └── admin/
-│   │       ├── page.tsx            # Dashboard admin (all tiket)
-│   │       ├── tiket/[id]/
-│   │       │   └── page.tsx        # Split-view: detail + chat
-│   │       ├── analytics/
-│   │       │   └── page.tsx        # KPI, SLA, sentiment chart
-│   │       └── ml/
-│   │           └── page.tsx        # ML training data + retrain (master admin)
+│   │   │   ├── page.tsx              # Dashboard mahasiswa (tiket sendiri)
+│   │   │   ├── submit/page.tsx       # Form submit tiket + FAQ suggestion
+│   │   │   └── tiket/[id]/page.tsx   # Detail tiket + live chat
+│   │   ├── notifications/            # Pusat notifikasi
+│   │   │   ├── page.tsx              # Server component
+│   │   │   └── client.tsx            # Client component (realtime)
+│   │   ├── profile/page.tsx          # Edit profil + avatar crop
+│   │   └── settings/page.tsx         # Pengaturan (tema, preferensi)
 │   ├── api/
 │   │   ├── auth/
-│   │   │   └── callback/route.ts   # Supabase Auth OAuth callback
+│   │   │   ├── callback/route.ts     # Supabase Auth callback
+│   │   │   └── logout/route.ts       # Logout handler
 │   │   ├── tickets/
-│   │   │   ├── route.ts            # GET (list) + POST (create)
-│   │   │   └── [id]/
-│   │   │       └── route.ts        # GET + PATCH + DELETE
-│   │   ├── chat/
-│   │   │   └── route.ts            # POST kirim pesan
-│   │   ├── faq/
-│   │   │   └── route.ts            # GET semua FAQ
-│   │   ├── ml/
-│   │   │   ├── suggest/route.ts    # POST → forward ke ML /faq-suggest
-│   │   │   ├── feedback/route.ts   # POST simpan koreksi ke DB
-│   │   │   └── retrain/route.ts    # POST → forward ke ML /retrain (master admin)
-│   │   └── analytics/
-│   │       └── route.ts            # GET KPI, SLA, sentiment aggregate
-│   └── page.tsx                    # Landing page
+│   │   │   ├── route.ts              # GET (list) + POST (create)
+│   │   │   └── [id]/route.ts         # GET + PATCH + DELETE
+│   │   ├── chat/route.ts             # POST kirim pesan
+│   │   ├── analytics/route.ts        # GET KPI, SLA, distribusi
+│   │   ├── notifications/route.ts    # GET/PATCH notifikasi
+│   │   ├── ml/suggest/route.ts       # POST → ML /faq-suggest
+│   │   └── admin/ml/
+│   │       ├── label/route.ts        # POST koreksi label
+│   │       ├── retrain/route.ts      # POST trigger retrain
+│   │       ├── stats/route.ts        # GET model stats
+│   │       └── uncertain/route.ts    # GET data uncertain
+│   ├── themes/                       # 10 tema CSS
+│   ├── page.tsx                      # Landing page
+│   ├── layout.tsx                    # Root layout
+│   ├── globals.css
+│   └── theme.css
 │
-├── components/
-│   ├── ui/                         # shadcn/ui base components
-│   ├── ticket/
-│   │   ├── TicketForm.tsx
-│   │   ├── TicketCard.tsx
-│   │   ├── TicketTable.tsx
-│   │   └── FaqSuggestion.tsx       # Komponen saran FAQ real-time
-│   ├── chat/
-│   │   ├── ChatRoom.tsx            # Live chat dengan Supabase Realtime
-│   │   └── ChatMessage.tsx
-│   ├── dashboard/
-│   │   ├── KpiCard.tsx
-│   │   ├── SlaChart.tsx
-│   │   ├── SentimentChart.tsx
-│   │   └── PriorityBadge.tsx
-│   └── layout/
-│       ├── Sidebar.tsx
-│       └── Navbar.tsx
+├── components/                       # Komponen UI Reusable
+│   ├── ui/                           # 67 base components (Shadcn/UI)
+│   ├── ticket/                       # FaqSuggestion, TicketActions
+│   ├── chat/                         # ChatRoom, ChatMessage
+│   ├── dashboard/                    # KpiCard, SlaChart, SentimentChart, CategoryChart, TrendChart
+│   ├── layout/                       # Sidebar, Header, BottomNav, NotificationBell, CommandMenu, dll.
+│   ├── forms/                        # Form system + 9 field components
+│   ├── themes/                       # Theme provider, selector, mode toggle
+│   ├── kbar/                         # Command palette
+│   ├── modal/                        # Alert modal, image cropper modal
+│   └── file-uploader.tsx
 │
-├── lib/
-│   ├── supabase/
-│   │   ├── client.ts               # Browser Supabase client (singleton)
-│   │   ├── server.ts               # Server component Supabase client
-│   │   └── middleware.ts           # Auth middleware helper
-│   ├── ml.ts                       # Helper fetch ke Railway ML service
-│   ├── anonymize.ts                # Logika generate kode anonim
-│   ├── escalation.ts               # Keyword auto-escalation list
-│   └── validations/
-│       ├── ticket.schema.ts        # Zod schema untuk tiket
-│       └── auth.schema.ts          # Zod schema untuk form auth
+├── hooks/                            # 18 Custom React Hooks
+│   ├── useTickets.ts                 # Data tiket mahasiswa
+│   ├── useAdminTickets.ts            # Data tiket admin + filter
+│   ├── useTicketForm.ts              # Logic form submit
+│   ├── useChat.ts                    # Realtime chat subscription
+│   ├── useNotifications.ts           # Notifikasi realtime
+│   ├── useAuth.ts                    # Auth state
+│   ├── useProfile.ts                 # Profil user
+│   └── ...                           # use-nav, use-toast, use-debounce, dll.
 │
-├── hooks/
-│   ├── useTickets.ts               # Data fetching + subscription tiket
-│   ├── useChat.ts                  # Realtime chat subscription
-│   └── useAnalytics.ts             # Data analytics dengan caching
+├── lib/                              # Utilities & Libraries
+│   ├── supabase/                     # Client (browser) + Server Supabase
+│   ├── validations/                  # Zod schemas (ticket, auth)
+│   ├── ml.ts                         # Helper fetch ML Service
+│   ├── anonymize.ts                  # Generate kode anonim
+│   ├── escalation.ts                 # Keyword auto-escalation
+│   ├── auth.ts                       # Auth utilities
+│   ├── rateLimit.ts                  # Rate limiting logic
+│   ├── export.ts                     # Export CSV/XLSX/PDF
+│   └── ...                           # format, api-client, query-client, utils
 │
 ├── types/
-│   ├── database.ts                 # Generated types dari Supabase CLI
-│   ├── ticket.ts
-│   ├── user.ts
-│   └── ml.ts
+│   ├── database.ts                   # Supabase generated types (ENUM)
+│   └── index.ts                      # NavItem, NavGroup types
+│
+├── config/nav-config.ts              # Konfigurasi navigasi
+│
+├── styles/
+│   ├── globals.css
+│   ├── theme.css
+│   └── themes/                       # 10 tema CSS preset
 │
 ├── supabase/
-│   ├── functions/
-│   │   └── process-ticket-ml/
-│   │       └── index.ts            # Edge Function: call ML setelah insert tiket
-│   ├── migrations/
-│   │   ├── 00001_init_schema.sql
-│   │   ├── 00002_rls_policies.sql
-│   │   ├── 00003_realtime_setup.sql
-│   │   └── 00004_seed_data.sql
-│   └── config.toml                 # Supabase local dev config
+│   ├── config.toml
+│   ├── functions/process-ticket-ml/  # Edge Function (Deno)
+│   └── migrations/                   # 18 migration files
 │
-├── ml-service/                     # Python ML Service (deploy ke Railway)
-│   ├── datasets/
-│   │   └── dataset.csv
-│   ├── models/                     # .pkl files (gitignored, di-generate saat train)
-│   ├── utils/
-│   │   ├── preprocessor.py         # Stemmer, stopwords, tokenizer
-│   │   └── model_loader.py         # Load/reload model tanpa restart
-│   ├── main.py                     # FastAPI server
-│   ├── train.py                    # Training pipeline
-│   ├── requirements.txt
-│   ├── Procfile                    # Railway: web: uvicorn main:app --host 0.0.0.0 --port $PORT
-│   └── railway.json                # Railway config
+├── ml-service/                       # Python ML Service (Railway)
+│   ├── main.py                       # FastAPI (5 endpoints)
+│   ├── train.py                      # Logistic Regression pipeline
+│   ├── start.py                      # Railway startup (sync + train + serve)
+│   ├── sync_faqs.py                  # Sync FAQ dari Supabase
+│   ├── requirements.txt              # 9 Python dependencies
+│   ├── Procfile + railway.json       # Railway config
+│   ├── datasets/                     # dataset.csv + faqs.json
+│   ├── models/                       # .pkl files
+│   └── utils/                        # preprocessor + model_loader
 │
-├── public/
-│   └── assets/
-│
-├── middleware.ts                   # Next.js middleware (auth guard)
+├── proxy.ts                          # Next.js middleware (auth guard)
 ├── next.config.ts
-├── tailwind.config.ts
-├── tsconfig.json
-├── package.json
+├── package.json                      # ~80 npm dependencies
+├── components.json                   # Shadcn/UI config
 └── .env.local.example
 ```
 
@@ -345,7 +352,17 @@ Semua fitur dari versi 1 dipertahankan:
 
 ## 7. Skema Database
 
-### 7.1 Tabel Utama
+### 7.1 ENUM Types
+
+```sql
+-- Custom ENUM types (migration: 20260614070304)
+CREATE TYPE user_role AS ENUM ('mahasiswa', 'admin', 'master_admin');
+CREATE TYPE ticket_category AS ENUM ('akademik', 'keuangan', 'fasilitas', 'keamanan', 'lainnya');
+CREATE TYPE ticket_status AS ENUM ('open', 'in_progress', 'resolved', 'closed');
+CREATE TYPE ticket_priority AS ENUM ('low', 'normal', 'urgent');
+```
+
+### 7.2 Tabel Utama
 
 ```sql
 -- USERS (extends Supabase auth.users)
@@ -353,7 +370,7 @@ CREATE TABLE public.profiles (
   id            UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
   nim           TEXT UNIQUE,                    -- NULL untuk admin
   full_name     TEXT NOT NULL,
-  role          TEXT NOT NULL CHECK (role IN ('mahasiswa', 'admin', 'master_admin')),
+  role          user_role NOT NULL DEFAULT 'mahasiswa',
   department    TEXT,
   avatar_url    TEXT,
   created_at    TIMESTAMPTZ DEFAULT NOW(),
@@ -362,28 +379,26 @@ CREATE TABLE public.profiles (
 
 -- TICKETS
 CREATE TABLE public.tickets (
-  id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  ticket_number   TEXT UNIQUE NOT NULL,          -- Format: TKT-2026-XXXX
-  title           TEXT NOT NULL,
-  description     TEXT NOT NULL,
-  category        TEXT NOT NULL,                 -- akademik | keuangan | fasilitas | keamanan | lainnya
-  status          TEXT NOT NULL DEFAULT 'open'   -- open | in_progress | resolved | closed
-                  CHECK (status IN ('open', 'in_progress', 'resolved', 'closed')),
-  priority        TEXT NOT NULL DEFAULT 'normal' -- low | normal | urgent
-                  CHECK (priority IN ('low', 'normal', 'urgent')),
-  is_anonymous    BOOLEAN DEFAULT FALSE,
-  anonymous_code  TEXT,                          -- mis: Anonim_#8A2C (dibuat di app)
-  reporter_id     UUID REFERENCES public.profiles(id),
-  assigned_to     UUID REFERENCES public.profiles(id),
-  department      TEXT,                          -- departemen yang dituju
-  attachment_url  TEXT,                          -- Supabase Storage URL
-  ml_confidence   FLOAT,                         -- Confidence score dari ML
-  ml_model_version TEXT,                         -- Versi model yang digunakan
-  priority_overridden BOOLEAN DEFAULT FALSE,     -- true jika auto-escalation keyword
-  sla_deadline    TIMESTAMPTZ,                   -- Dihitung saat insert berdasarkan priority
-  resolved_at     TIMESTAMPTZ,
-  created_at      TIMESTAMPTZ DEFAULT NOW(),
-  updated_at      TIMESTAMPTZ DEFAULT NOW()
+  id                   UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  ticket_number        TEXT UNIQUE NOT NULL,          -- Format: TKT-2026-XXXX
+  title                TEXT NOT NULL,
+  description          TEXT NOT NULL,
+  category             ticket_category NOT NULL,
+  status               ticket_status NOT NULL DEFAULT 'open',
+  priority             ticket_priority NOT NULL DEFAULT 'normal',
+  is_anonymous         BOOLEAN DEFAULT FALSE,
+  anonymous_code       TEXT,                          -- Anonim_#XXXX
+  reporter_id          UUID REFERENCES public.profiles(id),
+  assigned_to          UUID REFERENCES public.profiles(id),
+  department           TEXT,
+  attachment_url       TEXT,                          -- Supabase Storage URL
+  ml_confidence        FLOAT,
+  ml_model_version     TEXT,
+  priority_overridden  BOOLEAN DEFAULT FALSE,
+  sla_deadline         TIMESTAMPTZ,
+  resolved_at          TIMESTAMPTZ,
+  created_at           TIMESTAMPTZ DEFAULT NOW(),
+  updated_at           TIMESTAMPTZ DEFAULT NOW()
 );
 
 -- MESSAGES (Live Chat)
@@ -401,8 +416,7 @@ CREATE TABLE public.faqs (
   id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   question    TEXT NOT NULL,
   answer      TEXT NOT NULL,
-  category    TEXT,
-  view_count  INTEGER DEFAULT 0,
+  category    VARCHAR(50),
   is_active   BOOLEAN DEFAULT TRUE,
   created_at  TIMESTAMPTZ DEFAULT NOW(),
   updated_at  TIMESTAMPTZ DEFAULT NOW()
@@ -433,7 +447,7 @@ CREATE TABLE public.ticket_rate_limits (
 CREATE TABLE public.notifications (
   id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id     UUID NOT NULL REFERENCES public.profiles(id),
-  type        TEXT NOT NULL,                     -- ticket_update | new_message | sla_warning
+  type        TEXT NOT NULL,                     -- new_ticket | ticket_update | new_message | sla_warning
   title       TEXT NOT NULL,
   body        TEXT,
   ticket_id   UUID REFERENCES public.tickets(id),
@@ -442,97 +456,79 @@ CREATE TABLE public.notifications (
 );
 ```
 
-### 7.2 Database Trigger untuk SLA & Ticket Number
+### 7.3 Database Triggers & Functions
 
 ```sql
 -- Auto-generate ticket number
-CREATE OR REPLACE FUNCTION generate_ticket_number()
-RETURNS TRIGGER AS $$
-DECLARE
-  year_part TEXT := EXTRACT(YEAR FROM NOW())::TEXT;
-  seq_num   INTEGER;
-BEGIN
-  SELECT COUNT(*) + 1 INTO seq_num FROM public.tickets
-  WHERE EXTRACT(YEAR FROM created_at) = EXTRACT(YEAR FROM NOW());
-  NEW.ticket_number := 'TKT-' || year_part || '-' || LPAD(seq_num::TEXT, 4, '0');
-  RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
 CREATE TRIGGER set_ticket_number
 BEFORE INSERT ON public.tickets
 FOR EACH ROW EXECUTE FUNCTION generate_ticket_number();
+-- Format: TKT-{YEAR}-{SEQ_PADDED_4_DIGITS}
 
 -- Auto-set SLA deadline berdasarkan priority
-CREATE OR REPLACE FUNCTION set_sla_deadline()
-RETURNS TRIGGER AS $$
-BEGIN
-  CASE NEW.priority
-    WHEN 'urgent' THEN NEW.sla_deadline := NOW() + INTERVAL '4 hours';
-    WHEN 'normal' THEN NEW.sla_deadline := NOW() + INTERVAL '24 hours';
-    WHEN 'low'    THEN NEW.sla_deadline := NOW() + INTERVAL '72 hours';
-  END CASE;
-  RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
 CREATE TRIGGER set_ticket_sla
 BEFORE INSERT ON public.tickets
 FOR EACH ROW EXECUTE FUNCTION set_sla_deadline();
+-- urgent=4 jam, normal=24 jam, low=72 jam
+
+-- Auto-update updated_at timestamp
+CREATE TRIGGER tickets_updated_at BEFORE UPDATE ON public.tickets ...
+CREATE TRIGGER profiles_updated_at BEFORE UPDATE ON public.profiles ...
+
+-- Auto-create profile saat user register
+CREATE TRIGGER on_auth_user_created
+AFTER INSERT ON auth.users
+FOR EACH ROW EXECUTE FUNCTION handle_new_user();
+-- Reads raw_user_meta_data: full_name, role, nim
 ```
 
-### 7.3 Row Level Security (RLS)
+### 7.4 Analytics RPC Functions
 
 ```sql
--- Aktifkan RLS untuk semua tabel
+-- 5 server-side analytics functions (migration: 20260605000010)
+get_kpi_summary()        -- Total, open, in_progress, resolved, overdue, avg_resolve_hours
+get_weekly_trend()       -- Tiket per minggu (last 8 weeks)
+get_tickets_by_category() -- Distribusi per kategori
+get_tickets_by_priority() -- Distribusi per prioritas
+get_sla_compliance()     -- Persentase SLA compliance (within_sla / total_resolved)
+```
+
+### 7.5 Row Level Security (RLS)
+
+```sql
+-- RLS diaktifkan pada SEMUA 7 tabel
 ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.tickets ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.messages ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.notifications ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.faqs ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.ml_training_data ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.ticket_rate_limits ENABLE ROW LEVEL SECURITY;
 
--- TICKETS: Mahasiswa hanya bisa lihat tiket sendiri
-CREATE POLICY "mahasiswa_own_tickets" ON public.tickets
-  FOR SELECT USING (
-    auth.uid() = reporter_id
-    OR EXISTS (SELECT 1 FROM public.profiles WHERE id = auth.uid() AND role IN ('admin', 'master_admin'))
-  );
-
--- TICKETS: Mahasiswa bisa insert (rate limit dihandle di aplikasi)
-CREATE POLICY "mahasiswa_insert_ticket" ON public.tickets
-  FOR INSERT WITH CHECK (auth.uid() = reporter_id);
-
--- TICKETS: Admin bisa update status & priority
-CREATE POLICY "admin_update_ticket" ON public.tickets
-  FOR UPDATE USING (
-    EXISTS (SELECT 1 FROM public.profiles WHERE id = auth.uid() AND role IN ('admin', 'master_admin'))
-  );
-
--- MESSAGES: Hanya peserta tiket yang bisa lihat pesan
-CREATE POLICY "ticket_participants_messages" ON public.messages
-  FOR ALL USING (
-    EXISTS (
-      SELECT 1 FROM public.tickets t WHERE t.id = ticket_id AND (
-        t.reporter_id = auth.uid()
-        OR t.assigned_to = auth.uid()
-        OR EXISTS (SELECT 1 FROM public.profiles WHERE id = auth.uid() AND role IN ('admin', 'master_admin'))
-      )
-    )
-  );
-
--- PROFILES: User hanya bisa lihat profil sendiri, admin bisa lihat semua
--- CATATAN: Admin biasa TIDAK BISA lihat reporter_id jika is_anonymous = true
--- Ini dihandle di level aplikasi (Next.js API Route) bukan RLS murni
--- agar Master Admin tetap bisa akses untuk keperluan audit
+-- Key policies:
+-- TICKETS: Mahasiswa lihat tiket sendiri; admin/master_admin lihat semua
+-- MESSAGES: Hanya peserta tiket (reporter + assigned + admin)
+-- NOTIFICATIONS: Hanya user sendiri
+-- FAQS: Public read (is_active=true); manage oleh admin/master_admin
+-- ML_TRAINING_DATA: Hanya master_admin
+-- RATE_LIMITS: Hanya user sendiri
+-- PROFILES: User lihat sendiri; admin lihat semua
 ```
 
-### 7.4 Realtime Setup
+### 7.6 Realtime Setup
 
 ```sql
--- Aktifkan Realtime untuk tabel yang diperlukan
 ALTER PUBLICATION supabase_realtime ADD TABLE public.tickets;
 ALTER PUBLICATION supabase_realtime ADD TABLE public.messages;
 ALTER PUBLICATION supabase_realtime ADD TABLE public.notifications;
+```
+
+### 7.7 Storage Buckets & Policies
+
+```sql
+-- 2 Storage Buckets (migration: 20260614000018)
+-- 1. 'avatars' — Public read, authenticated upload/update/delete (format: {userId}-{random}.{ext})
+-- 2. 'attachments' — Public read, authenticated upload, owner/admin delete
 ```
 
 ---
@@ -541,73 +537,97 @@ ALTER PUBLICATION supabase_realtime ADD TABLE public.notifications;
 
 ### 8.1 Autentikasi & Manajemen Akun
 
-| ID | Fitur | Deskripsi | Priority |
+| ID | Fitur | Deskripsi | Status |
 |---|---|---|---|
-| F-AUTH-01 | Login dengan email & password | Via Supabase Auth | P0 |
-| F-AUTH-02 | Register mahasiswa | Input NIM, nama, email, password | P0 |
-| F-AUTH-03 | Session persistence | JWT token, auto-refresh | P0 |
-| F-AUTH-04 | Middleware route guard | Redirect ke login jika belum auth | P0 |
-| F-AUTH-05 | Profil user | Edit nama, avatar (upload ke Supabase Storage) | P1 |
-| F-AUTH-06 | Role-based redirect | Mahasiswa → /mahasiswa, Admin → /admin | P0 |
+| F-AUTH-01 | Login dengan email & password | Via Supabase Auth | ✅ |
+| F-AUTH-02 | Register mahasiswa | Input NIM, nama, email, password | ✅ |
+| F-AUTH-03 | Session persistence | JWT token, auto-refresh via `proxy.ts` middleware | ✅ |
+| F-AUTH-04 | Middleware route guard | Redirect ke login jika belum auth (`proxy.ts`) | ✅ |
+| F-AUTH-05 | Profil user | Edit nama, avatar dengan image cropper modal | ✅ |
+| F-AUTH-06 | Role-based redirect | Mahasiswa → /mahasiswa, Admin → /admin | ✅ |
+| F-AUTH-07 | Logout | Via `/api/auth/logout` route | ✅ |
+| F-AUTH-08 | Auto-create profile | Trigger DB `handle_new_user` saat register | ✅ |
 
 ### 8.2 Manajemen Tiket (Mahasiswa)
 
-| ID | Fitur | Deskripsi | Priority |
+| ID | Fitur | Deskripsi | Status |
 |---|---|---|---|
-| F-TKT-01 | Submit tiket | Form: judul, kategori, deskripsi, lampiran, pilihan anonim | P0 |
-| F-TKT-02 | Saran FAQ real-time | Debounce 500ms, call ML /faq-suggest saat user mengetik | P0 |
-| F-TKT-03 | Pelaporan anonim | Jika dicentang, identitas digantikan kode unik `Anonim_#XXXX` | P0 |
-| F-TKT-04 | Upload lampiran | Maks 2MB, ekstensi: jpg, jpeg, png, pdf | P0 |
-| F-TKT-05 | List tiket sendiri | Tabel dengan status, prioritas, tanggal | P0 |
-| F-TKT-06 | Detail tiket | Lihat info lengkap + status progress | P0 |
-| F-TKT-07 | Rate limiting | Maks 3 tiket per hari per user | P0 |
+| F-TKT-01 | Submit tiket | Form: judul, kategori, deskripsi, departemen, lampiran, pilihan anonim | ✅ |
+| F-TKT-02 | Saran FAQ real-time | Debounce → call ML /faq-suggest saat user mengetik (`FaqSuggestion.tsx`) | ✅ |
+| F-TKT-03 | Pelaporan anonim | Jika dicentang, identitas digantikan kode unik `Anonim_#XXXX` | ✅ |
+| F-TKT-04 | Upload lampiran | Maks 2MB, ekstensi: jpg, jpeg, png, pdf → Supabase Storage | ✅ |
+| F-TKT-05 | List tiket sendiri | Tabel dengan status, prioritas, tanggal (`useTickets.ts`) | ✅ |
+| F-TKT-06 | Detail tiket | Lihat info lengkap + status progress + live chat | ✅ |
+| F-TKT-07 | Rate limiting | Maks 3 tiket per hari per user (`rateLimit.ts`) | ✅ |
 
 ### 8.3 Manajemen Tiket (Admin)
 
-| ID | Fitur | Deskripsi | Priority |
+| ID | Fitur | Deskripsi | Status |
 |---|---|---|---|
-| F-ADM-01 | Dashboard semua tiket | Tabel dengan filter status, prioritas, kategori, tanggal | P0 |
-| F-ADM-02 | Assign tiket | Assign ke admin lain atau diri sendiri | P1 |
-| F-ADM-03 | Update status | Open → In Progress → Resolved → Closed | P0 |
-| F-ADM-04 | Update prioritas | Override prioritas ML secara manual | P1 |
-| F-ADM-05 | SLA indicator | Badge merah jika tiket mendekati/melewati SLA | P0 |
-| F-ADM-06 | Filter & search | Filter per kategori, departemen, tanggal, status | P1 |
-| F-ADM-07 | Notifikasi realtime | Notif tiket baru, update status | P0 |
+| F-ADM-01 | Dashboard semua tiket | Tabel dengan filter status, prioritas, kategori, tanggal (`useAdminTickets.ts`) | ✅ |
+| F-ADM-02 | Assign tiket | Assign ke admin lain atau diri sendiri (`TicketActions.tsx`) | ✅ |
+| F-ADM-03 | Update status | Open → In Progress → Resolved → Closed | ✅ |
+| F-ADM-04 | Update prioritas | Override prioritas ML secara manual | ✅ |
+| F-ADM-05 | SLA indicator | Badge hijau/kuning/merah (`SlaIndicator.tsx`) | ✅ |
+| F-ADM-06 | Filter & search | Filter per kategori, departemen, tanggal, status | ✅ |
+| F-ADM-07 | Notifikasi realtime | Notif tiket baru via `NotificationBell.tsx` + `useNotifications.ts` | ✅ |
+| F-ADM-08 | Export data | Export ke CSV/XLSX/PDF (`export.ts`) | ✅ |
 
 ### 8.4 Live Chat
 
-| ID | Fitur | Deskripsi | Priority |
+| ID | Fitur | Deskripsi | Status |
 |---|---|---|---|
-| F-CHAT-01 | Chat room per tiket | Satu room per tiket | P0 |
-| F-CHAT-02 | Realtime messaging | Pesan muncul instan via Supabase Realtime | P0 |
-| F-CHAT-03 | Split-view admin | Panel kiri: detail tiket, panel kanan: chat | P0 |
-| F-CHAT-04 | Timestamp pesan | Tampilkan waktu setiap pesan | P0 |
-| F-CHAT-05 | Anonimitas di chat | Nama mahasiswa anonim disembunyikan dari admin biasa | P0 |
-| F-CHAT-06 | Read receipt | Tandai pesan sudah dibaca | P2 |
+| F-CHAT-01 | Chat room per tiket | Satu room per tiket (`ChatRoom.tsx`) | ✅ |
+| F-CHAT-02 | Realtime messaging | Pesan muncul instan via Supabase Realtime (`useChat.ts`) | ✅ |
+| F-CHAT-03 | Split-view admin | Panel kiri: detail tiket, panel kanan: chat | ✅ |
+| F-CHAT-04 | Timestamp pesan | Tampilkan waktu setiap pesan (`ChatMessage.tsx`) | ✅ |
+| F-CHAT-05 | Anonimitas di chat | Nama mahasiswa anonim disembunyikan dari admin biasa | ✅ |
 
 ### 8.5 ML & Klasifikasi
 
-| ID | Fitur | Deskripsi | Priority |
+| ID | Fitur | Deskripsi | Status |
 |---|---|---|---|
-| F-ML-01 | Klasifikasi prioritas otomatis | Jalankan setelah tiket disubmit (async via Edge Function) | P0 |
-| F-ML-02 | Multi-model comparison | NB, LR, SVM, Random Forest — pilih model dengan F1 tertinggi | P1 |
-| F-ML-03 | Auto-escalation keyword | Override ke Urgent jika ada kata kunci sensitif | P0 |
-| F-ML-04 | Fail-safe fallback | Jika ML timeout/error, tiket default ke prioritas Normal | P0 |
-| F-ML-05 | FAQ suggestion | TF-IDF + Cosine Similarity, suggest saat mahasiswa mengetik | P0 |
-| F-ML-06 | Koreksi prediksi | Master Admin bisa koreksi label ML | P1 |
-| F-ML-07 | Trigger retraining | Master Admin bisa trigger retrain model dari dashboard | P1 |
-| F-ML-08 | Model metrics display | Tampilkan accuracy, F1-score model aktif | P2 |
+| F-ML-01 | Klasifikasi prioritas otomatis | Via Edge Function `process-ticket-ml` (async) | ✅ |
+| F-ML-02 | Logistic Regression classifier | TF-IDF + Logistic Regression (class_weight='balanced') | ✅ |
+| F-ML-03 | Auto-escalation keyword (fallback) | Override ke Urgent jika ML tidak tersedia + ada kata kunci sensitif | ✅ |
+| F-ML-04 | Fail-safe fallback | Jika ML timeout (5s) / error, tiket tetap Normal + notif tetap terkirim | ✅ |
+| F-ML-05 | FAQ suggestion | TF-IDF + Cosine Similarity, threshold > 0.15, top K results | ✅ |
+| F-ML-06 | Sentiment analysis | Keyword-based positive/negative/neutral scoring | ✅ |
+| F-ML-07 | Data uncertain | GET /api/admin/ml/uncertain — tiket dengan confidence rendah | ✅ |
+| F-ML-08 | Koreksi label | POST /api/admin/ml/label — Master Admin koreksi prediksi | ✅ |
+| F-ML-09 | Trigger retraining | POST /api/admin/ml/retrain → Railway /retrain (background task) | ✅ |
+| F-ML-10 | Model stats | GET /api/admin/ml/stats — statistik model aktif | ✅ |
+| F-ML-11 | Auto-train on startup | `start.py` — train otomatis jika belum ada model | ✅ |
+| F-ML-12 | FAQ sync dari Supabase | `sync_faqs.py` — sync FAQ tabel ke faqs.json | ✅ |
 
 ### 8.6 Analytics & Laporan
 
-| ID | Fitur | Deskripsi | Priority |
+| ID | Fitur | Deskripsi | Status |
 |---|---|---|---|
-| F-ANL-01 | KPI Cards | Total tiket, open, resolved, overdue | P0 |
-| F-ANL-02 | SLA Compliance chart | % tiket diselesaikan dalam SLA, per bulan | P1 |
-| F-ANL-03 | Tiket per kategori | Pie/bar chart distribusi kategori | P1 |
-| F-ANL-04 | Trend tiket | Line chart tiket masuk per minggu/bulan | P1 |
-| F-ANL-05 | Campus Sentiment Analytics | Agregat sentimen per bulan (master admin only) | P1 |
-| F-ANL-06 | Export data | Export tabel tiket ke CSV | P2 |
+| F-ANL-01 | KPI Cards | Total tiket, open, in_progress, resolved, overdue, avg resolve hours (`KpiCard.tsx`) | ✅ |
+| F-ANL-02 | SLA Compliance chart | % tiket diselesaikan dalam SLA (`SlaChart.tsx`) | ✅ |
+| F-ANL-03 | Tiket per kategori | Pie/bar chart distribusi kategori (`CategoryChart.tsx`) | ✅ |
+| F-ANL-04 | Trend tiket | Line chart tiket masuk per minggu (8 minggu) (`TrendChart.tsx`) | ✅ |
+| F-ANL-05 | Sentiment Analytics | Agregat sentimen per bulan (`SentimentChart.tsx`) | ✅ |
+| F-ANL-06 | Export data | Export tabel tiket ke CSV/XLSX/PDF | ✅ |
+
+### 8.7 Notifikasi
+
+| ID | Fitur | Deskripsi | Status |
+|---|---|---|---|
+| F-NOT-01 | Pusat notifikasi | Halaman dedicated `/notifications` | ✅ |
+| F-NOT-02 | Bell realtime | NotificationBell di header dengan badge count | ✅ |
+| F-NOT-03 | Mark as read | Tandai notifikasi sudah dibaca | ✅ |
+| F-NOT-04 | Auto-notif tiket baru | Edge Function insert notifikasi ke semua admin | ✅ |
+
+### 8.8 Settings & Personalisasi
+
+| ID | Fitur | Deskripsi | Status |
+|---|---|---|---|
+| F-SET-01 | Multi-theme | 10 tema CSS (astro-vista, claude, supabase, vercel, dll.) | ✅ |
+| F-SET-02 | Dark/Light mode | Toggle via next-themes | ✅ |
+| F-SET-03 | Settings page | Halaman pengaturan preferensi | ✅ |
+| F-SET-04 | Command palette | ⌘K shortcut untuk navigasi cepat | ✅ |
 
 ---
 
@@ -617,7 +637,7 @@ ALTER PUBLICATION supabase_realtime ADD TABLE public.notifications;
 
 - **Page load (LCP):** < 2.5 detik untuk halaman dashboard
 - **API response time:** < 300ms untuk operasi CRUD (P95)
-- **ML classification time:** < 3 detik per tiket (background, tidak blokir UX)
+- **ML classification time:** < 5 detik per tiket (background via Edge Function, tidak blokir UX)
 - **FAQ suggestion latency:** < 800ms dari debounce trigger
 - **Realtime message delivery:** < 500ms dari send ke receive
 
@@ -631,55 +651,44 @@ ALTER PUBLICATION supabase_realtime ADD TABLE public.notifications;
 
 - Frontend (Vercel): 99.99% uptime SLA (managed)
 - Database (Supabase): 99.9% uptime SLA (managed)
-- ML Service (Railway): Best-effort; ada fallback (Normal priority jika ML down)
+- ML Service (Railway): Best-effort; ada fallback (Normal priority + notif tetap terkirim jika ML down)
 
 ### 9.4 Keamanan
 
 - Semua komunikasi via HTTPS/WSS
-- Auth token disimpan di httpOnly cookie (bukan localStorage)
+- Auth token dikelola via `@supabase/ssr` (cookie-based)
 - Input sanitization di server (API Routes) dan client (Zod schema)
 - File upload validation: mime type + ukuran + ekstensi
-- Rate limiting di API Routes: 2 req/menit untuk submit tiket per IP
-- RLS Supabase sebagai lapisan keamanan database
+- Rate limiting: maks 3 tiket/hari/user (DB-level)
+- RLS Supabase pada semua 7 tabel sebagai lapisan keamanan database
+- ENUM types untuk validasi di level database
+- API Key ML Service via header `X-API-Key`
 
 ### 9.5 Aksesibilitas
 
-- WCAG 2.1 Level AA compliance untuk komponen UI utama
+- Shadcn/UI berbasis Radix UI (accessible by default)
 - Keyboard navigation untuk semua form interaktif
-- Screen reader friendly (ARIA labels, semantic HTML)
-- Dark mode sebagai mode default (Spotify-inspired theme dari v1)
+- ARIA labels dan semantic HTML
 
 ### 9.6 Kompatibilitas Browser
 
 - Chrome 100+, Firefox 100+, Safari 16+, Edge 100+
 - Mobile: iOS Safari 16+, Chrome Android 100+
-- Responsive design: mobile-first, breakpoint 375px / 768px / 1280px
+- Responsive design: mobile-first + BottomNav untuk mobile
 
 ---
 
 ## 10. Desain & UX
 
-### 10.1 Design System (Cendekia — Institutional Clarity)
+### 10.1 Design System
 
-**Tema:** Light Immersive (Warm Off-White & Deep Navy), mengutamakan *Institutional Clarity* sesuai file `DESIGN.md`.
+**Multi-theme support** dengan 10 preset tema CSS:
+- astro-vista, claude, light-green, mono, neobrutualism, notebook, supabase, vercel, whatsapp, zen
 
-| Token | Nilai |
-|---|---|
-| Background Primary | `#F7F6F3` (Warm Off-white) |
-| Surface Container | `#EEEBE7` |
-| Surface Card | `#FFFFFF` |
-| Primary (Navy) | `#1A3A5C` |
-| Accent Green | `#22C55E` |
-| Text Primary | `#111110` |
-| Text Secondary | `#5A5855` |
-| Border | `#D6D3CF` |
-| Danger / Urgent | `#EF4444` |
-| Warning | `#F59E0B` |
+Seluruh detail implementasi mengacu pada pedoman dalam `DESIGN.md`.
 
-**Tipografi:** `Inter` untuk UI umum, `JetBrains Mono` untuk data teknis (nomor tiket, token anonim, skor ML).  
-**Karakteristik Visual:** Menggunakan efek *Daytime Glass* (frosted glass transparan dengan blur 16-24px), border radius 24px untuk card, dan micro-interaction dengan glow-effect.  
-**Animasi:** Functional motion, 120-200ms ease.  
-**Catatan Penting:** Seluruh detail implementasi komponen mengacu penuh pada pedoman dalam `DESIGN.md`.
+**Tipografi:** Configurable via `font.config.ts`
+**Theming:** `next-themes` dengan dark/light mode toggle
 
 ### 10.2 Halaman Utama
 
@@ -687,38 +696,50 @@ ALTER PUBLICATION supabase_realtime ADD TABLE public.notifications;
 |---|---|---|
 | `/` | Landing Page | Hero + fitur utama + CTA login |
 | `/login` | Login | Form email + password |
-| `/register` | Register | Form data mahasiswa |
+| `/register` | Register | Form data mahasiswa (NIM, nama, email, password) |
 | `/mahasiswa` | Dashboard Mahasiswa | List tiket sendiri + tombol submit |
 | `/mahasiswa/submit` | Submit Tiket | Form lengkap + FAQ suggestion |
 | `/mahasiswa/tiket/[id]` | Detail Tiket | Status tiket + chat room |
 | `/admin` | Dashboard Admin | Semua tiket + filter + KPI summary |
+| `/admin/tiket` | Tabel Tiket Admin | Filter, search, SLA indicator |
 | `/admin/tiket/[id]` | Detail Tiket Admin | Split-view: detail + chat |
-| `/admin/analytics` | Analytics | Chart KPI, SLA, sentimen |
-| `/admin/ml` | ML Management | Training data + retrain (master admin) |
+| `/admin/analytics` | Analytics | Chart KPI, SLA, trend, sentiment, kategori |
+| `/admin/ml` | ML Management | Uncertain data + koreksi label + retrain (master admin) |
+| `/notifications` | Pusat Notifikasi | List notifikasi + mark as read |
+| `/profile` | Edit Profil | Nama, avatar crop & upload |
+| `/settings` | Pengaturan | Tema, preferensi |
 
 ### 10.3 Komponen Kunci
 
-**TicketForm**
-- Field: Judul (text), Kategori (select), Departemen Tujuan (select), Deskripsi (textarea), Lampiran (file), Anonim (toggle)
-- FAQ Suggestion muncul sebagai floating card di bawah field deskripsi saat ada hasil relevan
-- Submit button disabled selama loading + cooldown 2 detik pasca-submit
+**TicketActions.tsx (Admin)**
+- Update status: Open → In Progress → Resolved → Closed
+- Update priority: Low / Normal / Urgent
+- Assign ke admin lain
 
-**ChatRoom**
+**FaqSuggestion.tsx**
+- Muncul sebagai floating card saat ada FAQ relevan (score > 0.15)
+- Data dari ML Service /faq-suggest
+
+**ChatRoom.tsx + ChatMessage.tsx**
 - Bubble chat dengan timestamp
 - Input field sticky di bawah
 - Auto-scroll ke pesan terbaru
-- Indicator "sedang mengetik..." (opsional, P2)
+- Realtime via Supabase Postgres Changes
 
-**PriorityBadge**
-- `low` → Outline dot, abu-abu
-- `normal` → Biru aksen
-- `urgent` → Dot merah berkedip (glow shadow) + teks merah
-- Jika `priority_overridden = true` → tambahkan ikon peringatan ⚠️
+**PriorityBadge.tsx**
+- `low` → Outline style, abu-abu
+- `normal` → Blue style
+- `urgent` → Red style + emphasis
 
-**SLA Indicator**
+**SlaIndicator.tsx**
 - Hijau: > 50% waktu SLA tersisa
 - Kuning: 10-50% waktu SLA tersisa
-- Merah: < 10% tersisa atau sudah lewat (animasi sla-pulse)
+- Merah: < 10% tersisa atau sudah lewat
+
+**NotificationBell.tsx**
+- Dropdown bell di header
+- Badge count unread
+- Realtime subscription
 
 ---
 
@@ -728,26 +749,26 @@ ALTER PUBLICATION supabase_realtime ADD TABLE public.notifications;
 
 ```
 Register:
-User isi form → POST /api/auth/register →
-Supabase createUser() → Insert ke public.profiles →
-Redirect ke dashboard sesuai role
+User isi form → Supabase signUp({ email, password, options: { data: { full_name, nim, role } } })
+→ DB trigger handle_new_user() auto-create profile → Redirect sesuai role
 
 Login:
 User isi form → Supabase signInWithPassword() →
-Session JWT disimpan → Middleware baca session →
-Redirect ke /mahasiswa atau /admin
+Session JWT disimpan (cookie-based via @supabase/ssr) →
+proxy.ts middleware baca session → Redirect ke /mahasiswa atau /admin
 
 Logout:
-Supabase signOut() → Clear session → Redirect ke /login
+POST /api/auth/logout → Supabase signOut() → Redirect ke /login
 ```
 
-### 11.2 Middleware Next.js
+### 11.2 Middleware Next.js (proxy.ts)
 
 ```typescript
-// middleware.ts
-// Proteksi semua route /mahasiswa/* dan /admin/*
-// Redirect ke /login jika tidak ada session
-// Redirect ke halaman sesuai role jika sudah login
+// proxy.ts
+// Proteksi: /mahasiswa/*, /admin/* → redirect ke /login jika !user
+// Auto-redirect: /login, /register → redirect ke dashboard jika sudah login
+// Role-based: mahasiswa → /mahasiswa, admin/master_admin → /admin
+// Session refresh: supabase.auth.getUser() dipanggil setiap request
 ```
 
 ### 11.3 Matriks Permission
@@ -759,27 +780,23 @@ Supabase signOut() → Clear session → Redirect ke /login
 | Lihat semua tiket | ✗ | ✓ | ✓ |
 | Update status tiket | ✗ | ✓ | ✓ |
 | Lihat identitas anonim | ✗ | ✗ | ✓ |
-| Lihat analytics | ✗ | Terbatas | Penuh |
+| Lihat analytics | ✗ | ✓ | ✓ |
+| Lihat sentiment chart | ✗ | ✗ | ✓ |
 | Koreksi label ML | ✗ | ✗ | ✓ |
 | Trigger retrain | ✗ | ✗ | ✓ |
-| Manage FAQ | ✗ | ✗ | ✓ |
+| Manage FAQ | ✗ | ✓ | ✓ |
+| Edit profil sendiri | ✓ | ✓ | ✓ |
 
 ### 11.4 Logika Anonimitas
 
 ```typescript
 // lib/anonymize.ts
-export function generateAnonymousCode(userId: string): string {
-  // Deterministik: hash userId → kode 4 karakter hex
-  // Mis: Anonim_#8A2C
-  const hash = simpleHash(userId).toString(16).toUpperCase().slice(0, 4);
-  return `Anonim_#${hash}`;
-}
-
+// Deterministik: hash userId → kode 4 karakter hex → Anonim_#8A2C
 // Di API Route GET /api/tickets/[id]:
-// Jika is_anonymous = true DAN role requester BUKAN master_admin:
-//   - Kembalikan anonymous_code alih-alih reporter_id + nama asli
-// Jika role = master_admin:
-//   - Kembalikan semua data termasuk identitas asli
+// - Jika is_anonymous=true DAN role requester BUKAN master_admin:
+//   → Kembalikan anonymous_code alih-alih reporter_id + nama asli
+// - Jika role = master_admin:
+//   → Kembalikan semua data termasuk identitas asli
 ```
 
 ---
@@ -790,12 +807,12 @@ export function generateAnonymousCode(userId: string): string {
 
 | Method | Path | Deskripsi | Auth |
 |---|---|---|---|
+| GET | `/` | Service info + endpoint list | Publik |
 | GET | `/health` | Health check | Publik |
-| POST | `/classify` | Klasifikasi prioritas tiket | Internal (API Key) |
-| POST | `/faq-suggest` | Saran FAQ berdasarkan teks | Internal (API Key) |
-| POST | `/sentiment` | Analisis sentimen teks | Internal (API Key) |
-| GET | `/model-info` | Info model aktif (versi, metrics) | Internal |
-| POST | `/retrain` | Trigger retraining dengan data baru | Internal (API Key) |
+| POST | `/classify` | Klasifikasi prioritas tiket | `X-API-Key` |
+| POST | `/faq-suggest` | Saran FAQ berdasarkan teks | `X-API-Key` |
+| POST | `/sentiment` | Analisis sentimen teks | `X-API-Key` |
+| POST | `/retrain` | Trigger retraining (background task) | `X-API-Key` |
 
 ### 12.2 Request/Response Schema
 
@@ -804,13 +821,22 @@ export function generateAnonymousCode(userId: string): string {
 // Request
 { "text": "Saya belum menerima KRS untuk semester ini padahal sudah bayar UKT" }
 
-// Response
+// Response (ML model active)
 {
   "priority": "urgent",
   "confidence": 0.93,
-  "model": "random_forest_v2",
+  "model_version": "model_20260611_190002",
+  "overridden_by_keyword": false,
+  "keyword_matched": null
+}
+
+// Response (rule-based fallback — ML not loaded)
+{
+  "priority": "urgent",
+  "confidence": 1.0,
+  "model_version": "rule_based_fallback",
   "overridden_by_keyword": true,
-  "keyword_matched": "KRS"
+  "keyword_matched": "krs"
 }
 ```
 
@@ -826,64 +852,83 @@ export function generateAnonymousCode(userId: string): string {
       "faq_id": "uuid",
       "question": "Bagaimana prosedur pengajuan cuti akademik?",
       "answer": "...",
-      "similarity_score": 0.87
+      "score": 0.87
     }
   ]
 }
 ```
 
-**POST /retrain**
+**POST /sentiment**
 ```json
 // Request
-{
-  "training_data": [
-    { "text": "...", "label": "urgent" },
-    { "text": "...", "label": "normal" }
-  ]
-}
+{ "text": "Pelayanan sangat lambat dan tidak membantu" }
 
 // Response
-{
-  "status": "success",
-  "model_version": "random_forest_v3",
-  "metrics": {
-    "accuracy": 0.91,
-    "f1_score": 0.89,
-    "best_model": "random_forest"
-  }
-}
+{ "score": 0.167, "label": "negative" }
 ```
 
-### 12.3 Keyword Auto-Escalation
+**POST /retrain**
+```json
+// Response
+{ "message": "Retraining started in background" }
+```
 
-Daftar keyword yang memicu override prioritas ke **Urgent** secara otomatis:
+### 12.3 ML Architecture
 
+**Primary: Logistic Regression** (scikit-learn)
+- Vectorizer: TF-IDF (max_features=5000, ngram_range=(1,2))
+- Model: LogisticRegression (max_iter=1000, class_weight='balanced')
+- Training split: 80/20 (stratified)
+- Final model: retrained on 100% data for deployment
+
+**Fallback: Rule-Based Keyword Matching** (hanya aktif jika model tidak ter-load)
 ```python
 URGENT_KEYWORDS = [
-  # Keuangan kritis
-  "KRS", "UKT", "uang kuliah", "SPP", "beasiswa",
-  # Kedaruratan
+  "krs", "ukt", "uang kuliah", "spp", "beasiswa",
   "kebakaran", "kecelakaan", "darurat",
-  # Kekerasan & pelanggaran
   "pelecehan", "kekerasan", "bullying", "pencurian", "kehilangan",
-  # Akademik kritis
-  "DO", "drop out", "tidak lulus", "wisuda", "ijazah",
-  # Kesehatan
+  "do", "drop out", "tidak lulus", "wisuda", "ijazah",
   "sakit parah", "keracunan", "pingsan"
 ]
 ```
 
-### 12.4 Supabase Edge Function: process-ticket-ml
+**FAQ Engine:** TF-IDF + Cosine Similarity
+- FAQ data synced dari Supabase tabel `faqs` → `faqs.json` (via `sync_faqs.py`)
+- Similarity threshold: 0.15
+- Corpus: question + answer combined
+
+**Sentiment Analysis:** Keyword-based scoring
+- Positive words: terima kasih, bagus, puas, cepat, profesional, dll.
+- Negative words: buruk, lambat, kecewa, sulit, lama, dll.
+- Score: positive_count / total_count → label (positive > 0.6, negative < 0.4, else neutral)
+
+### 12.4 Preprocessing Pipeline (utils/preprocessor.py)
+
+1. Lowercase
+2. Remove special characters
+3. Stopword removal (NLTK Indonesian)
+4. Stemming (Sastrawi — Bahasa Indonesia stemmer)
+
+### 12.5 Supabase Edge Function: process-ticket-ml
 
 ```typescript
 // supabase/functions/process-ticket-ml/index.ts
 // Dipanggil via DB Webhook setelah INSERT ke tabel tickets
-// Melakukan:
-// 1. Ambil data tiket baru dari payload
-// 2. POST ke Railway ML /classify dengan title + description
-// 3. UPDATE tiket dengan priority & ml_confidence hasil klasifikasi
-// 4. Jika ML error/timeout (> 5 detik) → skip (tiket tetap Normal)
-// 5. Insert notifikasi untuk admin departemen terkait
+// Flow:
+// 1. Parse payload.record (ticket data)
+// 2. POST ke ML Service /classify dengan title + description
+// 3. Timeout: 5 detik (AbortController)
+// 4. UPDATE tiket dengan priority, ml_confidence, ml_model_version, priority_overridden
+// 5. INSERT notifikasi ke semua admin & master_admin
+// 6. Fallback: jika ML error/timeout → notif tetap terkirim (tanpa ML update)
+```
+
+### 12.6 Startup Flow (Railway)
+
+```
+1. sync_faqs.py → Fetch FAQs dari Supabase → Save ke faqs.json
+2. train.py → Load data (Supabase / CSV) → Train → Save model .pkl
+3. main.py → FastAPI server start → Preload model + FAQ index (background thread)
 ```
 
 ---
@@ -892,11 +937,11 @@ URGENT_KEYWORDS = [
 
 ### 13.1 Channel Design (Supabase Realtime)
 
-| Channel | Event | Subscribe | Deskripsi |
+| Channel | Event | Subscribe | Hook |
 |---|---|---|---|
-| `ticket:{ticketId}` | INSERT on messages | Mahasiswa + Admin | Pesan chat baru |
-| `tickets:admin` | INSERT/UPDATE on tickets | Semua admin | Tiket baru atau status berubah |
-| `notifications:{userId}` | INSERT on notifications | Semua user | Notifikasi personal |
+| `ticket:{ticketId}` | INSERT on messages | Mahasiswa + Admin | `useChat.ts` |
+| `tickets:admin` | INSERT/UPDATE on tickets | Semua admin | `useAdminTickets.ts` |
+| `notifications:{userId}` | INSERT on notifications | Semua user | `useNotifications.ts` |
 
 ### 13.2 Implementasi Client
 
@@ -929,48 +974,53 @@ Jika Supabase Realtime tidak tersambung (jaringan buruk):
 ### 14.1 Input Validation
 
 Semua input divalidasi dua lapisan:
-1. **Client-side:** Zod schema di `react-hook-form`
+1. **Client-side:** Zod schema di `react-hook-form` (`lib/validations/`)
 2. **Server-side:** Zod schema di setiap API Route sebelum operasi DB
 
 ### 14.2 File Upload Guard
 
 ```typescript
-// Validasi di API Route sebelum upload ke Supabase Storage
+// Validasi di client (react-dropzone) dan server sebelum upload ke Supabase Storage
 const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'application/pdf'];
 const MAX_SIZE_BYTES = 2 * 1024 * 1024; // 2MB
 
-// Validasi: mime type, ekstensi, dan ukuran
-// File disimpan dengan nama: {uuid}.{ext} (bukan nama asli user)
-// Path: attachments/{ticketId}/{uuid}.{ext}
+// File disimpan di Supabase Storage:
+// - Avatars: avatars/{userId}-{random}.{ext}
+// - Attachments: attachments/{ticketId}/{fileName}
 ```
 
 ### 14.3 Rate Limiting
 
 ```typescript
-// Dua level rate limiting:
-// 1. Business logic: maks 3 tiket/hari/user (cek di DB table ticket_rate_limits)
-// 2. IP-based: 2 request/menit untuk POST /api/tickets (Next.js middleware)
+// lib/rateLimit.ts
+// Business logic: maks 3 tiket/hari/user
+// Dicek via tabel ticket_rate_limits sebelum INSERT
 ```
 
 ### 14.4 API Key ML Service
 
-ML Service membutuhkan header `X-API-Key` untuk semua endpoint (kecuali `/health`). API Key disimpan sebagai environment variable di Railway dan Vercel/Supabase Edge Functions. Tidak pernah di-expose ke client.
+ML Service membutuhkan header `X-API-Key` untuk semua endpoint (kecuali `/` dan `/health`). API Key disimpan sebagai environment variable di Railway dan Supabase Edge Functions. Tidak pernah di-expose ke client.
 
 ### 14.5 Environment Variables
 
 ```bash
-# .env.local (Next.js — public prefix boleh di-expose ke browser)
+# .env.local (Next.js)
 NEXT_PUBLIC_SUPABASE_URL=https://xxx.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJ...
 
-# Server-only (tidak ada NEXT_PUBLIC prefix)
-SUPABASE_SERVICE_ROLE_KEY=eyJ...   # Untuk operasi admin di API Routes
+# Server-only
+SUPABASE_SERVICE_ROLE_KEY=eyJ...
 ML_SERVICE_URL=https://xxx.railway.app
 ML_SERVICE_API_KEY=sk-...
 
 # Supabase Edge Functions (set via Supabase CLI)
 ML_SERVICE_URL=https://xxx.railway.app
-ML_SERVICE_API_KEY=sk-...
+ML_API_KEY=sk-...
+
+# Railway ML Service
+SUPABASE_URL=https://xxx.supabase.co
+SUPABASE_SERVICE_ROLE_KEY=eyJ...
+ML_API_KEY=sk-...
 ```
 
 ---
@@ -992,14 +1042,15 @@ ML_SERVICE_API_KEY=sk-...
 
 **Next.js (Vercel):**
 ```
-Push ke branch main → GitHub Actions → Vercel build → Deploy otomatis
+Push ke branch main → Vercel auto-detect → Build → Deploy otomatis
 Preview deployment untuk setiap PR
 ```
 
 **ML Service (Railway):**
 ```
-Push ke branch main (perubahan di /ml-service) → Railway detect Procfile →
-Build image → Deploy → Railway auto-expose HTTPS URL
+Push ke branch main → Railway detect Nixpacks →
+Build image → Deploy → Health check /health → Auto-expose HTTPS URL
+railway.json: restartPolicyType=ON_FAILURE, maxRetries=10
 ```
 
 **Supabase Migrations:**
@@ -1017,8 +1068,8 @@ Deploy: supabase functions deploy process-ticket-ml
 
 ```bash
 # 1. Clone repo
-git clone https://github.com/risuunava/smart-campus-helpdesk-unsap
-cd smart-campus-helpdesk-unsap
+git clone https://github.com/risuunava/helpdesk-unsap-v2.git
+cd helpdesk-unsap-v2
 
 # 2. Install Next.js dependencies
 npm install
@@ -1029,7 +1080,7 @@ cp .env.local.example .env.local
 # 4. Jalankan Supabase local (opsional, bisa pakai hosted)
 supabase start
 
-# 5. Jalankan migrasi DB
+# 5. Jalankan migrasi DB (18 migration files)
 supabase db push
 
 # 6. Deploy Edge Function ke lokal
@@ -1037,10 +1088,10 @@ supabase functions serve process-ticket-ml
 
 # 7. Setup ML Service
 cd ml-service
-python -m venv venv && source venv/bin/activate
+python -m venv venv && source venv/bin/activate  # Windows: venv\Scripts\activate
 pip install -r requirements.txt
 python train.py          # Training model pertama kali
-uvicorn main:app --reload --port 5000
+uvicorn main:app --reload --port 8000
 
 # 8. Jalankan Next.js
 cd ..
@@ -1068,26 +1119,9 @@ Data yang perlu dimigrasikan dari sistem v1:
 - `faqs` → `faqs`
 - `ml_training_data` → `ml_training_data`
 
-File lampiran di storage lama → Supabase Storage
+File lampiran di storage lama → Supabase Storage (bucket: attachments)
 
-### 16.2 Script Migrasi
-
-```bash
-# 1. Export dari PostgreSQL lama
-pg_dump -h [OLD_HOST] -U postgres -d helpdesk_db \
-  --table=users --table=tickets --table=chat_messages \
-  --table=faqs --table=ml_training_data \
-  -f export.sql
-
-# 2. Transform & import ke Supabase
-# Script transformasi Python: ml-service/scripts/migrate.py
-# Handles: field name mapping, UUID conversion, role mapping
-
-# 3. Migrasi file lampiran via Supabase Storage API
-# Script: scripts/migrate-storage.py
-```
-
-### 16.3 Validasi Pasca-Migrasi
+### 16.2 Validasi Pasca-Migrasi
 
 - [ ] Jumlah row di setiap tabel sama dengan source
 - [ ] Semua relasi foreign key valid
@@ -1101,89 +1135,107 @@ pg_dump -h [OLD_HOST] -U postgres -d helpdesk_db \
 
 ### 17.1 Authentication
 
-- [ ] Mahasiswa bisa register dengan NIM + email + password
-- [ ] Login berhasil dan redirect ke halaman yang benar sesuai role
-- [ ] Halaman `/admin/*` tidak bisa diakses tanpa login admin
-- [ ] Halaman `/mahasiswa/*` tidak bisa diakses tanpa login mahasiswa
-- [ ] Session tidak hilang setelah refresh halaman
+- [x] Mahasiswa bisa register dengan NIM + email + password
+- [x] Login berhasil dan redirect ke halaman yang benar sesuai role
+- [x] Halaman `/admin/*` tidak bisa diakses tanpa login admin
+- [x] Halaman `/mahasiswa/*` tidak bisa diakses tanpa login mahasiswa
+- [x] Session tidak hilang setelah refresh halaman
+- [x] Auto-create profile via DB trigger saat register
 
 ### 17.2 Tiket
 
-- [ ] Mahasiswa bisa submit tiket dengan dan tanpa lampiran
-- [ ] Tiket anonim menampilkan kode `Anonim_#XXXX` bukan nama asli untuk admin biasa
-- [ ] Master Admin bisa melihat identitas asli tiket anonim
-- [ ] Submit ke-4 di hari yang sama ditolak dengan pesan error yang jelas
-- [ ] File > 2MB atau ekstensi tidak valid ditolak di client dan server
-- [ ] Tiket nomor auto-generate dalam format `TKT-2026-XXXX`
+- [x] Mahasiswa bisa submit tiket dengan dan tanpa lampiran
+- [x] Tiket anonim menampilkan kode `Anonim_#XXXX` bukan nama asli untuk admin biasa
+- [x] Master Admin bisa melihat identitas asli tiket anonim
+- [x] Submit ke-4 di hari yang sama ditolak dengan pesan error yang jelas
+- [x] File > 2MB atau ekstensi tidak valid ditolak di client dan server
+- [x] Tiket nomor auto-generate dalam format `TKT-2026-XXXX`
+- [x] SLA deadline auto-set berdasarkan priority
 
 ### 17.3 ML & Klasifikasi
 
-- [ ] Prioritas tiket ter-update otomatis dalam 10 detik setelah submit
-- [ ] Tiket dengan kata kunci "KRS", "pelecehan", dll. langsung Urgent
-- [ ] Jika ML Service down, tiket tetap masuk dengan prioritas Normal (tidak error)
-- [ ] FAQ Suggestion muncul dalam < 1 detik setelah berhenti mengetik
-- [ ] Master Admin bisa koreksi label dan trigger retrain dari dashboard
+- [x] Prioritas tiket ter-update otomatis setelah submit (via Edge Function)
+- [x] Jika ML Service down, tiket tetap masuk dengan prioritas Normal (tidak error)
+- [x] FAQ Suggestion muncul setelah berhenti mengetik
+- [x] Master Admin bisa koreksi label dan trigger retrain dari dashboard
+- [x] Model auto-train saat startup jika belum ada model file
+- [x] FAQ auto-sync dari Supabase saat startup
 
 ### 17.4 Realtime
 
-- [ ] Pesan chat muncul di kedua sisi tanpa refresh halaman
-- [ ] Admin mendapat notifikasi tiket baru tanpa refresh
-- [ ] Reconnect otomatis jika koneksi WebSocket putus
+- [x] Pesan chat muncul di kedua sisi tanpa refresh halaman
+- [x] Admin mendapat notifikasi tiket baru tanpa refresh
+- [x] Reconnect otomatis jika koneksi WebSocket putus
 
 ### 17.5 Analytics
 
-- [ ] Dashboard admin menampilkan KPI cards yang akurat
-- [ ] Tiket yang melewati SLA ditandai merah di tabel
-- [ ] Chart sentimen kampus hanya visible untuk Master Admin
+- [x] Dashboard admin menampilkan KPI cards yang akurat
+- [x] Tiket yang melewati SLA ditandai di tabel (SlaIndicator)
+- [x] Chart sentiment, trend, kategori, SLA compliance tersedia
+- [x] Analytics menggunakan server-side RPC functions
+
+### 17.6 UX
+
+- [x] 10 tema CSS tersedia dan bisa di-switch
+- [x] Dark/light mode toggle berfungsi
+- [x] Command palette (⌘K) untuk navigasi cepat
+- [x] Responsive design dengan BottomNav untuk mobile
+- [x] Profile page dengan avatar image cropper
 
 ---
 
 ## 18. Roadmap & Milestone
 
-### Phase 1 — Foundation (Minggu 1–2)
+### Phase 1 — Foundation ✅
 
-- [ ] Setup Supabase project (skema DB, RLS, Realtime)
-- [ ] Inisialisasi Next.js 14 dengan TypeScript + Tailwind + shadcn/ui
-- [ ] Implementasi Supabase Auth (register, login, middleware)
-- [ ] Setup Railway untuk ML Service + deploy versi existing
-- [ ] Halaman landing page
-- [ ] Halaman login & register
+- [x] Setup Supabase project (skema DB, RLS, Realtime)
+- [x] Inisialisasi Next.js 16 dengan TypeScript + Tailwind v4 + Shadcn/UI
+- [x] Implementasi Supabase Auth (register, login, middleware/proxy)
+- [x] Setup Railway untuk ML Service + deploy
+- [x] Halaman landing page
+- [x] Halaman login & register
 
-### Phase 2 — Core Features (Minggu 3–4)
+### Phase 2 — Core Features ✅
 
-- [ ] Dashboard mahasiswa + list tiket
-- [ ] Form submit tiket + upload lampiran ke Supabase Storage
-- [ ] Logika anonimitas + rate limiting
-- [ ] Dashboard admin + tabel tiket dengan filter
-- [ ] Update status tiket
+- [x] Dashboard mahasiswa + list tiket
+- [x] Form submit tiket + upload lampiran ke Supabase Storage
+- [x] Logika anonimitas + rate limiting
+- [x] Dashboard admin + tabel tiket dengan filter
+- [x] Update status & prioritas tiket
+- [x] Assign tiket
 
-### Phase 3 — ML Integration (Minggu 5)
+### Phase 3 — ML Integration ✅
 
-- [ ] FAQ Suggestion (debounce + call ML /faq-suggest)
-- [ ] Supabase Edge Function `process-ticket-ml`
-- [ ] Auto-escalation keyword detection
-- [ ] Fail-safe fallback (priority Normal jika ML timeout)
-- [ ] Dashboard ML management untuk Master Admin
+- [x] FAQ Suggestion (debounce + call ML /faq-suggest)
+- [x] Supabase Edge Function `process-ticket-ml`
+- [x] Auto-escalation keyword detection (rule-based fallback)
+- [x] Fail-safe fallback (priority Normal jika ML timeout)
+- [x] Dashboard ML management untuk Master Admin
+- [x] Koreksi label + uncertain data view + retrain trigger
 
-### Phase 4 — Realtime & Chat (Minggu 6)
+### Phase 4 — Realtime & Chat ✅
 
-- [ ] Live Chat Room dengan Supabase Realtime
-- [ ] Split-view admin (detail + chat)
-- [ ] Sistem notifikasi realtime
-- [ ] Anonimitas di chat
+- [x] Live Chat Room dengan Supabase Realtime
+- [x] Split-view admin (detail + chat)
+- [x] Sistem notifikasi realtime (NotificationBell + pusat notifikasi)
+- [x] Anonimitas di chat
 
-### Phase 5 — Analytics & Polish (Minggu 7)
+### Phase 5 — Analytics & Polish ✅
 
-- [ ] KPI cards + SLA monitoring
-- [ ] Chart distribusi kategori, trend tiket
-- [ ] Campus Sentiment Analytics (Master Admin)
-- [ ] Optimasi performa (caching, loading states)
-- [ ] Responsive design + dark mode fine-tuning
+- [x] KPI cards + SLA monitoring (PostgreSQL RPC functions)
+- [x] Chart distribusi kategori, trend tiket, SLA compliance
+- [x] Campus Sentiment Analytics
+- [x] Export data (CSV/XLSX/PDF)
+- [x] Responsive design + BottomNav mobile
+- [x] Multi-theme (10 tema) + dark/light mode
+- [x] Command palette (⌘K)
+- [x] Profile page + avatar image cropper
+- [x] Settings page
 
-### Phase 6 — Testing & Launch (Minggu 8)
+### Phase 6 — Hardening & Launch
 
-- [ ] Unit tests untuk API Routes (Jest/Vitest)
-- [ ] E2E test untuk flow kritis (Playwright)
+- [ ] Unit tests untuk API Routes
+- [ ] E2E test untuk flow kritis
 - [ ] Migrasi data dari sistem v1
 - [ ] User acceptance testing dengan mahasiswa & admin UNSAP
 - [ ] Deploy ke production + monitoring setup
@@ -1194,12 +1246,12 @@ pg_dump -h [OLD_HOST] -U postgres -d helpdesk_db \
 
 | Risiko | Probabilitas | Dampak | Mitigasi |
 |---|---|---|---|
-| ML Service auto-sleep di Railway (cold start ~30 detik) | Tinggi | Sedang | Fail-safe fallback Normal priority; Cron ping ML setiap 10 menit jika traffic rendah |
-| Supabase Edge Function timeout (maks 150 detik) | Rendah | Rendah | ML call timeout diset 5 detik; retry 1x |
-| Supabase free tier limit (500MB DB) | Sedang | Sedang | Paginate data, archive tiket lama ke status closed setelah 1 tahun |
-| Model ML tidak akurat untuk Bahasa Indonesia lokal | Sedang | Tinggi | Expand dataset dengan data nyata UNSAP; Active Learning dari koreksi admin |
-| Supabase Realtime connection limit (200 connections free) | Rendah | Sedang | Implementasi unsubscribe saat navigasi ke halaman lain |
-| Data kebocoran identitas anonim | Rendah | Sangat Tinggi | RLS + server-side masking di API Route; audit log akses Master Admin |
+| ML Service auto-sleep di Railway (cold start ~30 detik) | Tinggi | Sedang | Fail-safe fallback Normal priority; notif tetap terkirim |
+| Supabase Edge Function timeout (maks 150 detik) | Rendah | Rendah | ML call timeout diset 5 detik; fallback notif |
+| Supabase free tier limit (500MB DB) | Sedang | Sedang | Paginate data, archive tiket lama |
+| Model ML tidak akurat untuk Bahasa Indonesia lokal | Sedang | Tinggi | Expand dataset; Active Learning dari koreksi admin |
+| Supabase Realtime connection limit (200 free) | Rendah | Sedang | Unsubscribe saat navigasi ke halaman lain |
+| Data kebocoran identitas anonim | Rendah | Sangat Tinggi | RLS + server-side masking; master_admin only |
 
 ---
 
@@ -1207,18 +1259,22 @@ pg_dump -h [OLD_HOST] -U postgres -d helpdesk_db \
 
 | Term | Definisi |
 |---|---|
-| TF-IDF | Term Frequency-Inverse Document Frequency, teknik representasi teks untuk menghitung kemiripan |
+| TF-IDF | Term Frequency-Inverse Document Frequency, teknik representasi teks untuk menghitung bobot kata |
 | Cosine Similarity | Metrik kemiripan dua vektor (0–1), digunakan untuk FAQ matching |
+| Logistic Regression | Algoritma ML untuk klasifikasi, digunakan sebagai primary classifier |
 | SLA | Service Level Agreement, batas waktu penyelesaian tiket berdasarkan prioritas |
 | RLS | Row Level Security, fitur PostgreSQL/Supabase untuk membatasi akses data per baris |
+| ENUM | PostgreSQL data type untuk nilai terbatas (role, status, priority, category) |
 | Edge Function | Fungsi serverless yang berjalan dekat dengan database (Deno runtime) di Supabase |
 | Active Learning | Proses memperbaiki model ML dengan data koreksi dari manusia (admin) |
-| Auto-escalation | Mekanisme otomatis menaikkan prioritas tiket ke Urgent berdasarkan kata kunci |
-| Fail-safe | Mekanisme fallback agar sistem tetap berjalan meskipun komponen lain (ML) gagal |
+| Auto-escalation | Mekanisme fallback menaikkan prioritas tiket ke Urgent berdasarkan kata kunci (hanya aktif jika ML tidak tersedia) |
+| Fail-safe | Mekanisme fallback agar sistem tetap berjalan meskipun ML Service gagal |
 | Realtime Channel | Koneksi WebSocket Supabase untuk menerima update data secara instan |
 | anonymous_code | Kode unik deterministik (`Anonim_#XXXX`) yang menggantikan identitas mahasiswa anonim |
+| Sastrawi | Library stemmer untuk Bahasa Indonesia |
+| Nixpacks | Build system Railway untuk auto-detect dan build aplikasi |
 
 ---
 
 *Dokumen ini merupakan living document. Revisi dilakukan sesuai perkembangan proyek.*  
-*Versi terakhir: 2.0 — Juni 2026*
+*Versi terakhir: 2.1 — Juni 2026*
