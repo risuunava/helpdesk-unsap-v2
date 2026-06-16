@@ -27,6 +27,7 @@ export async function GET(request: Request) {
     )
 
     const { error } = await supabase.auth.exchangeCodeForSession(code)
+    const type = searchParams.get('type')
 
     if (!error) {
       // Get user profile to determine redirect
@@ -35,6 +36,10 @@ export async function GET(request: Request) {
       } = await supabase.auth.getUser()
 
       if (user) {
+        if (next === '/update-password' || type === 'recovery' || type === 'invite') {
+          return NextResponse.redirect(new URL('/update-password', origin))
+        }
+
         const { data: profile } = await supabase
           .from('profiles')
           .select('role')

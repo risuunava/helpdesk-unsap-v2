@@ -48,12 +48,11 @@ export default async function proxy(request: NextRequest) {
       .single()
 
     const role = profile?.role
-    if (role === 'mahasiswa') {
-      return NextResponse.redirect(new URL('/mahasiswa', request.url))
-    }
     if (role === 'admin' || role === 'master_admin') {
       return NextResponse.redirect(new URL('/admin', request.url))
     }
+    // Default redirect untuk user yang sudah login (misal mahasiswa atau role belum diset)
+    return NextResponse.redirect(new URL('/mahasiswa', request.url))
   }
 
   return response

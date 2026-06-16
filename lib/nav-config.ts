@@ -7,6 +7,7 @@ import {
   IconPlus,
   IconHistory,
   IconBell,
+  IconUsers,
 } from "@tabler/icons-react";
 
 export type NavItem = {
@@ -48,6 +49,12 @@ export const navItems: NavItem[] = [
     title: "Semua Laporan",
     href: "/admin/tiket",
     icon: IconTicket,
+    role: ["admin", "master_admin"],
+  },
+  {
+    title: "Kelola User",
+    href: "/admin/users",
+    icon: IconUsers,
     role: ["admin", "master_admin"],
   },
   {

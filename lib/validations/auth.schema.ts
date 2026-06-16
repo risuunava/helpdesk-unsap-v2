@@ -20,3 +20,21 @@ export const registerSchema = z
 
 export type LoginInput = z.infer<typeof loginSchema>
 export type RegisterInput = z.infer<typeof registerSchema>
+
+export const forgotPasswordSchema = z.object({
+  email: z.string().email('Email tidak valid'),
+})
+
+export const updatePasswordSchema = z
+  .object({
+    password: z.string().min(6, 'Password minimal 6 karakter'),
+    confirm_password: z.string(),
+  })
+  .refine((data) => data.password === data.confirm_password, {
+    message: 'Password tidak cocok',
+    path: ['confirm_password'],
+  })
+
+export type ForgotPasswordInput = z.infer<typeof forgotPasswordSchema>
+export type UpdatePasswordInput = z.infer<typeof updatePasswordSchema>
+
