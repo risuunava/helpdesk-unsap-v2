@@ -7,6 +7,7 @@ import { StatusBadge } from '@/components/ui/StatusBadge'
 import { PriorityBadge } from '@/components/ui/PriorityBadge'
 import { SlaIndicator } from '@/components/ui/SlaIndicator'
 import { ChatRoom } from '@/components/chat/ChatRoom'
+import { TicketRating } from '@/components/ticket/TicketRating'
 import { createClient } from '@/lib/supabase/client'
 import PageContainer from '@/components/layout/page-container'
 import {
@@ -138,7 +139,7 @@ export default function TicketDetailPage({ params }: { params: Promise<{ id: str
         </div>
       }
     >
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 pb-12">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 pb-12 items-start">
         
         {/* Main Content Area */}
         <div className="lg:col-span-2">
@@ -152,7 +153,7 @@ export default function TicketDetailPage({ params }: { params: Promise<{ id: str
                 transition={{ duration: 0.2 }}
                 className="space-y-6"
               >
-                <Card className="border-border/40 shadow-sm overflow-hidden bg-card">
+                <Card className="border-border/60 shadow-none overflow-hidden bg-card">
                   <CardHeader className="flex flex-row items-center justify-between border-b border-border/50 bg-muted/20">
                     <CardTitle className="text-base font-bold">{ticket?.title}</CardTitle>
                     <StatusBadge status={ticket?.status as any} />
@@ -184,7 +185,7 @@ export default function TicketDetailPage({ params }: { params: Promise<{ id: str
 
                     <div className="space-y-4">
                       <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Isi Laporan</p>
-                      <div className="text-sm text-muted-foreground leading-relaxed bg-muted/30 p-3 md:p-5 rounded-lg border border-border/40 whitespace-pre-wrap font-medium shadow-inner">
+                      <div className="text-sm text-muted-foreground leading-relaxed bg-muted/30 p-4 rounded-md border border-border/50 whitespace-pre-wrap font-medium">
                         {ticket?.description}
                       </div>
                     </div>
@@ -195,7 +196,7 @@ export default function TicketDetailPage({ params }: { params: Promise<{ id: str
                         <Button 
                           asChild
                           variant="outline"
-                          className="rounded-md h-10 px-4 font-bold flex items-center gap-2 shadow-sm"
+                          className="rounded-md h-9 px-4 font-bold flex items-center gap-2 text-sm"
                         >
                           <a href={ticket?.attachment_url} target="_blank" rel="noopener noreferrer">
                             <Paperclip size={16} className="text-muted-foreground" />
@@ -208,7 +209,7 @@ export default function TicketDetailPage({ params }: { params: Promise<{ id: str
                   </CardContent>
                 </Card>
 
-                <Card className="border-border/40 shadow-sm overflow-hidden bg-card">
+                <Card className="border-border/60 shadow-none overflow-hidden bg-card">
                   <CardHeader className="flex flex-row items-center gap-3 border-b border-border/50 bg-muted/20">
                     <History size={16} className="text-primary" />
                     <CardTitle className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">Timeline Penanganan</CardTitle>
@@ -245,18 +246,12 @@ export default function TicketDetailPage({ params }: { params: Promise<{ id: str
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.2 }}
-                className="bg-card border border-border/40 rounded-xl shadow-sm overflow-hidden flex flex-col h-[400px] md:h-[700px]"
+                className="bg-card border border-border/60 rounded-md shadow-none overflow-hidden flex flex-col h-[400px] md:h-[700px]"
               >
-                <div className="p-5 border-b border-border/60 bg-muted/40 backdrop-blur-md flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <MessageSquare size={18} className="text-primary" />
-                    <h3 className="text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground">Diskusi Petugas</h3>
+                <div className="px-5 py-4 border-b border-border/60 flex items-center gap-3">
+                    <MessageSquare size={15} className="text-muted-foreground" />
+                    <h3 className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">Diskusi</h3>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                    <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest">Live Connect</span>
-                  </div>
-                </div>
                 {currentUserId && (
                   <div className="flex-1 overflow-hidden">
                     <ChatRoom ticketId={id} currentUserId={currentUserId} />
@@ -269,23 +264,31 @@ export default function TicketDetailPage({ params }: { params: Promise<{ id: str
 
         {/* Sidebar Info */}
         <div className="lg:col-span-1 space-y-6">
-          <Card className="border-border/40 shadow-sm overflow-hidden bg-muted/50 border-primary/20">
-            <CardContent className="pt-6 space-y-4 text-foreground">
-              <div className="flex items-center gap-2 text-primary">
-                <ShieldCheck size={14} />
-                <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Informasi Support</span>
-              </div>
-              <p className="text-sm font-medium leading-relaxed text-muted-foreground">
+          {(ticket?.status === 'resolved' || ticket?.status === 'closed') && (
+            <Card className="border-border/60 shadow-none overflow-hidden bg-card">
+              <CardContent className="pt-5 pb-5">
+                <TicketRating 
+                  ticketId={id} 
+                  initialRating={ticket?.rating} 
+                />
+              </CardContent>
+            </Card>
+          )}
+
+          <Card className="border-border/60 shadow-none overflow-hidden bg-card">
+            <CardContent className="pt-5 pb-5 space-y-2 text-foreground">
+              <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">Informasi</p>
+              <p className="text-sm leading-relaxed text-muted-foreground">
                 Gunakan fitur diskusi untuk bertanya langsung kepada petugas. Tim kami akan merespon sesuai urutan antrean.
               </p>
             </CardContent>
           </Card>
           
-          <Card className="border-border/40 shadow-sm overflow-hidden bg-card">
+          <Card className="border-border/60 shadow-none overflow-hidden bg-card">
             <CardHeader className="py-4 border-b border-border/50">
               <div className="flex items-center gap-2">
-                <Calendar size={14} className="text-primary" />
-                <CardTitle className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Data Laporan</CardTitle>
+                <Calendar size={14} className="text-muted-foreground" />
+                <CardTitle className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">Data Laporan</CardTitle>
               </div>
             </CardHeader>
             <CardContent className="pt-6 space-y-4">

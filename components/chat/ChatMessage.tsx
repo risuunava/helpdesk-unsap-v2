@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { Message } from '@/hooks/useChat'
-import { User, ShieldCheck } from 'lucide-react'
+import { ShieldCheck, User } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 interface ChatMessageProps {
@@ -16,11 +16,10 @@ export function ChatMessage({ message, isSelf }: ChatMessageProps) {
     const date = new Date(dateStr)
     const now = new Date()
     const isToday = date.toDateString() === now.toDateString()
-    
-    return date.toLocaleTimeString('id-ID', { 
-      hour: '2-digit', 
+    return date.toLocaleTimeString('id-ID', {
+      hour: '2-digit',
       minute: '2-digit',
-      ...(!isToday && { weekday: 'short' })
+      ...(!isToday && { day: '2-digit', month: 'short' }),
     })
   }
 
@@ -28,31 +27,32 @@ export function ChatMessage({ message, isSelf }: ChatMessageProps) {
 
   return (
     <div className={cn(
-      'flex w-full gap-3 group animate-in fade-in slide-in-from-bottom-1 duration-300',
+      'flex w-full gap-2.5',
       isSelf ? 'flex-row-reverse' : 'flex-row'
     )}>
       {/* Avatar */}
       {!isSelf && (
         <div className={cn(
-          "w-8 h-8 rounded-xl flex items-center justify-center shrink-0 border transition-all duration-300 shadow-sm",
-          isAdmin ? "bg-primary/10 border-primary/20 text-primary" : "bg-muted border-border text-muted-foreground"
+          "w-7 h-7 rounded-md flex items-center justify-center shrink-0 border",
+          isAdmin
+            ? "bg-primary/10 border-primary/20 text-primary"
+            : "bg-muted border-border text-muted-foreground"
         )}>
-          {isAdmin ? <ShieldCheck size={14} /> : <User size={14} />}
+          {isAdmin ? <ShieldCheck size={13} /> : <User size={13} />}
         </div>
       )}
 
-      {/* Bubble */}
       <div className={cn(
-        'flex flex-col max-w-[80%]',
+        'flex flex-col max-w-[78%]',
         isSelf ? 'items-end' : 'items-start'
       )}>
         {!isSelf && (
-          <div className="flex items-center gap-1.5 mb-1 px-1">
-            <span className="text-[10px] font-bold text-foreground uppercase tracking-wider">
+          <div className="flex items-center gap-1.5 mb-1 px-0.5">
+            <span className="text-[10px] font-semibold text-foreground">
               {message.sender?.full_name || 'User'}
             </span>
             {isAdmin && (
-              <span className="text-[8px] font-bold bg-primary text-primary-foreground px-1.5 py-0.5 rounded-full uppercase tracking-tighter shadow-sm">
+              <span className="text-[9px] font-bold bg-primary/10 text-primary px-1.5 py-0.5 rounded uppercase tracking-tight border border-primary/15">
                 Petugas
               </span>
             )}
@@ -60,15 +60,15 @@ export function ChatMessage({ message, isSelf }: ChatMessageProps) {
         )}
 
         <div className={cn(
-          'px-4 py-3 rounded-2xl text-[13px] font-medium leading-relaxed break-words shadow-sm',
-          isSelf 
-            ? 'bg-primary text-primary-foreground rounded-tr-none' 
-            : 'bg-card text-foreground rounded-tl-none border border-border/50 shadow-glass'
+          'px-3 py-2 rounded-md text-sm leading-relaxed break-words',
+          isSelf
+            ? 'bg-primary text-primary-foreground rounded-tr-none'
+            : 'bg-muted text-foreground rounded-tl-none border border-border/60'
         )}>
           {message.content}
         </div>
 
-        <span className="text-[9px] font-bold text-muted-foreground mt-1.5 px-2 uppercase tracking-widest opacity-60">
+        <span className="text-[10px] text-muted-foreground mt-1 px-0.5 opacity-70">
           {formatTime(message.created_at)}
         </span>
       </div>

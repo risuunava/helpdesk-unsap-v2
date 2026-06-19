@@ -32,7 +32,8 @@ import {
   FileSpreadsheet, 
   FileText,
   LayoutList,
-  LayoutGrid
+  LayoutGrid,
+  Star
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -177,6 +178,9 @@ export default function FullReportsPage() {
                         <th className="h-10 px-6 text-left align-middle font-bold text-muted-foreground text-[10px] uppercase tracking-[0.1em]">
                           Status
                         </th>
+                        <th className="h-10 px-6 text-left align-middle font-bold text-muted-foreground text-[10px] uppercase tracking-[0.1em]">
+                          Rating
+                        </th>
                         <th className="h-10 px-6 text-right align-middle font-bold text-muted-foreground text-[10px] uppercase tracking-[0.1em]">
                           SLA Target
                         </th>
@@ -208,6 +212,16 @@ export default function FullReportsPage() {
                           </td>
                           <td className="h-[64px] px-6 align-middle">
                             <StatusBadge status={t.status as any} />
+                          </td>
+                          <td className="h-[64px] px-6 align-middle">
+                            {t.rating ? (
+                              <div className="flex items-center gap-1">
+                                <Star size={14} className="fill-amber-400 text-amber-400" />
+                                <span className="text-xs font-bold">{t.rating}/5</span>
+                              </div>
+                            ) : (
+                              <span className="text-xs text-muted-foreground">-</span>
+                            )}
                           </td>
                           <td className="h-[64px] px-6 align-middle text-right">
                             <SlaIndicator deadline={t.sla_deadline} />
@@ -242,6 +256,13 @@ export default function FullReportsPage() {
                           <span className="w-1 h-1 rounded-full bg-border" />
                           <span>{new Date(t.created_at).toLocaleDateString()}</span>
                         </div>
+                        {t.rating && (
+                          <div className="flex items-center gap-1 mt-1">
+                            {[1, 2, 3, 4, 5].map(star => (
+                              <Star key={star} size={12} className={star <= t.rating ? "fill-amber-400 text-amber-400" : "fill-muted text-muted-foreground/30"} />
+                            ))}
+                          </div>
+                        )}
                         <div className="flex items-center justify-between pt-2">
                           <PriorityBadge priority={t.priority as any} />
                           <div className="hidden sm:block">

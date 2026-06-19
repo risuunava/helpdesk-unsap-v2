@@ -287,6 +287,7 @@ export type Database = {
           ml_model_version: string | null
           priority: string
           priority_overridden: boolean | null
+          rating: number | null
           reporter_id: string | null
           resolved_at: string | null
           sla_deadline: string | null
@@ -309,6 +310,7 @@ export type Database = {
           ml_model_version?: string | null
           priority?: string
           priority_overridden?: boolean | null
+          rating?: number | null
           reporter_id?: string | null
           resolved_at?: string | null
           sla_deadline?: string | null
@@ -331,6 +333,7 @@ export type Database = {
           ml_model_version?: string | null
           priority?: string
           priority_overridden?: boolean | null
+          rating?: number | null
           reporter_id?: string | null
           resolved_at?: string | null
           sla_deadline?: string | null

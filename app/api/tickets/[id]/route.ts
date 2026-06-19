@@ -111,7 +111,11 @@ export async function PATCH(
     let notificationBody = ''
 
     if (validatedData.status) {
-      notificationBody = `Status tiket Anda telah berubah menjadi ${validatedData.status.toUpperCase()}.`
+      if (validatedData.status === 'resolved') {
+        notificationBody = `Status tiket Anda telah berubah menjadi SELESAI. Silakan berikan rating untuk pelayanan kami.`
+      } else {
+        notificationBody = `Status tiket Anda telah berubah menjadi ${validatedData.status.toUpperCase()}.`
+      }
     } else if (validatedData.priority) {
       notificationBody = `Prioritas tiket Anda telah diubah menjadi ${validatedData.priority.toUpperCase()}.`
     } else if (validatedData.assigned_to) {

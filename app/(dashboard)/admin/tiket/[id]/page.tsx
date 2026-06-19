@@ -8,6 +8,7 @@ import { StatusBadge } from '@/components/ui/StatusBadge'
 import { PriorityBadge } from '@/components/ui/PriorityBadge'
 import { SlaIndicator } from '@/components/ui/SlaIndicator'
 import { TicketActions } from '@/components/ticket/TicketActions'
+import { TicketRating } from '@/components/ticket/TicketRating'
 import { ChatRoom } from '@/components/chat/ChatRoom'
 import PageContainer from '@/components/layout/page-container'
 import {
@@ -25,7 +26,7 @@ import {
   ArrowLeft, Paperclip, Clock, Loader2, 
   Cpu, MessageSquare,
   ChevronRight, FileText, AlertTriangle, Activity, Database, ArrowRight, SlidersHorizontal,
-  History
+  History, Star
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -148,7 +149,7 @@ export default function AdminTicketDetail({ params }: { params: Promise<{ id: st
         </div>
       }
     >
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 pb-12">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 pb-12 items-start">
         
         {/* Main Content Area */}
         <div className="lg:col-span-2">
@@ -162,8 +163,8 @@ export default function AdminTicketDetail({ params }: { params: Promise<{ id: st
                 className="space-y-6"
               >
                 {/* Core Registry Info */}
-                <Card className="border-border/40 shadow-glass overflow-hidden bg-card/50 backdrop-blur-sm">
-                  <CardHeader className="flex flex-row items-center justify-between border-b border-border/50 bg-muted/20">
+                <Card className="border-border/60 shadow-none overflow-hidden bg-card">
+                  <CardHeader className="flex flex-row items-center justify-between border-b border-border/50 px-6 py-4">
                     <div className="flex items-center gap-3">
                       <Database size={16} className="text-primary" />
                       <CardTitle className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">Detail Laporan</CardTitle>
@@ -172,7 +173,7 @@ export default function AdminTicketDetail({ params }: { params: Promise<{ id: st
                   </CardHeader>
                   
                   <CardContent className="pt-8 space-y-8">
-                    <h3 className="text-2xl font-bold text-foreground leading-tight">{ticket?.title}</h3>
+                    <h3 className="text-xl font-bold text-foreground leading-tight">{ticket?.title}</h3>
                     
                     <div className="grid grid-cols-2 gap-y-4 md:gap-y-6 gap-x-4 md:grid-cols-4 md:gap-6">
                       <div className="space-y-1.5">
@@ -195,9 +196,19 @@ export default function AdminTicketDetail({ params }: { params: Promise<{ id: st
                       </div>
                     </div>
 
+                    {ticket?.rating && (
+                      <div className="pt-6 border-t border-border/50">
+                        <TicketRating 
+                          ticketId={ticket.id} 
+                          initialRating={ticket.rating} 
+                          readonly={true} 
+                        />
+                      </div>
+                    )}
+
                     <div className="space-y-3 pt-6 border-t border-border/50">
                       <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Deskripsi Masalah</p>
-                      <div className="text-sm text-muted-foreground leading-relaxed bg-muted/30 p-3 md:p-5 rounded-2xl border border-border/40 whitespace-pre-wrap font-medium shadow-inner">
+                      <div className="text-sm text-muted-foreground leading-relaxed bg-muted/30 p-4 rounded-md border border-border/50 whitespace-pre-wrap font-medium">
                         {ticket?.description}
                       </div>
                     </div>
@@ -208,7 +219,7 @@ export default function AdminTicketDetail({ params }: { params: Promise<{ id: st
                         <Button 
                           asChild
                           variant="outline"
-                          className="rounded-xl h-12 px-6 font-bold flex items-center gap-2 shadow-sm"
+                          className="rounded-md h-9 px-4 font-bold flex items-center gap-2 text-sm"
                         >
                           <a href={ticket?.attachment_url} target="_blank" rel="noopener noreferrer">
                             <Paperclip size={14} />
@@ -222,8 +233,8 @@ export default function AdminTicketDetail({ params }: { params: Promise<{ id: st
                 </Card>
 
                 {/* Timeline History */}
-                <Card className="border-border/40 shadow-glass overflow-hidden bg-card/50 backdrop-blur-sm">
-                  <CardHeader className="flex flex-row items-center gap-3 border-b border-border/50 bg-muted/20">
+                <Card className="border-border/60 shadow-none overflow-hidden bg-card">
+                  <CardHeader className="flex flex-row items-center gap-3 border-b border-border/50 px-6 py-4">
                     <History size={16} className="text-primary" />
                     <CardTitle className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">Riwayat Aktivitas</CardTitle>
                   </CardHeader>
@@ -262,18 +273,12 @@ export default function AdminTicketDetail({ params }: { params: Promise<{ id: st
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, x: 10 }}
-                className="bg-card border border-border/40 rounded-[2rem] shadow-glass overflow-hidden flex flex-col h-[400px] md:h-[700px]"
+                className="bg-card border border-border/60 rounded-md shadow-none overflow-hidden flex flex-col h-[400px] md:h-[700px]"
               >
-                <div className="p-5 border-b border-border/60 bg-muted/40 backdrop-blur-md flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <MessageSquare size={18} className="text-primary" />
-                    <h3 className="text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground">Diskusi Aktif</h3>
+                <div className="px-5 py-4 border-b border-border/60 flex items-center gap-3">
+                    <MessageSquare size={15} className="text-muted-foreground" />
+                    <h3 className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">Diskusi</h3>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                    <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest">Live Sync</span>
-                  </div>
-                </div>
                 {currentUserId && (
                   <div className="flex-1 overflow-hidden">
                     <ChatRoom ticketId={id} currentUserId={currentUserId} />
@@ -287,11 +292,11 @@ export default function AdminTicketDetail({ params }: { params: Promise<{ id: st
         {/* Action Sidebar */}
         <div className="lg:col-span-1 space-y-6">
           <div className="sticky top-6 space-y-6">
-            <Card className="border-border/40 shadow-glass overflow-hidden bg-muted/50">
-              <CardHeader className="border-b border-border/50 py-4">
+            <Card className="border-border/60 shadow-none overflow-hidden bg-card">
+              <CardHeader className="border-b border-border/50 py-4 px-5">
                 <div className="flex items-center gap-2">
-                  <SlidersHorizontal size={14} className="text-primary" />
-                  <CardTitle className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">Kontrol Penanganan</CardTitle>
+                  <SlidersHorizontal size={14} className="text-muted-foreground" />
+                  <CardTitle className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">Kontrol Penanganan</CardTitle>
                 </div>
               </CardHeader>
               <CardContent className="pt-6">
@@ -308,11 +313,11 @@ export default function AdminTicketDetail({ params }: { params: Promise<{ id: st
               </CardContent>
             </Card>
 
-            <Card className="border-border/40 shadow-glass overflow-hidden bg-card/50 backdrop-blur-sm">
-              <CardHeader className="border-b border-border/50 py-4">
+            <Card className="border-border/60 shadow-none overflow-hidden bg-card">
+              <CardHeader className="border-b border-border/50 py-4 px-5">
                 <div className="flex items-center gap-2">
-                  <Clock size={14} className="text-primary" />
-                  <CardTitle className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">Target Resolusi</CardTitle>
+                  <Clock size={14} className="text-muted-foreground" />
+                  <CardTitle className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">Target Resolusi</CardTitle>
                 </div>
               </CardHeader>
               <CardContent className="pt-6">
@@ -332,11 +337,11 @@ export default function AdminTicketDetail({ params }: { params: Promise<{ id: st
             </Card>
 
             {ticket?.ml_confidence !== null && ticket?.ml_confidence !== undefined && (
-              <Card className="border-border/40 shadow-glass overflow-hidden bg-primary/5">
-                <CardHeader className="border-b border-border/20 py-4">
+              <Card className="border-border/60 shadow-none overflow-hidden bg-primary/5">
+                <CardHeader className="border-b border-border/20 py-4 px-5">
                   <div className="flex items-center gap-2">
                     <Cpu size={14} className="text-primary" />
-                    <CardTitle className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">Analisis AI</CardTitle>
+                    <CardTitle className="text-[10px] font-semibold uppercase tracking-widest text-primary">Analisis AI</CardTitle>
                   </div>
                 </CardHeader>
                 <CardContent className="pt-6 space-y-4">
