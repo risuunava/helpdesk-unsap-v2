@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2 } from 'lucide-react'
+import { toast } from 'sonner'
 import { loginSchema, type LoginInput } from '@/lib/validations/auth.schema'
 import { createClient } from '@/lib/supabase/client'
 import { motion } from 'motion/react'
@@ -28,28 +29,42 @@ function LoginForm() {
   const onSubmit = async (data: LoginInput) => {
     setErrorMsg(null)
     const supabase = createClient()
-    
-    const { error } = await supabase.auth.signInWithPassword({
-      email: data.email,
-      password: data.password,
-    })
 
-    if (error) {
-      setErrorMsg(error.message)
-      return
+    try {
+      const { error } = await supabase.auth.signInWithPassword({
+        email: data.email,
+        password: data.password,
+      })
+
+      if (error) {
+        if (error.message === 'Invalid login credentials') {
+          const res = await fetch('/api/auth/check-user', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: data.email }),
+          })
+          const { exists } = await res.json()
+          setErrorMsg(exists ? 'Password salah.' : 'Email belum terdaftar.')
+        } else if (error.message === 'Email not confirmed') {
+          setErrorMsg('Email belum dikonfirmasi. Silakan cek inbox email Anda.')
+        } else {
+          setErrorMsg(error.message)
+        }
+        return
+      }
+
+      router.push(nextPath)
+      router.refresh()
+    } catch {
+      toast.error('Terjadi kesalahan jaringan. Silakan coba lagi.')
     }
-
-    router.push(nextPath)
-    router.refresh()
   }
 
   return (
     <>
       {errorMsg && (
         <div className="mb-6 p-4 rounded-md bg-destructive/10 border border-destructive/20 text-destructive text-[13px] font-medium tracking-tight">
-          {errorMsg === 'Invalid login credentials' 
-            ? 'Email atau password salah.' 
-            : errorMsg}
+          {errorMsg}
         </div>
       )}
 
