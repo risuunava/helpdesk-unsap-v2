@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Loader2 } from 'lucide-react'
+import { Loader2, Eye, EyeOff, XCircle } from 'lucide-react'
 import { toast } from 'sonner'
 import { loginSchema, type LoginInput } from '@/lib/validations/auth.schema'
 import { createClient } from '@/lib/supabase/client'
@@ -17,14 +17,19 @@ function LoginForm() {
   const nextPath = searchParams.get('redirect') || '/mahasiswa'
   
   const [errorMsg, setErrorMsg] = useState<string | null>(null)
+  const [showPassword, setShowPassword] = useState(false)
   
   const {
     register,
     handleSubmit,
+    setValue,
+    watch,
     formState: { errors, isSubmitting },
   } = useForm<LoginInput>({
     resolver: zodResolver(loginSchema),
   })
+
+  const emailValue = watch('email')
 
   const onSubmit = async (data: LoginInput) => {
     setErrorMsg(null)
@@ -71,12 +76,24 @@ function LoginForm() {
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <div className="space-y-2">
           <label className="text-[11px] font-mono uppercase tracking-widest text-muted-foreground">Alamat Email</label>
-          <input
-            {...register('email')}
-            type="email"
-            placeholder="mahasiswa@unsap.ac.id"
-            className="w-full px-4 py-3 rounded-md bg-transparent border border-border focus:outline-none focus:ring-1 focus:ring-foreground focus:border-foreground transition-all font-sans text-[15px] placeholder:text-muted-foreground/40"
-          />
+          <div className="relative">
+            <input
+              {...register('email')}
+              type="email"
+              placeholder="mahasiswa@unsap.ac.id"
+              className="w-full px-4 py-3 pr-11 rounded-md bg-transparent border border-border focus:outline-none focus:ring-1 focus:ring-foreground focus:border-foreground transition-all font-sans text-[15px] placeholder:text-muted-foreground/40"
+            />
+            {emailValue && (
+              <button
+                type="button"
+                onClick={() => setValue('email', '')}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                tabIndex={-1}
+              >
+                <XCircle size={18} />
+              </button>
+            )}
+          </div>
           {errors.email && (
             <p className="text-destructive text-[12px] font-medium mt-1">{errors.email.message}</p>
           )}
@@ -84,12 +101,22 @@ function LoginForm() {
 
         <div className="space-y-2">
           <label className="text-[11px] font-mono uppercase tracking-widest text-muted-foreground">Kata Sandi</label>
-          <input
-            {...register('password')}
-            type="password"
-            placeholder="••••••••"
-            className="w-full px-4 py-3 rounded-md bg-transparent border border-border focus:outline-none focus:ring-1 focus:ring-foreground focus:border-foreground transition-all font-sans text-[15px] placeholder:text-muted-foreground/40"
-          />
+          <div className="relative">
+            <input
+              {...register('password')}
+              type={showPassword ? 'text' : 'password'}
+              placeholder="••••••••"
+              className="w-full px-4 py-3 pr-11 rounded-md bg-transparent border border-border focus:outline-none focus:ring-1 focus:ring-foreground focus:border-foreground transition-all font-sans text-[15px] placeholder:text-muted-foreground/40"
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+              tabIndex={-1}
+            >
+              {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+            </button>
+          </div>
           {errors.password && (
             <p className="text-destructive text-[12px] font-medium mt-1">{errors.password.message}</p>
           )}
